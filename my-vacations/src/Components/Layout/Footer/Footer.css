@@ -1,0 +1,14 @@
+.Footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+	position: relative;
+    display: flex;
+    height: 100%;
+}
+
+/* .footerLinks span:hover {
+    box-sizing: border-box;
+    box-shadow: 1px 3px 10px #e9ecef;
+    
+} */

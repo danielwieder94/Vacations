@@ -1,0 +1,18 @@
+.MainLayout {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 10dvh 78dvh 12dvh;
+    box-sizing: border-box;
+}
+
+
+.MainLayout > header {
+    grid-row: 1;
+}
+.MainLayout > main {
+    grid-row: 2;
+    /* padding-top: 60px; */
+}
+.MainLayout > footer {
+    grid-row: 3;
+}
