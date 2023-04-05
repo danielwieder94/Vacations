@@ -1,3 +1,4 @@
+import React from "react";
 import "./VacationList.css";
 
 function VacationList(): JSX.Element {

@@ -1,3 +1,4 @@
+import React from "react";
 import MainRoutes from "../../Routes/MainRoutes/MainRoutes";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";

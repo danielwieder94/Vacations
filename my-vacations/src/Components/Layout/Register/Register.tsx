@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./Register.css";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 
 export const theme = createTheme({
         palette: {

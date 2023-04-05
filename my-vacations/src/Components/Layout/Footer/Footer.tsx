@@ -3,6 +3,7 @@ import Wave from 'react-wavify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import "./Footer.css";
+import React from 'react';
 
 function Footer(): JSX.Element {
     return (

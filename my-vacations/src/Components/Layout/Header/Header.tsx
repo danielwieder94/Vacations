@@ -4,6 +4,7 @@ import { theme } from "../Register/Register"
 import "./Header.css";
 import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 function Header(): JSX.Element {
     const navigate = useNavigate()

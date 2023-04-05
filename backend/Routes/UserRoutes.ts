@@ -70,41 +70,4 @@ userRoutes.post(
   }
 );
 
-// try {
-//     //validate user's input
-//     const { email, password } = request.body;
-//     if (!email || !password) {
-//     return response
-//         .status(400)
-//         .json({ message: "Missing required fields" });
-//     }
-//     //check if email exists
-//     const emailExists = await checkEmailExists(email);
-//     if (!emailExists) {
-//     return response.status(400).json({ message: "Invalid email" });
-//     }
-//     //check if password is correct
-//     const user = await getUserByEmail(email);
-//     const isPasswordCorrect = await bcrypt.compare(
-//     password,
-//     user.password
-//     );
-//     if (!isPasswordCorrect) {
-//     return response.status(400).json({ message: "Invalid password" });
-//     }
-//     //generate token
-//     const token = jwt.sign(
-//     { id: user.id, isAdmin: user.isAdmin },
-//     config.jwtSecret,
-//     { expiresIn: "1d" }
-//     );
-//     //send token to client
-//     response.json({ token });
-// } catch (error) {
-//     console.error(error);
-//     response.status(500).json({ message: "Internal server error" });
-// }
-
-//get user by email
-
 export default userRoutes;

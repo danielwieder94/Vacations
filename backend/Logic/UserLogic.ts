@@ -73,7 +73,7 @@ export const registerUser = async (user: User) => {
   };
 };
 
-//get user by email
+//get user by email - for login / register
 const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const sql = `SELECT * FROM users WHERE email = ?`;

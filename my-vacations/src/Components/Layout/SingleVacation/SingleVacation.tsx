@@ -1,3 +1,4 @@
+import React from "react";
 import "./SingleVacation.css";
 
 function SingleVacation(): JSX.Element {
