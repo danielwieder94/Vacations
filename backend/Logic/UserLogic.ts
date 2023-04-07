@@ -37,51 +37,87 @@ const createLikesTable = async () => {
 //Register user
 export const registerUser = async (user: User) => {
   //check if email exists
-  const emailExists = await getUserByEmail(user.email);
-  if (emailExists) {
-    throw new Error("Email already exists");
+  try {
+    const emailExists = await getUserByEmail(user.email);
+    if (emailExists) {
+      throw new Error("Email already exists");
+    }
+    //protect user's password - using bcrypt
+    const hashedPassword: string = await bcrypt.hash(user.password, 10);
+    //using ? ? ? ? placeholders to prevent SQL injection, adding maintainability and readability
+    const insertUserSql = `INSERT INTO vacations.users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
+    console.log(
+      insertUserSql,
+      user.firstName,
+      user.lastName,
+      user.email,
+      hashedPassword
+    );
+    //Insert the new user to the DB
+    const insertUserResult: OkPacket = await dal_mysql.execute(insertUserSql, [
+      user.firstName,
+      user.lastName,
+      user.email,
+      hashedPassword,
+    ]);
+    console.log("insertUserResult: ", insertUserResult);
+    //Return the new user
+    const newUser = {
+      id: insertUserResult.insertId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: "", //don't return the password to the client
+      isAdmin: false,
+      vacations: [],
+    };
+    return newUser;
+  } catch (error: any) {
+    console.error("Error occured in registerUser function: ", error);
+    throw new Error("Failed to register user");
   }
-  //protect user's password - using bcrypt
-  const hashedPassword: string = await bcrypt.hash(user.password, 10);
-  //using ? ? ? ? placeholders to prevent SQL injection, adding maintainability and readability
-  const insertUserSql = `INSERT INTO vacations.users (firstName, lastName, email, password, isAdmin) VALUES (?, ?, ?, ?, ?)`;
-  console.log(
-    insertUserSql,
-    user.firstName,
-    user.lastName,
-    user.email,
-    hashedPassword,
-    user.isAdmin
-  );
-  //Insert the new user to the DB
-  const insertUserResult: OkPacket = await dal_mysql.execute(insertUserSql, [
-    user.firstName,
-    user.lastName,
-    user.email,
-    hashedPassword,
-    user.isAdmin,
-  ]);
-  //Return the new user
-  const newUser = {
-    id: insertUserResult.insertId,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: "", //don't return the password to the client
-    isAdmin: false,
-    vacations: [],
-  };
+};
+
+//login
+const loginUser = async (email: string, password: string) => {
+  try {
+    const user: User | null = await getUserByEmail(email);
+    console.log("loginUser email: ", email);
+    console.log("loginUser password: ", password);
+    if (!user) {
+      throw new Error("Invalid email");
+    }
+    //check if password is correct
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    console.log("isPasswordCorrect: ", isPasswordCorrect);
+    if (!isPasswordCorrect) {
+      throw new Error("Invalid password");
+      // console.error("Invalid password");
+    }
+    //return the user
+    return user;
+  } catch (error: any) {
+    console.error("Error occured in loginUser function: ", error);
+    throw new Error("Failed to login user");
+  }
 };
 
 //get user by email - for login / register
 const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    const sql = `SELECT * FROM users WHERE email = ?`;
-    const [rows] = await dal_mysql.execute(sql, [email]);
-    return rows[0] || null;
+    const sql = `SELECT * FROM vacations.users WHERE email = ?`;
+    // synax [userData] = await dal_mysql......, is the same as - const result = await dal_mysql....
+    //and then const userData = result[0]
+    const [userData] = await dal_mysql.execute(sql, [email]);
+    console.log("getUserByEmail:", userData);
+    if (!userData) {
+      throw new Error("Invalid email or password");
+    }
+    return userData ? { ...userData } : null;
   } catch (error: any) {
-    console.error(error);
-    return error;
+    console.error("Error occured in getUserByEmail function: ", error);
+    throw new Error("Invalid email or password");
+    return null;
   }
 };
 
@@ -90,4 +126,5 @@ export default {
   createLikesTable,
   registerUser,
   getUserByEmail,
+  loginUser,
 };

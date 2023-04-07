@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Link, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./Register.css";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import axios from "axios";
 
 export const theme = createTheme({
         palette: {
@@ -39,9 +40,14 @@ function Register(): JSX.Element {
 })
     const navigate = useNavigate()
     const { register, handleSubmit, trigger ,formState: { errors } } = useForm<FormData>({resolver: zodResolver(schema)});
-    const onSubmit = (data: FormData) => {
-        console.log(data);
-        navigate("/vacationList")
+    const onSubmit = async (data: FormData) => {
+        try {
+            const response = await axios.post<FormData>("http://localhost:4000/api/v1/users/register", data);
+            console.log(response.data);
+            navigate("/vacationList");
+        } catch (err) {
+            console.log("error occured in register component: ", err);
+        }
     }
     return (
       //onBlur to show the error message dynamically before form submits the form.

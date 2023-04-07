@@ -1,11 +1,6 @@
-import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
-import fileUpload from "express-fileupload";
-import { OkPacket } from "mysql";
-import dal_mysql from "../Utils/dal_mysql";
 import bcrypt from "bcrypt";
 import User from "../Models/User";
-import { registerUser } from "../Logic/UserLogic";
 import UserLogic from "../Logic/UserLogic";
 
 const userRoutes = express.Router();
@@ -32,6 +27,7 @@ userRoutes.post(
       };
       const registeredUser = await UserLogic.registerUser(newUser);
       response.status(201).json(registeredUser);
+      console.log("User registered successfully");
     } catch (error) {
       console.error(error);
       response.status(500).json({ message: "Internal server error" });
@@ -42,30 +38,34 @@ userRoutes.post(
 //login
 userRoutes.post(
   "/login",
-  async (request: Request, response: Response, NextFunction) => {
+  async (request: Request, response: Response, next: NextFunction) => {
     try {
       const { email, password } = request.body;
+      console.log("email: ", email);
+      console.log("password: ", password);
       if (!email || !password) {
         return response
           .status(400)
           .json({ message: "Missing required fields" });
       }
-      const emailExists = await UserLogic.getUserByEmail(email);
-      if (!emailExists) {
-        return response.status(400).json({ message: "Invalid email" });
+      console.log(
+        "Attempting to log in with email:",
+        email,
+        "and password:",
+        password
+      );
+      const user = await UserLogic.loginUser(email, password);
+      response.status(200).json({ message: "Login successful", user });
+    } catch (error: any) {
+      switch (error.message) {
+        case response.status(400):
+          return response
+            .status(400)
+            .json({ message: "Invalid email or password" });
+        default:
+          response.status(500).json({ message: "Internal server error" });
+          next(error);
       }
-      //check if password is correct
-      const user: User | null = await UserLogic.getUserByEmail(email);
-      if (!user) {
-        return response.status(400).json({ message: "Invalid email" });
-      }
-      const isPasswordCorrect = await bcrypt.compare(password, user.password);
-      if (!isPasswordCorrect) {
-        return response.status(400).json({ message: "Invalid password" });
-      }
-    } catch (error) {
-      console.log(error);
-      response.status(500).json({ message: "Internal server error" });
     }
   }
 );
