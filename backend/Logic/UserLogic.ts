@@ -1,5 +1,5 @@
 import dal_mysql from "../Utils/dal_mysql";
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import { OkPacket } from "mysql";
 import User from "../Models/User";
 import execute from "../Utils/dal_mysql";
@@ -80,23 +80,25 @@ export const registerUser = async (user: User) => {
 
 //login
 const loginUser = async (email: string, password: string) => {
+  const user = await getUserByEmail(email);
+  console.log("loginUser email: ", email);
+  console.log("loginUser password: ", password);
+  if (!user) {
+    response.statusCode = 401;
+    throw new Error("Invalid email or password");
+  }
+  // check if password is correct
   try {
-    const user: User | null = await getUserByEmail(email);
-    console.log("loginUser email: ", email);
-    console.log("loginUser password: ", password);
-    if (!user) {
-      throw new Error("Invalid email");
-    }
-    //check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     console.log("isPasswordCorrect: ", isPasswordCorrect);
     if (!isPasswordCorrect) {
-      throw new Error("Invalid password");
-      // console.error("Invalid password");
+      response.statusCode = 401;
+      throw new Error("Invalid email or password");
     }
     //return the user
     return user;
   } catch (error: any) {
+    response.statusCode = 401;
     console.error("Error occured in loginUser function: ", error);
     throw new Error("Failed to login user");
   }
@@ -111,13 +113,12 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     const [userData] = await dal_mysql.execute(sql, [email]);
     console.log("getUserByEmail:", userData);
     if (!userData) {
-      throw new Error("Invalid email or password");
+      return null;
     }
     return userData ? { ...userData } : null;
   } catch (error: any) {
     console.error("Error occured in getUserByEmail function: ", error);
-    throw new Error("Invalid email or password");
-    return null;
+    throw new Error("Invalid email: " + email);
   }
 };
 

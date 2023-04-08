@@ -1,10 +1,15 @@
 .Login {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 70dvh;
     width: 100vw;
     text-align: center;
+}
+
+.MuiAlert-root {
+    margin-bottom: 2rem;
 }
 
 .logForm {

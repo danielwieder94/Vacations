@@ -28,8 +28,8 @@ function Login(): JSX.Element {
         console.log(response.data)
         navigate("/vacationList");
     } catch (err: any) {
-        // err.response.status === 400 ? setErrorMsg(err.response.data.error) : setErrorMsg("Internal server error");
-        console.log(errorMsg)
+        err.response.status === 401 ? setErrorMsg("Invalid email or password") : setErrorMsg(err.response.data.message);
+        console.log(err.response.status)
         console.log("error occured in login component: ", err);
     }
     }

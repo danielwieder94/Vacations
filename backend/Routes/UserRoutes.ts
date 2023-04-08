@@ -41,15 +41,13 @@ userRoutes.post(
   async (request: Request, response: Response, next: NextFunction) => {
     try {
       const { email, password } = request.body;
-      console.log("email: ", email);
-      console.log("password: ", password);
       if (!email || !password) {
         return response
           .status(400)
           .json({ message: "Missing required fields" });
       }
       console.log(
-        "Attempting to log in with email:",
+        "Email found. Attempting to log in with email:",
         email,
         "and password:",
         password
@@ -57,14 +55,17 @@ userRoutes.post(
       const user = await UserLogic.loginUser(email, password);
       response.status(200).json({ message: "Login successful", user });
     } catch (error: any) {
-      switch (error.message) {
-        case response.status(400):
-          return response
-            .status(400)
-            .json({ message: "Invalid email or password" });
-        default:
-          response.status(500).json({ message: "Internal server error" });
-          next(error);
+      if (
+        error.message === "Invalid email or password" ||
+        "Invalid email or password"
+      ) {
+        console.log("Login route error, invalid email or password: ", error);
+        return response.status(401).json({ message: error.message });
+      } else {
+        console.error(error);
+        response
+          .status(500)
+          .json({ message: "Internal server error!!!! DANIELLLLL" });
       }
     }
   }
