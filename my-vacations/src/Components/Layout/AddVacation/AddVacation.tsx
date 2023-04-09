@@ -29,7 +29,7 @@ function AddVacation(): JSX.Element {
         startDate: z.coerce.date().refine((data) => data > new Date(), {message: 'Start date must be in the future'}),
         endDate: z.coerce.date(),
         vacDesc: z.string().min(2).nonempty(),
-        vacPrice: z.number().positive().max(1000),
+        vacPrice: z.number().positive().max(10000),
         vacImg: z.string().nonempty()
       }).refine((data) => data.startDate < data.endDate, {message: 'End date must be after start date',
       path: ['endDate']});
