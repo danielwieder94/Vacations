@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ThemeProvider } from "@emotion/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
@@ -7,12 +7,17 @@ import { useNavigate } from "react-router-dom";
 import { ZodType, z } from "zod";
 import Vacation from "../../../Model/Vacation";
 import { theme } from "../../Layout/Register/Register";
-import { DateRangePicker } from "@mui/x-date-pickers-pro"
+import {MdCloudUpload, MdDelete} from 'react-icons/md';
 import "./AddVacation.css";
 
 
+
 function AddVacation(): JSX.Element {
-    let allVacations: Vacation[] = [];
+    const [allVacations, setAllVacations] = useState<Vacation[]>([]);
+    //for image file
+    const [vacFile, setVacFile] = useState<File | null>(null);
+    const [image, setImage] = useState<string>('');
+
     type FormData = {
         // id: number,
         destination: string,
@@ -20,58 +25,98 @@ function AddVacation(): JSX.Element {
         endDate: Date,
         vacDesc: string,
         vacPrice: number,
+        // vacFile: File,
         vacImg: string,
       }
       // This will be the schema for the form, it'll be used to validate the form when submitting.
       //z.coerce.date() is used to convert the string to a date object.
-      const schema: ZodType<FormData> = z.object({
+    const schema: ZodType<FormData> = z.object({
         destination: z.string().min(2, {message: 'Destination must have at least 2 characters'}).nonempty(),
         startDate: z.coerce.date().refine((data) => data > new Date(), {message: 'Start date must be in the future'}),
         endDate: z.coerce.date(),
         vacDesc: z.string().min(2).nonempty(),
-        vacPrice: z.number().positive().max(10000),
-        vacImg: z.string().nonempty()
-      }).refine((data) => data.startDate < data.endDate, {message: 'End date must be after start date',
-      path: ['endDate']});
-      const navigate = useNavigate();
-      const { register, handleSubmit, trigger ,formState: { errors } } = useForm<FormData>({resolver: zodResolver(schema)});
-      const onSubmit = (data: FormData) => {
-            console.log("submitting...")
-            console.log(errors);
-            const newVacation = new Vacation(data.destination, data.startDate, data.endDate, data.vacDesc, data.vacPrice, data.vacImg);
-            allVacations.push(newVacation);
-            console.log(data);
-            console.log(`allVacations: ${allVacations}`)
-            navigate("/vacationList")
-      }
+        vacPrice: z.number().positive().max(10000, {message: 'Price must be equal to or less than $10,000'}),
+        vacImg: z.string().nonempty(),
+        // vacFile: z.instanceof(File),
+        }).refine((data) => data.startDate < data.endDate, {message: 'End date must be after start date',
+        path: ['endDate']});
+
+    const navigate = useNavigate();
+    const { register, handleSubmit, trigger ,formState: { errors } } = useForm<FormData>({resolver: zodResolver(schema)});
+    const onSubmit = (data: FormData) => {
+        console.log("submitting...", data)
+        console.log(errors);
+        const newVacation = new Vacation(data.destination, data.startDate, data.endDate, data.vacDesc, data.vacPrice, vacFile?.name || '');
+        setAllVacations([...allVacations, newVacation]);
+        console.log('newVacation:', newVacation)
+        navigate("/vacationList")
+    }
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {  
+        const file = e.target.files![0];
+        // const fileName = e.target.files![0].name;
+        if (!file){
+            return 'No file selected';
+        }
+        setVacFile(file);
+        setImage(URL.createObjectURL(file));
+    }
+    console.log(vacFile?.name)
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const handleClick = () => {
+        inputRef.current?.click();
+    }
+    const handleDelete = () => {
+        setVacFile(null);
+        setImage('');
+        if(inputRef.current){
+            inputRef.current.value = '';
+        }
+    }
 
     return (
         <div className="AddVacation">
 			<ThemeProvider theme={theme}>
             <form className="addVacationForm" onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h4">Add a new Vacation</Typography>
-            <TextField type="text" label="Destination" {...register("destination")} error={!!errors.destination} helperText={errors.destination?.message}
+            <TextField className="destination" type="text" label="Destination" 
+            {...register("destination")} error={!!errors.destination} helperText={errors.destination?.message}
             onBlur={()=>trigger('destination')}/>
-            <div>
+            <div className="dateDiv">
                 <Typography variant="subtitle2">Start Date</Typography>
-                <TextField type="date" {...register("startDate")} error={!!errors.startDate} helperText={errors.startDate?.message} 
+                <TextField type="date" 
+                {...register("startDate")} error={!!errors.startDate} helperText={errors.startDate?.message} 
                 onBlur={() => trigger('startDate')}/>
-            </div>
-            <div>
+            {/* </div>
+            <div> */}
                 <Typography variant="subtitle2">End Date</Typography>
-                <TextField type="date" {...register("endDate")} error={!!errors.endDate} helperText={errors.endDate?.message}
+                <TextField type="date" 
+                {...register("endDate")} error={!!errors.endDate} helperText={errors.endDate?.message}
                 onBlur={() => trigger('endDate')}/>
             </div>
-            <TextField type="text" label="Description" {...register("vacDesc")}/>
+            <TextField multiline minRows={1} className="desc" type="text" label="Description" {
+                ...register('vacDesc')}/>
             {/* using valueAsNumber because the TextField component returns a string, and the schema requires a number. */}
-            <TextField type="number" label="Price" {...register('vacPrice', {valueAsNumber: true})}
+            <TextField style={{width: '50%', alignSelf:'center'}} type="number" label="Price" 
+            {...register('vacPrice', {valueAsNumber: true})}
             InputProps={{
                 startAdornment: (
                 <InputAdornment position="start">$</InputAdornment>
                 ),
-            }} error={!!errors.vacPrice} helperText={errors.vacPrice ? errors.vacPrice.message : ''} onBlur={() => trigger('vacPrice')}
-            />
-            <TextField type="text" label="Image URL" {...register("vacImg")}/>
+            }} error={!!errors.vacPrice} helperText={errors.vacPrice ? errors.vacPrice.message : ''} 
+            onBlur={() => trigger('vacPrice')}/>
+            <div className="fileInput" onClick={handleClick}>
+                <input accept="image/*" type="file" id="image-file" ref={inputRef} className="input-field" onChange={handleImageChange} hidden/>
+                {image ? <img src={image} width={'300px'} height={'150px'} alt={File.name}/> : <MdCloudUpload size={50} color="#5EB4FF"/> }
+                <input type="text"  style={{display:'none'}} value={('vacImg')} {...register('vacImg')}/>
+            </div>
+            <span>
+                {image && (
+                <>
+                    <Typography variant="subtitle2">{vacFile?.name}</Typography>
+                    <MdDelete onClick={handleDelete}/>
+                </>
+                )}
+            </span>
             <Button variant="contained" size="large" color="primary" type="submit"><Typography>Add Vacation</Typography></Button> <br />
             </form>
             </ThemeProvider>

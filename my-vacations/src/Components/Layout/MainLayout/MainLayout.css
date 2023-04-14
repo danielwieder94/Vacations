@@ -4,8 +4,6 @@
     grid-template-rows: 10dvh 78dvh 12dvh;
     box-sizing: border-box;
 }
-
-
 .MainLayout > header {
     grid-row: 1;
 }

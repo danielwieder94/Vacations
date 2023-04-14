@@ -18,18 +18,6 @@ const createVacationsTable = async () => {
             )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };
-const createLikesTable = async () => {
-  const sql = `
-        CREATE TABLE IF NOT EXISTS vacations.likes (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        vacationId INT NOT NULL,
-        userId INT NOT NULL,
-        FOREIGN KEY (userId) REFERENCES users(id),
-        FOREIGN KEY (vacationId) REFERENCES vacations_list(id),
-        UNIQUE KEY (userId, vacationId)
-        )`;
-  const result: OkPacket = await dal_mysql.execute(sql);
-};
 //add vacation
 const addVacation = async (vacation: Vacation) => {
   const sql = `INSERT INTO vacations.vacations_list (destination, description, image, startDate, endDate, price) VALUES (?, ?, ?, ?, ?, ?)`;
@@ -96,4 +84,4 @@ const getVacationByLikes = async () => {
   const result: OkPacket = await dal_mysql.execute(sql);
 };
 
-export default { createVacationsTable, getAllVacations };
+export default { createVacationsTable, getAllVacations, addVacation };
