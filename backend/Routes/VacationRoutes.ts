@@ -7,7 +7,7 @@ import VacationLogic from "../Logic/VacationLogic";
 const router = express.Router();
 
 //router.post
-router.post(
+const addVacation = router.post(
   "/add",
   async (request: Request, response: Response, next: NextFunction) => {
     response.status(200).json(await VacationLogic.addVacation(request.body));
