@@ -18,6 +18,7 @@
 }
 
 .addVacationForm > .dateDiv {
+    /* width: 50%; */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -44,7 +45,7 @@ span {
     margin: 0 auto;
     border: 2px dashed #e9ecef;
     height: 150px;
-    width: 300px;
+    width: 100%;
     cursor: pointer;
     box-sizing: border-box;
     box-shadow: 1px 3px 10px #e9ecef;

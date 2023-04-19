@@ -1,12 +1,12 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
-import AddVacation from "../../Layout/AddVacation/AddVacation";
+import AddVacation from "../../Pages/AddVacation/AddVacation";
 import EditVacation from "../../Layout/EditVacation/EditVacation";
 import Main from "../../Layout/Main/Main";
-import Page404 from "../../Layout/Page404/Page404";
-import Register from "../../Layout/Register/Register";
-import Login from "../../Layout/Login/Login";
-import VacationList from "../../Layout/VacationList/VacationList";
+import Page404 from "../../Pages/Page404/Page404";
+import Register from "../../Pages/Register/Register";
+import Login from "../../Pages/Login/Login";
+import VacationList from "../../Pages/VacationList/VacationList";
 import "./MainRoutes.css";
 
 function MainRoutes(): JSX.Element {

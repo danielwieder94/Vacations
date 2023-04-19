@@ -3,7 +3,7 @@ import "./Login.css";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider} from "@mui/material/styles";
-import { theme } from "../../Layout/Register/Register"
+import { theme } from "../Register/Register"
 import { Alert, Button, Link, TextField, Typography } from "@mui/material";
 import { z, ZodType } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
