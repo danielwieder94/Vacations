@@ -2,22 +2,14 @@ import React from "react";
 import { Button, Link, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../Layout/Theme/Theme"
 import "./Register.css";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-
-export const theme = createTheme({
-        palette: {
-          primary: {
-            main: '#5EB4FF',
-          },
-          secondary: {
-            main: '#ffa95e',
-          },
-        },
-});
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Register(): JSX.Element {
   type FormData = {
@@ -37,7 +29,7 @@ function Register(): JSX.Element {
 }).refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
-})
+    })
     const navigate = useNavigate()
     const { register, handleSubmit, trigger ,formState: { errors } } = useForm<FormData>({resolver: zodResolver(schema)});
     const onSubmit = async (data: FormData) => {
@@ -51,10 +43,13 @@ function Register(): JSX.Element {
     }
     return (
       //onBlur to show the error message dynamically before form submits the form.
+      //error={!!errors.fieldName} is used to show the error in red color (MUI)
         <ThemeProvider theme={theme}>
         <div className="Register">
             <form className="regForm" onSubmit={handleSubmit(onSubmit)}>
-                <Typography variant="h4">Sign Up</Typography>
+                <Typography variant="h4"
+                >Sign Up  <FontAwesomeIcon icon={faUserPlus} style={{color: "#FFC857"}} />
+                </Typography>
                 <TextField type="text" label="First Name" {...register("firstName")} error={!!errors.firstName} helperText={errors.firstName ? errors.firstName.message : ''}
                 onBlur={()=>{trigger('firstName')}}/>
                 <TextField type="text" label="Last name"{...register("lastName")}  error={!!errors.lastName} helperText={errors.lastName ? errors.lastName.message : ''}
@@ -65,8 +60,9 @@ function Register(): JSX.Element {
                 onBlur={()=>{trigger('password')}}/>
                 <TextField type="password" label="Confirm password" {...register("confirmPassword")} error={!!errors.confirmPassword} helperText={errors.confirmPassword ? errors.confirmPassword.message : ''} 
                 onBlur={()=>{trigger('confirmPassword')}}/>
-                <Button variant="contained" size="large" color="primary" type="submit"><Typography>Register</Typography></Button> <br />
-                <span>Already have a user?</span><Link underline="none" component="button" className="loginBtn" onClick={()=>navigate("/login")}>Login</Link>
+                <Button variant="contained" size="large" color="secondary" type="submit"><Typography>Register</Typography></Button>
+                <span>Already have a user?</span>
+                <Link underline="none" component="button" className="loginBtn" onClick={()=>navigate("/login")}>Login</Link>
             </form>
         </div>
         </ThemeProvider>

@@ -21,6 +21,11 @@
     cursor: pointer;
 } 
 
+span {
+    color: black;
+    font-size: small;
+}
+
 /* .error {
     color: red;
     font-size: 0.8rem;

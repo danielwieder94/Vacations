@@ -3,11 +3,13 @@ import "./Login.css";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider} from "@mui/material/styles";
-import { theme } from "../Register/Register"
+import { theme } from "../../Layout/Theme/Theme"
 import { Alert, Button, Link, TextField, Typography } from "@mui/material";
 import { z, ZodType } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
 function Login(): JSX.Element {
     const [errorMsg, setErrorMsg] = useState('');
@@ -41,14 +43,16 @@ function Login(): JSX.Element {
                 {errorMsg}
                 </Alert>)}
 			<form className="logForm">
-                <Typography variant="h4">Login</Typography>
+                <Typography variant="h4">
+                    Login  <FontAwesomeIcon icon={faArrowRightToBracket} style={{color: "#FFC857",}} />
+                    </Typography>
                 <TextField type="text" label="Email" {...register("email")} error={!!errors.email} helperText={errors.email?.message}
                 onBlur={()=>{trigger('email')}}/>
                 <TextField type="password" label="Password" {...register("password")} error={!!errors.password} helperText={errors.password?.message}
                 onBlur={()=>{trigger('password')}}/>
-                <Button variant="contained" size="large" color="primary" type="submit"><Typography>Login</Typography></Button>
-                <span>Don't have a user?</span><Link underline="none" component="button" className="registerBtn" onClick={()=>navigate("/register")}>Register</Link>
-                
+                <Button variant="contained" size="large" color="secondary" type="submit"><Typography>Login</Typography></Button>
+                <span>Don't have a user?</span>
+                <Link underline="none" component="button" className="registerBtn" onClick={()=>navigate("/register")}>Register</Link>
             </form>
         </div>
         </ThemeProvider>

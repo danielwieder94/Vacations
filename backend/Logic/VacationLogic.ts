@@ -20,13 +20,13 @@ const createVacationsTable = async () => {
 };
 //add vacation
 const addVacation = async (vacation: Vacation) => {
-  const sql = `INSERT INTO vacations.vacations_list (destination, description, image, startDate, endDate, price) VALUES (?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO vacations.vacations_list (destination, description, image, startDate, endDate, price) VALUES (?, ?,  ?, ?, ?, ?)`;
   const result: OkPacket = await dal_mysql.execute(sql, [
     vacation.destination,
     vacation.vacDesc,
     vacation.vacImg,
-    vacation.startDate,
-    vacation.endDate,
+    formatDate(vacation.startDate),
+    formatDate(vacation.endDate),
     vacation.vacPrice,
   ]);
   return result.insertId;
@@ -53,16 +53,6 @@ const getVacationByDest = async (destination: string) => {
   // const result: OkPacket = await dal_mysql.execute(sql, [destination]);
 };
 
-//get vacations by price
-const getVacationByPrice = async (price: number) => {
-  return await dal_mysql.execute(
-    `SELECT * FROM vacations.vacations_list WHERE price = ?`,
-    [price]
-  );
-  // const sql = `SELECT * FROM vacations.vacations_list WHERE price = ?`;
-  // const result: OkPacket = await dal_mysql.execute(sql, [price]);
-};
-
 //get vacations by date
 const getVacationByDate = async (startDate: Date, endDate: Date) => {
   return await dal_mysql.execute(
@@ -84,4 +74,9 @@ const getVacationByLikes = async () => {
   const result: OkPacket = await dal_mysql.execute(sql);
 };
 
+//format date for mySQL date type
+const formatDate = (date: Date): string => {
+  const formattedDate = new Date(date).toISOString().split("T")[0];
+  return formattedDate;
+};
 export default { createVacationsTable, getAllVacations, addVacation };

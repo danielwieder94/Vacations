@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 class Vacation {
   // public id: number;
   public destination: string;
@@ -16,10 +18,11 @@ class Vacation {
     vacPrice: number,
     vacImg: string
   ) {
+    const today = dayjs().startOf("day").toDate();
     // this.id = id;
     this.destination = destination;
     this.startDate =
-      startDate < new Date()
+      startDate < today
         ? (() => {
             throw new Error("Start date cannot be earlier than today.");
           })()

@@ -26,6 +26,11 @@
     cursor: pointer;
 }
 
+span {
+    color: black;
+    font-size: small;
+}
+
 /* .logForm input {
     padding: 0.5rem;
     border: 1px solid #ccc;
