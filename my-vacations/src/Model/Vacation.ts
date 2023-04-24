@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 class Vacation {
-  // public id: number;
+  public id?: number;
   public destination: string;
   public startDate: Date;
   public endDate: Date;
@@ -10,7 +10,7 @@ class Vacation {
   public vacImg: string;
 
   constructor(
-    // id: number,
+    id: number,
     destination: string,
     startDate: Date,
     endDate: Date,
@@ -19,7 +19,7 @@ class Vacation {
     vacImg: string
   ) {
     const today = dayjs().startOf("day").toDate();
-    // this.id = id;
+    this.id = id;
     this.destination = destination;
     this.startDate =
       startDate < today
