@@ -23,7 +23,7 @@ function AddVacation(): JSX.Element {
     const [image, setImage] = useState<string>('');
     const today = dayjs().startOf('day').toDate()
     type FormData = {
-        // id: number,
+        id?: number,
         destination: string,
         startDate: Date,
         endDate: Date,
@@ -50,7 +50,7 @@ function AddVacation(): JSX.Element {
     const navigate = useNavigate();
     const { register, handleSubmit, trigger ,formState: { errors } } = useForm<FormData>({resolver: zodResolver(schema)});
     const onSubmit = async (data: FormData) => {
-        const newVacation = new Vacation(data.destination, new Date(data.startDate), new Date(data.endDate), data.vacDesc, data.vacPrice, vacFile?.name || '');
+        const newVacation = new Vacation(0, data.destination, new Date(data.startDate), new Date(data.endDate), data.vacDesc, data.vacPrice, vacFile?.name || '');
         console.log("submitting...", newVacation)
         setAllVacations([...allVacations, newVacation]);
         console.log(typeof newVacation.startDate);
