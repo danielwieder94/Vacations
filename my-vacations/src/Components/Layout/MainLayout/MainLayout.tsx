@@ -3,9 +3,12 @@ import MainRoutes from "../../Routes/MainRoutes/MainRoutes";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import "./MainLayout.css";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "../Theme/Theme";
 
 function MainLayout(): JSX.Element {
     return (
+        <ThemeProvider theme={theme}>
         <div className="MainLayout">
             <header>
                 <Header/>
@@ -17,6 +20,7 @@ function MainLayout(): JSX.Element {
                 <Footer/>
             </footer>
         </div>
+        </ThemeProvider>
     );
 }
 

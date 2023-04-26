@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { vacationReducer } from "./VacationReducer";
 
-const store = configureStore({
+export const vacationlyStore = configureStore({
   reducer: {
     vacations: vacationReducer,
   },

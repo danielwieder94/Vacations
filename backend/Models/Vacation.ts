@@ -1,5 +1,5 @@
 class Vacation {
-  // public id: number;
+  public id: number;
   public destination: string;
   public startDate: Date;
   public endDate: Date;
@@ -8,7 +8,7 @@ class Vacation {
   public vacImg: string;
 
   constructor(
-    // id: number,
+    id: number,
     destination: string,
     startDate: Date,
     endDate: Date,
@@ -16,7 +16,7 @@ class Vacation {
     vacPrice: number,
     vacImg: string
   ) {
-    // this.id = id;
+    this.id = id;
     this.destination = destination;
     this.startDate =
       startDate < new Date()
