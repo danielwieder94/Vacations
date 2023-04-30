@@ -9,20 +9,25 @@ import {
 } from "@mui/material";
 
 interface cardProps {
-  name: string;
-  description: string;
-  price: number;
-  image: string;
+  id?: number;
+  destination: string;
+  vacDesc: string;
+  vacPrice: number;
+  vacImg: string;
 }
 
 function SingleVacation(props: cardProps): JSX.Element {
   return (
     <div className="SingleVacation">
       <Card>
-        <CardHeader>{props.name}</CardHeader>
-        <CardMedia component="img" image={props.image} alt={props.name} />
+        <CardHeader>{props.destination}</CardHeader>
+        <CardMedia
+          component="img"
+          image={`http://localhost:4000/backend/Images/${props.id}_${props.vacImg}`}
+          alt={props.destination}
+        />
         <CardContent>
-          <Typography>{props.description}</Typography>
+          <Typography>{props.vacDesc}</Typography>
         </CardContent>
       </Card>
     </div>

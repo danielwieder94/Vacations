@@ -29,7 +29,15 @@ const addVacation = async (vacation: Vacation) => {
     formatDate(vacation.endDate),
     vacation.vacPrice,
   ]);
-  return result.insertId;
+  return new Vacation(
+    result.insertId,
+    vacation.destination,
+    vacation.startDate,
+    vacation.endDate,
+    vacation.vacDesc,
+    vacation.vacPrice,
+    vacation.vacImg
+  );
 };
 
 //edit vacation

@@ -41,13 +41,7 @@ function VacationList(): JSX.Element {
       <Grid container spacing={2}>
         {vacationlyStore.getState().vacations.vacations.map((item) => (
           <Grid item xs={12} sm={6} md={4}>
-            <SingleVacation
-              key={item.id}
-              name={item.destination}
-              description={item.vacDesc}
-              price={item.vacPrice}
-              image={item.vacImg}
-            />
+            TESTING
           </Grid>
         ))}
       </Grid>

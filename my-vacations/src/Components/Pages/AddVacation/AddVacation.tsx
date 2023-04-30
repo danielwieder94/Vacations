@@ -13,6 +13,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 function AddVacation(): JSX.Element {
   const [allVacations, setAllVacations] = useState<Vacation[]>([]);
@@ -27,7 +28,6 @@ function AddVacation(): JSX.Element {
     endDate: Date;
     vacDesc: string;
     vacPrice: number;
-    // vacFile: File,
     vacImg: string;
   };
   // This will be the schema for the form, it'll be used to validate the form when submitting.
@@ -39,11 +39,9 @@ function AddVacation(): JSX.Element {
         .string()
         .min(2, { message: "Destination must have at least 2 characters" })
         .nonempty(),
-      startDate: z.coerce
-        .date()
-        .refine((data) => data >= today, {
-          message: "Start date must be today or in the future",
-        }),
+      startDate: z.coerce.date().refine((data) => data >= today, {
+        message: "Start date must be today or in the future",
+      }),
       endDate: z.coerce.date(),
       vacDesc: z.string().min(2).nonempty(),
       vacPrice: z
@@ -51,7 +49,6 @@ function AddVacation(): JSX.Element {
         .positive()
         .max(10000, { message: "Price must be equal to or less than $10,000" }),
       vacImg: z.string().nonempty(),
-      // vacFile: z.instanceof(File),
     })
     .refine((data) => data.startDate < data.endDate, {
       message: "End date must be after start date",
@@ -66,31 +63,35 @@ function AddVacation(): JSX.Element {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const onSubmit = async (data: FormData) => {
-    const newVacation = new Vacation(
-      0,
-      data.destination,
-      new Date(data.startDate),
-      new Date(data.endDate),
-      data.vacDesc,
-      data.vacPrice,
-      vacFile?.name || ""
-    );
-    console.log("submitting...", newVacation);
-    setAllVacations([...allVacations, newVacation]);
-    console.log(typeof newVacation.startDate);
-    console.log(typeof newVacation.endDate);
+    console.log("Submit clicked");
+    const imageData = new FormData();
+    imageData.append("image", vacFile!);
     try {
-      const response = await axios.post<FormData>(
+      const addVacationRes = await axios.post(
         "http://localhost:4000/api/v1/vacations/add",
-        newVacation
+        data
       );
+      const vacationId = addVacationRes.data.vacationId;
+      const uploadImageRes = await axios.post(
+        `http://localhost:4000/api/v1/vacations/${vacationId}/upload`,
+        imageData
+      );
+      const newVacation = new Vacation(
+        vacationId,
+        data.destination,
+        new Date(data.startDate),
+        new Date(data.endDate),
+        data.vacDesc,
+        data.vacPrice,
+        vacFile?.name || ""
+      );
+      setAllVacations([...allVacations, newVacation]);
       navigate("/vacationList");
     } catch (err) {
       console.log("error occured in onSubmit function: ", err);
     }
-    console.log("newVacation:", newVacation);
-    navigate("/vacationList");
   };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     if (!file) {
@@ -99,6 +100,7 @@ function AddVacation(): JSX.Element {
     setVacFile(file);
     setImage(URL.createObjectURL(file));
   };
+  console.log(vacFile);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const handleClick = () => {
     inputRef.current?.click();
@@ -174,6 +176,7 @@ function AddVacation(): JSX.Element {
               accept="image/*"
               type="file"
               id="image-file"
+              name="image"
               ref={inputRef}
               className="input-field"
               onChange={handleImageChange}
@@ -207,7 +210,7 @@ function AddVacation(): JSX.Element {
             type="submit"
           >
             <Typography>Add Vacation</Typography>
-          </Button>{" "}
+          </Button>
           <br />
         </form>
       </ThemeProvider>
