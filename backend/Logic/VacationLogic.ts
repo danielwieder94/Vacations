@@ -9,8 +9,8 @@ const createVacationsTable = async () => {
             CREATE TABLE IF NOT EXISTS vacations.vacations_list (
             id INT AUTO_INCREMENT PRIMARY KEY,
             destination VARCHAR(255) NOT NULL,
-            description VARCHAR(255) NOT NULL,
-            image VARCHAR(255) NOT NULL,
+            description VARCHAR(510) NOT NULL,
+            vacImg VARCHAR(255) NOT NULL,
             startDate DATE NOT NULL,
             endDate DATE NOT NULL,
             price INT NOT NULL,
@@ -20,7 +20,7 @@ const createVacationsTable = async () => {
 };
 //add vacation
 const addVacation = async (vacation: Vacation) => {
-  const sql = `INSERT INTO vacations.vacations_list (destination, description, image, startDate, endDate, price) VALUES (?, ?,  ?, ?, ?, ?)`;
+  const sql = `INSERT INTO vacations.vacations_list (destination, description, vacImg, startDate, endDate, price) VALUES (?, ?,  ?, ?, ?, ?)`;
   const result: OkPacket = await dal_mysql.execute(sql, [
     vacation.destination,
     vacation.vacDesc,
@@ -39,6 +39,8 @@ const addVacation = async (vacation: Vacation) => {
     vacation.vacImg
   );
 };
+
+//upload image to "public" folder
 
 //edit vacation
 

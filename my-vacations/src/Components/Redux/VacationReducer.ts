@@ -37,7 +37,7 @@ export function vacationReducer(
   currentState: VacationState = new VacationState(),
   action: VacationAction
 ): VacationState {
-  console.log(" currentState: " + currentState);
+  console.log(" currentState: ", currentState);
   console.log("action: ", action);
   const newState = { ...currentState };
 
@@ -46,8 +46,8 @@ export function vacationReducer(
       newState.vacations = [...newState.vacations, action.payload];
       break;
     case VacationActionType.downloadVacations:
-      console.log("DownloadVacations called with payload: " + action.payload);
       newState.vacations = action.payload;
+      console.log("DownloadVacations called with payload: ", action.payload);
       break;
     case VacationActionType.updateVacation:
       const index = newState.vacations.findIndex(

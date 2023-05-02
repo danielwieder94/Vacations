@@ -7,22 +7,22 @@ import config from "./Utils/Config";
 import ErrorHandler from "./Middleware/route-not-found";
 import UserLogic from "./Logic/UserLogic";
 import VacationLogic from "./Logic/VacationLogic";
+import path from "path";
 import fileUpload from "express-fileupload";
 
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.use(express.static("public"));
 
 server.use("/api/v1/vacations", router);
 server.use("/api/v1/users", userRoutes);
 
-console.log("check if tables exist..");
+// console.log("check if tables exist..");
 
 server.use("*", ErrorHandler);
-//use backend folder as static folder so it can be accessed and images can be displayed
-server.use("/upload", express.static("Images"));
+// server.use(fileUpload());
 
-// server.use(fileUpload);
 UserLogic.createLikesTable();
 UserLogic.createUsersTable();
 VacationLogic.createVacationsTable();

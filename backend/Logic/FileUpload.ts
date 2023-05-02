@@ -4,7 +4,7 @@ import dal_mysql from "../Utils/dal_mysql";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "Images");
+    cb(null, "public");
   },
   filename: async (req, file, cb) => {
     const vacationId = req.params.id;

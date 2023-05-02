@@ -7,8 +7,9 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 
-interface cardProps {
+interface singleVacationProps {
   id?: number;
   destination: string;
   vacDesc: string;
@@ -16,18 +17,22 @@ interface cardProps {
   vacImg: string;
 }
 
-function SingleVacation(props: cardProps): JSX.Element {
+function SingleVacation(props: singleVacationProps): JSX.Element {
+  const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
+
   return (
     <div className="SingleVacation">
-      <Card>
+      <Card sx={{ width: "90%" }}>
         <CardHeader>{props.destination}</CardHeader>
         <CardMedia
+          sx={{ height: 300 }}
           component="img"
-          image={`http://localhost:4000/backend/Images/${props.id}_${props.vacImg}`}
-          alt={props.destination}
+          src={imageUrl}
+          alt={`${props.destination}`}
         />
         <CardContent>
           <Typography>{props.vacDesc}</Typography>
+          <Typography>{props.vacPrice}</Typography>
         </CardContent>
       </Card>
     </div>

@@ -10,8 +10,8 @@ const connection = mysql.createPool({
 
 const execute = (sql: string, params?: any): Promise<any> => {
   return new Promise((resolve, reject) => {
-    console.log("SQL query:", sql);
-    console.log("Parameters:", params);
+    // console.log("SQL query:", sql);
+    // console.log("Parameters:", params);
     connection.query(sql, params, (err, result) => {
       if (err) {
         console.log("Error in dal_mysql.ts: ", err);

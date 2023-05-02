@@ -69,7 +69,7 @@ function AddVacation(): JSX.Element {
     try {
       const addVacationRes = await axios.post(
         "http://localhost:4000/api/v1/vacations/add",
-        data
+        { ...data, vacImg: vacFile?.name || "" }
       );
       const vacationId = addVacationRes.data.vacationId;
       const uploadImageRes = await axios.post(
