@@ -31,7 +31,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
           alt={`${props.destination}`}
         />
         <CardContent>
-          <Typography>{props.vacDesc}</Typography>
+          <Typography color="text.secondary">{props.vacDesc}</Typography>
           <Typography>{props.vacPrice}</Typography>
         </CardContent>
       </Card>

@@ -17,6 +17,7 @@ function VacationList(): JSX.Element {
     (state: { vacations: { vacations: Vacation[] } }) =>
       state.vacations.vacations
   );
+  console.log("VacationList vacations: ", vacations);
   // console.log("Vacations: ", vacations);
   useEffect(() => {
     //use redux
@@ -27,20 +28,14 @@ function VacationList(): JSX.Element {
           type: VacationActionType.downloadVacations,
           payload: response.data,
         });
-        console.log("Dispatched action:", {
-          type: downloadVacations,
-          payload: response.data,
-        });
       });
-    // setRefresh(false);
   }, [dispatch]);
   return (
     <div className="VacationList">
       <Grid container spacing={2}>
         {vacations.map((item) => (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
             <SingleVacation
-              key={item.id}
               id={item.id}
               destination={item.destination}
               vacDesc={item.vacDesc}
