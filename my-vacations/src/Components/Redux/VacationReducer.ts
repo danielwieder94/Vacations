@@ -37,8 +37,6 @@ export function vacationReducer(
   currentState: VacationState = new VacationState(),
   action: VacationAction
 ): VacationState {
-  console.log(" currentState: ", currentState);
-  console.log("action: ", action);
   const newState = { ...currentState };
 
   switch (action.type) {

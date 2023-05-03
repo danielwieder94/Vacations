@@ -1,7 +1,7 @@
 .MainLayout {
     height: 100%;
     display: grid;
-    grid-template-rows: 8dvh 80dvh 12dvh;
+    grid-template-rows: 8dvh 84dvh 8dvh;
     /* box-sizing: border-box; */
 }
 .MainLayout > header {

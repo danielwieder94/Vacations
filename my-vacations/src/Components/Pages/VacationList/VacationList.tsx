@@ -28,22 +28,28 @@ function VacationList(): JSX.Element {
           type: VacationActionType.downloadVacations,
           payload: response.data,
         });
+        console.log("VacationList response.data: ", response.data);
       });
   }, [dispatch]);
   return (
     <div className="VacationList">
-      <Grid container spacing={2}>
-        {vacations.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <SingleVacation
-              id={item.id}
-              destination={item.destination}
-              vacDesc={item.vacDesc}
-              vacImg={item.vacImg}
-              vacPrice={item.vacPrice}
-            />
-          </Grid>
-        ))}
+      <Grid container spacing={1} m={"0 auto"}>
+        {vacations.map((item) => {
+          console.log(item);
+          return (
+            <Grid item xs={12} sm={6} md={4} key={item.id}>
+              <SingleVacation
+                id={item.id}
+                destination={item.destination}
+                startDate={item.startDate}
+                endDate={item.endDate}
+                vacDesc={item.vacDesc}
+                vacImg={item.vacImg}
+                vacPrice={item.vacPrice}
+              />
+            </Grid>
+          );
+        })}
       </Grid>
     </div>
   );

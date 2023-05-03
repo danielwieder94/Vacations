@@ -9,18 +9,18 @@ const createVacationsTable = async () => {
             CREATE TABLE IF NOT EXISTS vacations.vacations_list (
             id INT AUTO_INCREMENT PRIMARY KEY,
             destination VARCHAR(255) NOT NULL,
-            description VARCHAR(510) NOT NULL,
+            vacDesc VARCHAR(510) NOT NULL,
             vacImg VARCHAR(255) NOT NULL,
             startDate DATE NOT NULL,
             endDate DATE NOT NULL,
-            price INT NOT NULL,
+            vacPrice INT NOT NULL,
             likes INT NOT NULL DEFAULT 0
             )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };
 //add vacation
 const addVacation = async (vacation: Vacation) => {
-  const sql = `INSERT INTO vacations.vacations_list (destination, description, vacImg, startDate, endDate, price) VALUES (?, ?,  ?, ?, ?, ?)`;
+  const sql = `INSERT INTO vacations.vacations_list (destination, vacDesc, vacImg, startDate, endDate, vacPrice) VALUES (?, ?,  ?, ?, ?, ?)`;
   const result: OkPacket = await dal_mysql.execute(sql, [
     vacation.destination,
     vacation.vacDesc,
