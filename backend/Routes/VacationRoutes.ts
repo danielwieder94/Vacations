@@ -28,7 +28,28 @@ router.get(
   }
 );
 
-//router.put
+//get vacation by id
+router.get(
+  "/list/:id",
+  async (request: Request, response: Response, next: NextFunction) => {
+    const vacationId = +request.params.id;
+    response.status(200).json(await VacationLogic.getVacationById(vacationId));
+  }
+);
+
+//update vacation
+// router.put(
+//   "/update/:id",
+//   async (request: Request, response: Response, next: NextFunction) => {
+//     const updatedVacation: Vacation = await VacationLogic.updateVacation(
+//       request.body
+//     );
+//     response.status(200).json({
+//       updatedVacation: updatedVacation,
+//       vacationId: updatedVacation.id,
+//       message: "Vacation updated successfully",
+//     });
+//   }
 
 //router.delete
 

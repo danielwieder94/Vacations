@@ -3,7 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 70dvh;
+    /* height: calc(100dvh - 155px); */
+    height: 100%;
     width: 100vw;
     text-align: center;
 }

@@ -8,8 +8,13 @@ import Register from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
 import VacationList from "../../Pages/VacationList/VacationList";
 import "./MainRoutes.css";
+import { useSelector } from "react-redux";
 
 function MainRoutes(): JSX.Element {
+  // const isLoggedIn = useSelector(
+  //   (state: { user: { isLoggedIn: boolean } }) => state.user.isLoggedIn
+  // );
+  // console.log("MainRoutes isLoggedIn: ", isLoggedIn);
   return (
     <div className="MainRoutes">
       <Routes>

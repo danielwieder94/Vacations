@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { ThemeProvider } from "@emotion/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
@@ -13,7 +13,6 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { upload } from "@testing-library/user-event/dist/upload";
 
 function AddVacation(): JSX.Element {
   const [allVacations, setAllVacations] = useState<Vacation[]>([]);
@@ -43,7 +42,10 @@ function AddVacation(): JSX.Element {
         message: "Start date must be today or in the future",
       }),
       endDate: z.coerce.date(),
-      vacDesc: z.string().min(2).nonempty(),
+      vacDesc: z
+        .string()
+        .min(2, { message: "Desscription too short" })
+        .nonempty(),
       vacPrice: z
         .number()
         .positive()
@@ -137,6 +139,9 @@ function AddVacation(): JSX.Element {
             type="text"
             label="Description"
             {...register("vacDesc")}
+            error={!!errors.vacDesc}
+            helperText={errors.vacDesc?.message}
+            onBlur={() => trigger("vacDesc")}
           />
           <div className="dateDiv">
             <Typography variant="subtitle2">Start Date</Typography>

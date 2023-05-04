@@ -55,7 +55,7 @@ export const registerUser = async (user: User) => {
     ]);
     console.log("insertUserResult: ", insertUserResult);
     //Return the new user
-    const newUser = {
+    const newUser: User = {
       id: insertUserResult.insertId,
       firstName: user.firstName,
       lastName: user.lastName,

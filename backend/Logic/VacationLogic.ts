@@ -18,6 +18,12 @@ const createVacationsTable = async () => {
             )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };
+//format date for mySQL date type
+const formatDate = (date: Date): string => {
+  const formattedDate = new Date(date).toISOString().split("T")[0];
+  return formattedDate;
+};
+
 //add vacation
 const addVacation = async (vacation: Vacation) => {
   const sql = `INSERT INTO vacations.vacations_list (destination, vacDesc, vacImg, startDate, endDate, vacPrice) VALUES (?, ?,  ?, ?, ?, ?)`;
@@ -43,7 +49,9 @@ const addVacation = async (vacation: Vacation) => {
 //upload image to "public" folder
 
 //edit vacation
-
+// `UPDATE vacations.vacations_list
+// SET destination = ?, vacDesc = ?, vacImg = ?, startDate = ?, endDate = ?, vacPrice = ?
+// WHERE id = ?`;
 //delete vacation
 
 //get all vacations
@@ -63,6 +71,8 @@ const getVacationByDest = async (destination: string) => {
   // const result: OkPacket = await dal_mysql.execute(sql, [destination]);
 };
 
+//update vacation
+
 //get vacations by date
 const getVacationByDate = async (startDate: Date, endDate: Date) => {
   return await dal_mysql.execute(
@@ -71,6 +81,14 @@ const getVacationByDate = async (startDate: Date, endDate: Date) => {
   );
   // const sql = `SELECT * FROM vacations.vacations_list WHERE startDate = ? AND endDate = ?`;
   // const result: OkPacket = await dal_mysql.execute(sql, [startDate, endDate]);
+};
+
+//get vacation by id
+const getVacationById = async (id: number) => {
+  return await dal_mysql.execute(
+    `SELECT * FROM vacations.vacations_list WHERE id = ?`,
+    [id]
+  );
 };
 
 //get vacations by likes (for admin reports)
@@ -84,9 +102,9 @@ const getVacationByLikes = async () => {
   const result: OkPacket = await dal_mysql.execute(sql);
 };
 
-//format date for mySQL date type
-const formatDate = (date: Date): string => {
-  const formattedDate = new Date(date).toISOString().split("T")[0];
-  return formattedDate;
+export default {
+  createVacationsTable,
+  getAllVacations,
+  addVacation,
+  getVacationById,
 };
-export default { createVacationsTable, getAllVacations, addVacation };

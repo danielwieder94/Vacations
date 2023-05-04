@@ -19,23 +19,27 @@ function VacationList(): JSX.Element {
   );
   console.log("VacationList vacations: ", vacations);
   // console.log("Vacations: ", vacations);
+
   useEffect(() => {
     //use redux
-    axios
-      .get("http://localhost:4000/api/v1/vacations/list")
-      .then((response) => {
-        dispatch({
-          type: VacationActionType.downloadVacations,
-          payload: response.data,
+    if (vacations.length === 0) {
+      axios
+        .get("http://localhost:4000/api/v1/vacations/list")
+        .then((response) => {
+          dispatch({
+            type: VacationActionType.downloadVacations,
+            payload: response.data,
+          });
+          console.log("VacationList response.data: ", response.data);
         });
-        console.log("VacationList response.data: ", response.data);
-      });
-  }, [dispatch]);
+    }
+  }, [dispatch, vacations]);
+  // }, [refresh, dispatch]);
+
   return (
     <div className="VacationList">
       <Grid container spacing={1} m={"0 auto"}>
         {vacations.map((item) => {
-          console.log(item);
           return (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
               <SingleVacation

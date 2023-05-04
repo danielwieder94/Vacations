@@ -7,22 +7,6 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "../Theme/Theme";
 
 function MainLayout(): JSX.Element {
-  //   const [showFooter, setShowFooter] = useState(false);
-
-  //   useEffect(() => {
-  //     function handleScroll() {
-  //       const isAtBottom =
-  //         window.innerHeight + window.scrollY >= document.body.offsetHeight;
-  //       setShowFooter(isAtBottom);
-  //     }
-
-  //     window.addEventListener("scroll", handleScroll);
-
-  //     return () => {
-  //       window.removeEventListener("scroll", handleScroll);
-  //     };
-  //   }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <div className="MainLayout">
