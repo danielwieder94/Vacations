@@ -13,15 +13,16 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { downloadVacations, updateVacation } from "../../Redux/VacationReducer";
 
 function EditVacation(): JSX.Element {
-  const [editedVacation, setEditedVacation] = useState<Vacation>(
-    {} as Vacation
-  );
+  const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);
   //for image file
   const [vacFile, setVacFile] = useState<File | null>(null);
   const [image, setImage] = useState<string>("");
   const today = dayjs().startOf("day").toDate();
+
   type FormData = {
     id?: number;
     destination: string;
@@ -58,7 +59,7 @@ function EditVacation(): JSX.Element {
       message: "End date must be after start date",
       path: ["endDate"],
     });
-  const { id } = useParams<{ id: string }>(); //get the id of the vacation we want to edit from the url
+
   const navigate = useNavigate();
   const {
     register,
@@ -66,22 +67,20 @@ function EditVacation(): JSX.Element {
     trigger,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const { id } = useParams<{ id: string }>(); //get the id of the vacation we want to edit from the url
 
   useEffect(() => {
     const getVacation = async () => {
-      try {
-        const response = await axios.get<Vacation>(
-          `http://localhost:4000/api/v1/vacations/list/${id}`
-        );
-        setEditedVacation(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+      axios
+        .get(`http://localhost:4000/api/v1/vacations/list/${id}`)
+        .then((response) => {
+          setEditedVacation(response.data);
+          console.log("response data...", response.data);
+        });
     };
     getVacation();
   }, [id]);
-
+  console.log("editedVacation...", editedVacation);
   const onSubmit = async (data: FormData) => {};
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +114,7 @@ function EditVacation(): JSX.Element {
               <FontAwesomeIcon icon={faUmbrellaBeach} color="#FFC857" />
             </Typography>
             <TextField
-              defaultValue={editedVacation.destination}
+              value={editedVacation.destination}
               className="destination"
               type="text"
               label="Destination"

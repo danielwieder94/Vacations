@@ -1,45 +1,34 @@
 import React, { useEffect, useState } from "react";
 import "./VacationList.css";
 import axios from "axios";
-import {
-  VacationActionType,
-  downloadVacations,
-} from "../../Redux/VacationReducer";
+import { downloadVacations } from "../../Redux/VacationReducer";
 import SingleVacation from "./SingleVacation/SingleVacation";
 import { Grid } from "@mui/material";
-import Vacation from "../../../Model/Vacation";
-import { useDispatch, useSelector } from "react-redux";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 function VacationList(): JSX.Element {
   const [refresh, setRefresh] = useState(false);
-  const dispatch = useDispatch();
-  const vacations = useSelector(
-    (state: { vacations: { vacations: Vacation[] } }) =>
-      state.vacations.vacations
-  );
-  console.log("VacationList vacations: ", vacations);
-  // console.log("Vacations: ", vacations);
 
   useEffect(() => {
-    //use redux
-    if (vacations.length === 0) {
+    if (vacationlyStore.getState().vacations.vacations.length < 1) {
+      console.log("loading vacations... getting data from backend");
       axios
         .get("http://localhost:4000/api/v1/vacations/list")
         .then((response) => {
-          dispatch({
-            type: VacationActionType.downloadVacations,
-            payload: response.data,
-          });
-          console.log("VacationList response.data: ", response.data);
+          vacationlyStore.dispatch(downloadVacations(response.data));
+          setRefresh(true);
         });
     }
-  }, [dispatch, vacations]);
-  // }, [refresh, dispatch]);
+  }, []);
+
+  if (vacationlyStore.getState().vacations.vacations.length < 1) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="VacationList">
       <Grid container spacing={1} m={"0 auto"}>
-        {vacations.map((item) => {
+        {vacationlyStore.getState().vacations.vacations.map((item) => {
           return (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
               <SingleVacation

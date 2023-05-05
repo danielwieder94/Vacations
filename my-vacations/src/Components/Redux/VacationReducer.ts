@@ -48,7 +48,7 @@ export function vacationReducer(
       console.log("DownloadVacations called with payload: ", action.payload);
       break;
     case VacationActionType.updateVacation:
-      const index = newState.vacations.findIndex(
+      const index = [...newState.vacations].findIndex(
         (v) => v.id === action.payload.id
       );
       newState.vacations[index] = action.payload;
