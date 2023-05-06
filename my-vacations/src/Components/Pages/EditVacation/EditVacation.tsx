@@ -14,7 +14,8 @@ import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
-import { downloadVacations, updateVacation } from "../../Redux/VacationReducer";
+// import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { updateVacation } from "../../Redux/VacationReducer";
 
 function EditVacation(): JSX.Element {
   const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);
@@ -34,7 +35,6 @@ function EditVacation(): JSX.Element {
   };
   // This will be the schema for the form, it'll be used to validate the form when submitting.
   //z.coerce.date() is used to convert the string to a date object.
-
   const schema: ZodType<FormData> = z
     .object({
       destination: z
@@ -67,21 +67,50 @@ function EditVacation(): JSX.Element {
     trigger,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const { id } = useParams<{ id: string }>(); //get the id of the vacation we want to edit from the url
+  const { id } = useParams();
 
   useEffect(() => {
     const getVacation = async () => {
       axios
         .get(`http://localhost:4000/api/v1/vacations/list/${id}`)
         .then((response) => {
-          setEditedVacation(response.data);
-          console.log("response data...", response.data);
+          setEditedVacation(response.data[0]);
+          console.log("response data...", response.data[0]);
+          setImage(`http://localhost:4000/${id}_${response.data[0].vacImg}`);
         });
     };
     getVacation();
   }, [id]);
-  console.log("editedVacation...", editedVacation);
-  const onSubmit = async (data: FormData) => {};
+
+  const onSubmit = async (data: FormData) => {
+    const imageData = new FormData();
+    imageData.append("image", vacFile!);
+    console.log("editedVacation", editedVacation);
+    const vacationId: number | undefined = editedVacation?.id;
+    const updatedVacation = new Vacation(
+      //   vacationId!,
+      data.destination,
+      new Date(data.startDate),
+      new Date(data.endDate),
+      data.vacDesc,
+      data.vacPrice,
+      vacFile ? vacFile.name : editedVacation!.vacImg
+    );
+    updatedVacation.id = vacationId;
+    console.log("updated vacation", updatedVacation);
+    axios.put(
+      `http://localhost:4000/api/v1/vacations/update/${id}`,
+      updatedVacation
+    );
+    if (editedVacation?.vacImg !== `${id}_${vacFile?.name}`) {
+      axios.post(
+        `http://localhost:4000/api/v1/vacations/${id}/upload`,
+        imageData
+      );
+    }
+    // vacationlyStore.dispatch(updateVacation(updatedVacation));
+    navigate("/vacationList");
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
@@ -91,7 +120,6 @@ function EditVacation(): JSX.Element {
     setVacFile(file);
     setImage(URL.createObjectURL(file));
   };
-  //   console.log(vacFile);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const handleClick = () => {
     inputRef.current?.click();
@@ -114,7 +142,7 @@ function EditVacation(): JSX.Element {
               <FontAwesomeIcon icon={faUmbrellaBeach} color="#FFC857" />
             </Typography>
             <TextField
-              value={editedVacation.destination}
+              defaultValue={editedVacation.destination}
               className="destination"
               type="text"
               label="Destination"
@@ -124,6 +152,7 @@ function EditVacation(): JSX.Element {
               onBlur={() => trigger("destination")}
             />
             <TextField
+              defaultValue={editedVacation.vacDesc}
               multiline
               minRows={1}
               className="desc"
@@ -137,6 +166,9 @@ function EditVacation(): JSX.Element {
             <div className="dateDiv">
               <Typography variant="subtitle2">Start Date</Typography>
               <TextField
+                defaultValue={new Date(editedVacation.startDate)
+                  .toISOString()
+                  .slice(0, 10)}
                 type="date"
                 {...register("startDate", { valueAsDate: true })}
                 error={!!errors.startDate}
@@ -145,6 +177,9 @@ function EditVacation(): JSX.Element {
               />
               <Typography variant="subtitle2">End Date</Typography>
               <TextField
+                defaultValue={new Date(editedVacation.endDate)
+                  .toISOString()
+                  .slice(0, 10)}
                 type="date"
                 {...register("endDate", { valueAsDate: true })}
                 error={!!errors.endDate}
@@ -154,6 +189,7 @@ function EditVacation(): JSX.Element {
             </div>
             {/* using valueAsNumber because the TextField component returns a string, and the schema requires a number. */}
             <TextField
+              defaultValue={editedVacation.vacPrice}
               style={{ width: "50%", alignSelf: "center" }}
               type="number"
               label="Price"
@@ -187,6 +223,7 @@ function EditVacation(): JSX.Element {
                 />
               ) : (
                 <MdCloudUpload size={50} color="#0075A2" />
+                // <img src={`http://localhost:4000/${id}_${editedVacation.vacImg}`} width={"100%"} height={"100%"} alt={File.name} />
               )}
               {!image && <span>Upload Image</span>}
               <input
@@ -199,7 +236,11 @@ function EditVacation(): JSX.Element {
             <span>
               {image && (
                 <>
-                  <Typography variant="subtitle2">{vacFile?.name}</Typography>
+                  <Typography variant="subtitle2">
+                    {vacFile?.name
+                      ? vacFile.name
+                      : `${id}_${editedVacation.vacImg}`}
+                  </Typography>
                   <MdDelete onClick={handleDelete} />
                 </>
               )}
@@ -216,7 +257,6 @@ function EditVacation(): JSX.Element {
               variant="outlined"
               size="large"
               color="info"
-              type="submit"
               onClick={() => navigate("/vacationList")}
             >
               <Typography>Cancel</Typography>

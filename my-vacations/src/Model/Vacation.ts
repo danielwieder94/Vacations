@@ -10,7 +10,7 @@ class Vacation {
   public vacImg: string;
 
   constructor(
-    id: number,
+    // id: number,
     destination: string,
     startDate: Date,
     endDate: Date,

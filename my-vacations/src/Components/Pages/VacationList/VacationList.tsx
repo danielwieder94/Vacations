@@ -8,9 +8,10 @@ import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 function VacationList(): JSX.Element {
   const [refresh, setRefresh] = useState(false);
+  const vacations = vacationlyStore.getState().vacations.vacations;
 
   useEffect(() => {
-    if (vacationlyStore.getState().vacations.vacations.length < 1) {
+    if (vacations.length < 1) {
       console.log("loading vacations... getting data from backend");
       axios
         .get("http://localhost:4000/api/v1/vacations/list")
@@ -19,7 +20,7 @@ function VacationList(): JSX.Element {
           setRefresh(true);
         });
     }
-  }, []);
+  }, [vacations]);
 
   if (vacationlyStore.getState().vacations.vacations.length < 1) {
     return <div>Loading...</div>;

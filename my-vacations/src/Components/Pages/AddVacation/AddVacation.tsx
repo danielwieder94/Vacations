@@ -79,7 +79,7 @@ function AddVacation(): JSX.Element {
         imageData
       );
       const newVacation = new Vacation(
-        vacationId,
+        // vacationId,
         data.destination,
         new Date(data.startDate),
         new Date(data.endDate),

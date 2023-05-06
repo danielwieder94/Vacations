@@ -38,18 +38,18 @@ router.get(
 );
 
 //update vacation
-// router.put(
-//   "/update/:id",
-//   async (request: Request, response: Response, next: NextFunction) => {
-//     const updatedVacation: Vacation = await VacationLogic.updateVacation(
-//       request.body
-//     );
-//     response.status(200).json({
-//       updatedVacation: updatedVacation,
-//       vacationId: updatedVacation.id,
-//       message: "Vacation updated successfully",
-//     });
-//   }
+router.put(
+  "/update/:id",
+  async (request: Request, response: Response, next: NextFunction) => {
+    const updatedVacation: Vacation = await VacationLogic.updateVacation(
+      request.body
+    );
+    response.status(200).json({
+      updatedVacation: updatedVacation,
+      message: "Vacation updated successfully",
+    });
+  }
+);
 
 //router.delete
 
@@ -58,6 +58,16 @@ router.post(
   upload.single("image"),
   (request: Request, response: Response) => {
     response.send("image uploaded successfully");
+  }
+);
+
+//get file image from 'public' folder by image id and name
+router.get(
+  "/public/:image",
+  (request: Request, response: Response, next: NextFunction) => {
+    const image = request.params.image;
+    response.sendFile(path.join(__dirname, "../public", image));
+    // response.status(200).json({ message: "image sent successfully" });
   }
 );
 

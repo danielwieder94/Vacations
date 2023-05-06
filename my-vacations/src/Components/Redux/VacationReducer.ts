@@ -26,6 +26,7 @@ export const downloadVacations = (vacations: Vacation[]): VacationAction => {
 };
 
 export const updateVacation = (updatedVacation: Vacation): VacationAction => {
+  console.log("Trying to update vacation: ", updatedVacation);
   return { type: VacationActionType.updateVacation, payload: updatedVacation };
 };
 
@@ -48,10 +49,15 @@ export function vacationReducer(
       console.log("DownloadVacations called with payload: ", action.payload);
       break;
     case VacationActionType.updateVacation:
-      const index = [...newState.vacations].findIndex(
+      const updatedIndex = newState.vacations.findIndex(
         (v) => v.id === action.payload.id
       );
-      newState.vacations[index] = action.payload;
+
+      if (updatedIndex !== -1) {
+        const updatedVacations = [...newState.vacations];
+        updatedVacations[updatedIndex] = action.payload;
+        newState.vacations = updatedVacations;
+      }
       break;
     case VacationActionType.deleteVacation:
       newState.vacations = [...newState.vacations].filter(

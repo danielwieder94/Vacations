@@ -49,16 +49,30 @@ const addVacation = async (vacation: Vacation) => {
 //upload image to "public" folder
 
 //edit vacation
-// `UPDATE vacations.vacations_list
-// SET destination = ?, vacDesc = ?, vacImg = ?, startDate = ?, endDate = ?, vacPrice = ?
-// WHERE id = ?`;
+const updateVacation = async (vacation: Vacation) => {
+  return await dal_mysql.execute(
+    `UPDATE vacations.vacations_list
+SET destination = ?, vacDesc = ?, vacImg = ?, startDate = ?, endDate = ?, vacPrice = ?
+WHERE id = ?`,
+    [
+      vacation.destination,
+      vacation.vacDesc,
+      vacation.vacImg,
+      formatDate(vacation.startDate),
+      formatDate(vacation.endDate),
+      vacation.vacPrice,
+      vacation.id,
+    ]
+  );
+};
 //delete vacation
 
 //get all vacations
 const getAllVacations = async () => {
-  return await dal_mysql.execute(`SELECT * FROM vacations.vacations_list`, []);
-  // const sql = `SELECT * FROM vacations.vacations_list`;
-  // const result: OkPacket = await dal_mysql.execute(sql);
+  return await dal_mysql.execute(
+    `SELECT * FROM vacations.vacations_list ORDER BY startDate ASC`,
+    []
+  );
 };
 
 //get vacations by destination
@@ -79,8 +93,6 @@ const getVacationByDate = async (startDate: Date, endDate: Date) => {
     `SELECT * FROM vacations.vacations_list WHERE startDate = ? AND endDate = ?`,
     [startDate, endDate]
   );
-  // const sql = `SELECT * FROM vacations.vacations_list WHERE startDate = ? AND endDate = ?`;
-  // const result: OkPacket = await dal_mysql.execute(sql, [startDate, endDate]);
 };
 
 //get vacation by id
@@ -107,4 +119,5 @@ export default {
   getAllVacations,
   addVacation,
   getVacationById,
+  updateVacation,
 };
