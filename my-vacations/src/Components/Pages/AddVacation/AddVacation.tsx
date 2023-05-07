@@ -64,6 +64,7 @@ function AddVacation(): JSX.Element {
     trigger,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
+
   const onSubmit = async (data: FormData) => {
     console.log("Submit clicked");
     const imageData = new FormData();
@@ -74,7 +75,7 @@ function AddVacation(): JSX.Element {
         { ...data, vacImg: vacFile?.name || "" }
       );
       const vacationId = addVacationRes.data.vacationId;
-      const uploadImageRes = await axios.post(
+      await axios.post(
         `http://localhost:4000/api/v1/vacations/${vacationId}/upload`,
         imageData
       );

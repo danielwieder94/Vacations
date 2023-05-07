@@ -85,22 +85,16 @@ const getVacationByDest = async (destination: string) => {
   // const result: OkPacket = await dal_mysql.execute(sql, [destination]);
 };
 
-//update vacation
-
-//get vacations by date
-const getVacationByDate = async (startDate: Date, endDate: Date) => {
-  return await dal_mysql.execute(
-    `SELECT * FROM vacations.vacations_list WHERE startDate = ? AND endDate = ?`,
-    [startDate, endDate]
-  );
-};
-
-//get vacation by id
 const getVacationById = async (id: number) => {
-  return await dal_mysql.execute(
-    `SELECT * FROM vacations.vacations_list WHERE id = ?`,
+  const [row] = await dal_mysql.execute(
+    `SELECT *, 
+            CONVERT_TZ(startDate, '+00:00', @@session.time_zone) AS startDate,
+            CONVERT_TZ(endDate, '+00:00', @@session.time_zone) AS endDate
+     FROM vacations.vacations_list WHERE id = ?`,
     [id]
   );
+  console.log(row);
+  return row;
 };
 
 //get vacations by likes (for admin reports)

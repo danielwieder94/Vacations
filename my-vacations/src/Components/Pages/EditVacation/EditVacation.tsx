@@ -71,12 +71,14 @@ function EditVacation(): JSX.Element {
 
   useEffect(() => {
     const getVacation = async () => {
-      axios
+      await axios
         .get(`http://localhost:4000/api/v1/vacations/list/${id}`)
         .then((response) => {
-          setEditedVacation(response.data[0]);
-          console.log("response data...", response.data[0]);
-          setImage(`http://localhost:4000/${id}_${response.data[0].vacImg}`);
+          setEditedVacation(response.data);
+          console.log("response data...", response.data);
+          console.log("date..." + response.data.startDate);
+          console.log("date..." + response.data.endDate);
+          setImage(`http://localhost:4000/${id}_${response.data.vacImg}`);
         });
     };
     getVacation();

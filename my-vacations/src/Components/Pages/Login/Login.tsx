@@ -4,7 +4,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../Layout/Theme/Theme";
-import { Alert, Button, Link, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Link,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -48,17 +55,21 @@ function Login(): JSX.Element {
       err.response.status === 401
         ? setErrorMsg("Invalid email or password")
         : setErrorMsg(err.response.data.message);
-      console.log(err.response.status);
-      console.log("error occured in login component: ", err);
     }
   };
   return (
     <ThemeProvider theme={theme}>
       <div className="Login" onSubmit={handleSubmit(onSubmit)}>
         {errorMsg && (
-          <Alert severity="error" onClose={() => setErrorMsg("")}>
-            {errorMsg}
-          </Alert>
+          <Snackbar
+            open={!!errorMsg}
+            autoHideDuration={600}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert severity="error" onClose={() => setErrorMsg("")}>
+              {errorMsg}
+            </Alert>
+          </Snackbar>
         )}
         <form className="logForm">
           <Typography variant="h4">

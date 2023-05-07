@@ -33,7 +33,9 @@ router.get(
   "/list/:id",
   async (request: Request, response: Response, next: NextFunction) => {
     const vacationId = +request.params.id;
-    response.status(200).json(await VacationLogic.getVacationById(vacationId));
+    const vacation = await VacationLogic.getVacationById(vacationId);
+    response.status(200).json(vacation);
+    console.log(vacation);
   }
 );
 
@@ -71,10 +73,10 @@ router.get(
   }
 );
 
-// router.get("/public/:image", (request: Request, response: Response) => {
-//   console.log(request.params.image);
-//   const image = request.params.image;
-//   response.sendFile(path.join(__dirname, "../public", image));
-// });
+//format date to local timezone
+const formatDate = (date: Date) => {
+  const formattedDate = new Date(date).toLocaleDateString("en-GB");
+  return formattedDate;
+};
 
 export default router;
