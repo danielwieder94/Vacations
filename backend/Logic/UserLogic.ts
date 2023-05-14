@@ -40,6 +40,7 @@ export const registerUser = async (user: User) => {
   try {
     const emailExists = await getUserByEmail(user.email);
     if (emailExists) {
+      response.statusCode = 400;
       throw new Error("Email already exists");
     }
     //protect user's password - using bcrypt
@@ -110,7 +111,6 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     }
     return userData ? { ...userData } : null;
   } catch (error: any) {
-    console.error("Error occured in getUserByEmail function: ", error);
     throw new Error("Invalid email: " + email);
   }
 };

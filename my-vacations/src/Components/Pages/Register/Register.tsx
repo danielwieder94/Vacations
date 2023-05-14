@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, Link, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  Button,
+  Link,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -15,6 +22,7 @@ import { addUser, isLoggedIn } from "../../Redux/UserReducer";
 import User from "../../../Model/User";
 
 function Register(): JSX.Element {
+  const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch();
   type FormData = {
     firstName: string;
@@ -72,19 +80,40 @@ function Register(): JSX.Element {
         "http://localhost:4000/api/v1/users/register",
         newUser
       );
-      console.log(response.data);
       dispatch(addUser(response.data));
       dispatch(isLoggedIn(true));
       navigate("/vacationList");
-    } catch (err) {
+    } catch (err: any) {
       console.log("error occured in register component: ", err);
+      err.response.status === 400
+        ? setErrorMsg("Email already exists")
+        : setErrorMsg("");
     }
   };
+  useEffect(() => {
+    if (errorMsg) {
+      const timeout = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMsg]);
   return (
     //onBlur to show the error message dynamically before form submits the form.
     //error={!!errors.fieldName} is used to show the error in red color (MUI)
     <ThemeProvider theme={theme}>
       <div className="Register">
+        {errorMsg && (
+          <Snackbar
+            open={!!errorMsg}
+            autoHideDuration={600}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert severity="error" onClose={() => setErrorMsg("")}>
+              {errorMsg}
+            </Alert>
+          </Snackbar>
+        )}
         <form className="regForm" onSubmit={handleSubmit(onSubmit)}>
           <Typography variant="h4">
             Sign Up{" "}

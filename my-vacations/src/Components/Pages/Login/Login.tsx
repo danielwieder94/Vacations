@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ import { isLoggedIn } from "../../Redux/UserReducer";
 function Login(): JSX.Element {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   type FormData = {
     email: string;
     password: string;
@@ -50,6 +51,7 @@ function Login(): JSX.Element {
       );
       console.log(response.data);
       dispatch(isLoggedIn(true));
+      setSuccessMsg("Logged in successfully");
       navigate("/vacationList");
     } catch (err: any) {
       err.response.status === 401
@@ -57,6 +59,15 @@ function Login(): JSX.Element {
         : setErrorMsg(err.response.data.message);
     }
   };
+  useEffect(() => {
+    if (errorMsg) {
+      const timeout = setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMsg]);
+
   return (
     <ThemeProvider theme={theme}>
       <div className="Login" onSubmit={handleSubmit(onSubmit)}>
@@ -71,6 +82,7 @@ function Login(): JSX.Element {
             </Alert>
           </Snackbar>
         )}
+        {/* <UserMsg errorMsg={errorMsg} successMsg={successMsg} /> */}
         <form className="logForm">
           <Typography variant="h4">
             Login{" "}

@@ -30,7 +30,7 @@ userRoutes.post(
       console.log("User registered successfully");
     } catch (error) {
       console.error(error);
-      response.status(500).json({ message: "Internal server error" });
+      response.status(400).json({ message: "Email already exists" });
     }
   }
 );
