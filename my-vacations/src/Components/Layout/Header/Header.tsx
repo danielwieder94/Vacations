@@ -13,6 +13,7 @@ import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
+import { isLoggedIn } from "../../Redux/UserReducer";
 
 function Header(): JSX.Element {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function Header(): JSX.Element {
               >
                 Explore
               </Button>
+
               <Button size="large" color="inherit">
                 Saved Vacations
               </Button>

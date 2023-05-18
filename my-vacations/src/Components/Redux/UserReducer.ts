@@ -2,14 +2,12 @@ import User from "../../Model/User";
 
 export class UserState {
   public user: User[] = [];
-  public isAdmin: boolean = false;
   public isLoggedIn: boolean = false;
 }
 
 export enum UserActionType {
   addUser = "addUser",
   downloadUsers = "downloadUsers",
-  isAdmin = "isAdmin",
   isLoggedIn = "isLoggedIn",
 }
 
@@ -26,15 +24,10 @@ export const addUser = (newUser: User): UserAction => {
   return { type: UserActionType.addUser, payload: userWithInitials };
 };
 
-export const downloadUsers = (user: User[]): UserAction => {
+export const downloadUsers = (user: User): UserAction => {
   console.log("Trying to download user: ", user);
   return { type: UserActionType.downloadUsers, payload: user };
 };
-
-export const isAdmin = (isAdmin: boolean): UserAction => {
-  return { type: UserActionType.isAdmin, payload: isAdmin };
-};
-
 export const isLoggedIn = (isLoggedIn: boolean): UserAction => {
   return { type: UserActionType.isLoggedIn, payload: isLoggedIn };
 };
@@ -52,9 +45,6 @@ export function userReducer(
     case UserActionType.downloadUsers:
       newState.user = action.payload;
       console.log("downloadUsers called with payload: ", action.payload);
-      break;
-    case UserActionType.isAdmin:
-      newState.isAdmin = action.payload;
       break;
     case UserActionType.isLoggedIn:
       newState.isLoggedIn = action.payload;

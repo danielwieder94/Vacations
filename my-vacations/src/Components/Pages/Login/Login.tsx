@@ -18,7 +18,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { isLoggedIn } from "../../Redux/UserReducer";
+import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
 
 function Login(): JSX.Element {
   const dispatch = useDispatch();
@@ -45,18 +45,19 @@ function Login(): JSX.Element {
   const navigate = useNavigate();
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await axios.post<FormData>(
+      const response = await axios.post(
         "http://localhost:4000/api/v1/users/login",
         data
       );
-      console.log(response.data);
+      const { user } = response.data;
+      dispatch(downloadUsers({ ...user, password: "Confidential" }));
       dispatch(isLoggedIn(true));
       setSuccessMsg("Logged in successfully");
       navigate("/vacationList");
     } catch (err: any) {
       err.response.status === 401
         ? setErrorMsg("Invalid email or password")
-        : setErrorMsg(err.response.data.message);
+        : setErrorMsg(err.response.message);
     }
   };
   useEffect(() => {

@@ -8,22 +8,20 @@ import Register from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
 import VacationList from "../../Pages/VacationList/VacationList";
 import "./MainRoutes.css";
-import { useSelector } from "react-redux";
+import PrivateRoutes from "../../../Utils/ProtectedRoutes";
 
 function MainRoutes(): JSX.Element {
-  // const isLoggedIn = useSelector(
-  //   (state: { user: { isLoggedIn: boolean } }) => state.user.isLoggedIn
-  // );
-  // console.log("MainRoutes isLoggedIn: ", isLoggedIn);
   return (
     <div className="MainRoutes">
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/vacationList" element={<VacationList />} />
+          <Route path="/addVacation" element={<AddVacation />} />
+          <Route path="/editVacation/:id" element={<EditVacation />} />
+        </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/vacationList" element={<VacationList />} />
-        <Route path="/addVacation" element={<AddVacation />} />
-        <Route path="/editVacation/:id" element={<EditVacation />} />
         <Route path="/*" element={<Page404 />} />
       </Routes>
     </div>
