@@ -5,12 +5,16 @@ import Header from "../Header/Header";
 import "./MainLayout.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../Theme/Theme";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { downloadUsers } from "../../Redux/UserReducer";
 // import { useDispatch } from "react-redux";
 // import { getCookie } from "../../../Utils/cookieUtil";
 // import { isAdmin, isLoggedIn } from "../../Redux/UserReducer";
 // import { useLocation } from "react-router-dom";
 
 function MainLayout(): JSX.Element {
+  // const user = vacationlyStore.getState().users.user[0];
+  // console.log("user...:", user);
   // const dispatch = useDispatch();
   // const location = useLocation();
 

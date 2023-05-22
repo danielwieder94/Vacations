@@ -43,7 +43,7 @@ export function userReducer(
       newState.user = [...newState.user, action.payload];
       break;
     case UserActionType.downloadUsers:
-      newState.user = action.payload;
+      newState.user = [action.payload];
       console.log("downloadUsers called with payload: ", action.payload);
       break;
     case UserActionType.isLoggedIn:

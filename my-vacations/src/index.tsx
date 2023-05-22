@@ -5,7 +5,8 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import MainLayout from "./Components/Layout/MainLayout/MainLayout";
 import { Provider } from "react-redux";
-import { vacationlyStore } from "./Components/Redux/VacationlyStore";
+import { persistor, vacationlyStore } from "./Components/Redux/VacationlyStore";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,7 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <Provider store={vacationlyStore}>
-      <MainLayout />
+      <PersistGate loading={null} persistor={persistor}>
+        <MainLayout />
+      </PersistGate>
     </Provider>
   </BrowserRouter>
 );

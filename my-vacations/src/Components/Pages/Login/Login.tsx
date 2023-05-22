@@ -50,8 +50,8 @@ function Login(): JSX.Element {
         data
       );
       const { user } = response.data;
-      dispatch(downloadUsers({ ...user, password: "Confidential" }));
       dispatch(isLoggedIn(true));
+      dispatch(downloadUsers({ ...user, password: "Confidential" }));
       setSuccessMsg("Logged in successfully");
       navigate("/vacationList");
     } catch (err: any) {
