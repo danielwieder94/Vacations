@@ -2,7 +2,6 @@ import dal_mysql from "../Utils/dal_mysql";
 import { Request, Response, response } from "express";
 import { OkPacket } from "mysql";
 import User from "../Models/User";
-import execute from "../Utils/dal_mysql";
 import bcrypt from "bcrypt";
 
 //create userTable
@@ -75,8 +74,7 @@ export const registerUser = async (user: User) => {
 //login
 const loginUser = async (email: string, password: string) => {
   const user = await getUserByEmail(email);
-  console.log("loginUser email: ", email);
-  console.log("loginUser password: ", password);
+
   if (!user) {
     response.statusCode = 401;
     throw new Error("Invalid email or password");
@@ -84,15 +82,12 @@ const loginUser = async (email: string, password: string) => {
   // check if password is correct
   try {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    console.log("isPasswordCorrect: ", isPasswordCorrect);
     if (!isPasswordCorrect) {
-      response.statusCode = 401;
       throw new Error("Invalid email or password");
     }
     //return the user
     return user;
   } catch (error: any) {
-    response.statusCode = 401;
     console.error("Error occured in loginUser function: ", error);
     throw new Error("Failed to login user");
   }
@@ -105,13 +100,12 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     // synax [userData] = await dal_mysql......, is the same as - const result = await dal_mysql....
     //and then const userData = result[0]
     const [userData] = await dal_mysql.execute(sql, [email]);
-    console.log("getUserByEmail:", userData);
     if (!userData) {
       return null;
     }
-    return userData ? { ...userData } : null;
+    return userData ? { ...userData, isAdmin: userData.isAdmin } : null;
   } catch (error: any) {
-    throw new Error("Invalid email: " + email);
+    throw new Error("Invalid email or password");
   }
 };
 

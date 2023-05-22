@@ -5,12 +5,14 @@ import VacationLogic from "../Logic/VacationLogic";
 import Vacation from "../Models/Vacation";
 import upload from "../Logic/FileUpload";
 import path from "path";
+import { authenticateToken } from "../Middleware/authenticateToken";
 
 const router = express.Router();
 
 //router.post
 const addVacation = router.post(
   "/add",
+  authenticateToken,
   async (request: Request, response: Response, next: NextFunction) => {
     const newVacation: Vacation = await VacationLogic.addVacation(request.body);
     response.status(200).json({
@@ -42,12 +44,15 @@ router.get(
 //update vacation
 router.put(
   "/update/:id",
+  authenticateToken,
   async (request: Request, response: Response, next: NextFunction) => {
     const updatedVacation: Vacation = await VacationLogic.updateVacation(
       request.body
     );
+    const isAdmin = response.locals.jwtPayload.isAdmin;
     response.status(200).json({
       updatedVacation: updatedVacation,
+      isAdmin: isAdmin,
       message: "Vacation updated successfully",
     });
   }

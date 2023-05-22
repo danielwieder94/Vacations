@@ -7,11 +7,19 @@ import config from "./Utils/Config";
 import ErrorHandler from "./Middleware/route-not-found";
 import UserLogic from "./Logic/UserLogic";
 import VacationLogic from "./Logic/VacationLogic";
-import path from "path";
-import fileUpload from "express-fileupload";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
+dotenv.config();
 const server = express();
-server.use(cors());
+server.use(cookieParser());
+server.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 server.use(express.json());
 server.use(express.static("public"));
 

@@ -16,10 +16,10 @@ const findImage = async (vacationId: number) => {
 };
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: any) => {
     cb(null, "public");
   },
-  filename: async (req, file, cb) => {
+  filename: async (req: any, file: any, cb: any) => {
     const vacationId = req.params.id;
     const originalName = file.originalname.split(".")[0];
     const ext = path.extname(file.originalname);

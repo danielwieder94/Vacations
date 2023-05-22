@@ -1,7 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
-import bcrypt from "bcrypt";
 import User from "../Models/User";
 import UserLogic from "../Logic/UserLogic";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { generateAuthToken, verifyAuthToken } from "../Utils/auth";
 
 const userRoutes = express.Router();
 //email validation in UserLogic.ts
@@ -53,6 +55,7 @@ userRoutes.post(
         password
       );
       const user = await UserLogic.loginUser(email, password);
+      console.log("User Is Admin?", user.isAdmin);
       response.status(200).json({ message: "Login successful", user });
     } catch (error: any) {
       if (
@@ -63,9 +66,7 @@ userRoutes.post(
         return response.status(401).json({ message: error.message });
       } else {
         console.error(error);
-        response
-          .status(500)
-          .json({ message: "Internal server error!!!! DANIELLLLL" });
+        response.status(500).json({ message: error.message });
       }
     }
   }
