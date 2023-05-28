@@ -8,6 +8,7 @@
 }
 
 .editVacationForm {
+    margin-bottom: 15px;
     width: 20%;
     display: flex;
     flex-direction: column;
@@ -45,7 +46,7 @@ span {
     align-items: center;
     margin: 0 auto;
     border: 2px dashed #e9ecef;
-    height: 150px;
+    height: 200px;
     width: 100%;
     cursor: pointer;
     box-sizing: border-box;

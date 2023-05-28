@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import { vacationlyStore } from "../Components/Redux/VacationlyStore";
 
 // const userLoggedIn = vacationlyStore.getState().users.isLoggedIn;
@@ -14,7 +15,7 @@ export const userLoggedIn = () => {
   return vacationlyStore.getState().users.isLoggedIn;
 };
 
-export function userIsAdmin() {
+export function userIsAdmin(): boolean {
   const loggedIn = userLoggedIn();
   console.log("userIsAdmin called....");
   if (loggedIn) {

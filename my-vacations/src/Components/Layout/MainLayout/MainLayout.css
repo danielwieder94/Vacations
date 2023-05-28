@@ -2,7 +2,7 @@
     position: relative;
     height: 100%;
     display: grid;
-    grid-template-rows: 8dvh minmax(84dvh, auto) 8dvh;
+    grid-template-rows: 6.5dvh minmax(85.5dvh, auto) 8dvh;
     /* box-sizing: border-box; */
 }
 .MainLayout > header {

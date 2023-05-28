@@ -30,6 +30,15 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
         <Button
           size="large"
           color="inherit"
+          onClick={() => {
+            navigate("/addVacation");
+          }}
+        >
+          Add Vacation
+        </Button>
+        <Button
+          size="large"
+          color="inherit"
           onClick={() => navigate("/vacationList")}
         >
           Explore
