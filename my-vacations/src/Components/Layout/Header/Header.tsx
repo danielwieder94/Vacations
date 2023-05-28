@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -16,22 +16,26 @@ import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
 import { persistor, vacationlyStore } from "../../Redux/VacationlyStore";
 import AdminNav from "../../UserOptions/AdminNav/AdminNav";
 import UserNav from "../../UserOptions/UserNav/UserNav";
-import { isLoggedIn } from "../../Redux/UserReducer";
+import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
+import { userIsAdmin, userLoggedIn } from "../../../Utils/authUtils";
 
 function Header(): JSX.Element {
+  const [initials, setInitials] = useState<string>("");
   const navigate = useNavigate();
-  const userLoggedIn = vacationlyStore.getState().users.isLoggedIn;
-  const userIsAdmin = () => {
-    if (userLoggedIn) {
+  const loggedIn = userLoggedIn();
+  const isAdmin = userIsAdmin();
+
+  useEffect(() => {
+    if (loggedIn) {
       const user = vacationlyStore.getState().users.user[0];
-      return user.isAdmin;
-    } else {
-      return false;
+      const firstInitial = user.firstName.charAt(0);
+      const lastInitial = user.lastName.charAt(0);
+      const initials = firstInitial + lastInitial;
+      setInitials(initials);
     }
-  };
-  console.log("userIsAdmin:", userIsAdmin());
+  }, [loggedIn]);
+
   const handleLogout = () => {
-    localStorage.removeItem("persist:main-root");
     vacationlyStore.dispatch(isLoggedIn(false));
     navigate("/login");
   };
@@ -41,7 +45,7 @@ function Header(): JSX.Element {
       <div className="Header">
         <AppBar color="primary" style={{ position: "static" }}>
           <Toolbar>
-            {!userLoggedIn ? (
+            {!loggedIn ? (
               <>
                 <FontAwesomeIcon
                   icon={faPlaneDeparture}
@@ -70,10 +74,10 @@ function Header(): JSX.Element {
                   </Button>
                 </Stack>
               </>
-            ) : userIsAdmin() ? (
-              <AdminNav onLogout={handleLogout} />
+            ) : isAdmin ? (
+              <AdminNav onLogout={handleLogout} initials={initials} />
             ) : (
-              <UserNav onLogout={handleLogout} />
+              <UserNav onLogout={handleLogout} initials={initials} />
             )}
           </Toolbar>
         </AppBar>

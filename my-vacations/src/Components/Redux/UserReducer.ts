@@ -48,6 +48,9 @@ export function userReducer(
       break;
     case UserActionType.isLoggedIn:
       newState.isLoggedIn = action.payload;
+      if (!action.payload) {
+        newState.user = [];
+      }
       break;
   }
   return newState;

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Icons from "../../../UserOptions/Icons/Icons";
 import "./SingleVacation.css";
 import {
   Card,
@@ -27,18 +28,35 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
   const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
 
   return (
     <div className="SingleVacation">
-      <Card sx={{ width: "90%", height: 450, mb: 2 }}>
+      <Card
+        raised={isHovered}
+        sx={{ width: "90%", height: 500, mb: 2 }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="cardHeader">
           <CardHeader
-            title={props.destination}
+            title={
+              <div className="headerTitle">
+                {props.destination} <Icons vacationId={props.id} />
+              </div>
+            }
             subheader={`${formatDate(props.startDate)} - ${formatDate(
               props.endDate
             )}`}
           />
+
           <Chip
             className="price"
             label={"$" + props.vacPrice}
@@ -46,7 +64,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
           />
         </div>
         <CardMedia
-          sx={{ height: 250 }}
+          sx={{ height: 270, objectFit: "cover" }}
           component="img"
           src={imageUrl}
           alt={`${props.destination}`}

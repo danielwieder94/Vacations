@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import "./VacationList.css";
 import axios from "axios";
 import { downloadVacations } from "../../Redux/VacationReducer";
 import SingleVacation from "./SingleVacation/SingleVacation";
-import { Grid } from "@mui/material";
+import { Grid, Pagination } from "@mui/material";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 function VacationList(): JSX.Element {
   const [refresh, setRefresh] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const vacations = vacationlyStore.getState().vacations.vacations;
+  const itemsPerPage = 9;
+  const totalPages = Math.ceil(vacations.length / itemsPerPage);
 
   useEffect(() => {
     if (vacations.length < 1) {
@@ -22,14 +25,23 @@ function VacationList(): JSX.Element {
     }
   }, [vacations]);
 
+  const handlePageChange = (event: ChangeEvent<any>, page: number) => {
+    setCurrentPage(page);
+  };
+  const getPageVacations = () => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return vacations.slice(start, end);
+  };
+
   if (vacationlyStore.getState().vacations.vacations.length < 1) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="VacationList">
-      <Grid container spacing={1} m={"0 auto"}>
-        {vacationlyStore.getState().vacations.vacations.map((item) => {
+      <Grid container spacing={3} margin={"auto"}>
+        {getPageVacations().map((item) => {
           return (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
               <SingleVacation
@@ -45,6 +57,14 @@ function VacationList(): JSX.Element {
           );
         })}
       </Grid>
+      <Pagination
+        className="pagination"
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        variant="outlined"
+        shape="rounded"
+      />
     </div>
   );
 }

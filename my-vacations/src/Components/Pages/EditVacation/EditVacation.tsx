@@ -13,9 +13,6 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { vacationlyStore } from "../../Redux/VacationlyStore";
-// import { vacationlyStore } from "../../Redux/VacationlyStore";
-import { updateVacation } from "../../Redux/VacationReducer";
 
 function EditVacation(): JSX.Element {
   const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);

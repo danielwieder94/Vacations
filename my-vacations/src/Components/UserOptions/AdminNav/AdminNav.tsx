@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface AdminNavProps {
   onLogout: () => void;
+  initials: string;
 }
 
-function AdminNav({ onLogout }: AdminNavProps): JSX.Element {
+function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
   const navigate = useNavigate();
   return (
     <div className="AdminNav">
@@ -40,7 +41,7 @@ function AdminNav({ onLogout }: AdminNavProps): JSX.Element {
       </div>
 
       <div className="right">
-        <Avatar sx={{ width: 32, height: 32 }}>Test</Avatar>
+        <Avatar sx={{ width: 40, height: 40 }}>{initials}</Avatar>
         <Button
           size="large"
           sx={{ height: "2rem" }}

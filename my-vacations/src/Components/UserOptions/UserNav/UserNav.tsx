@@ -2,27 +2,32 @@ import React from "react";
 import "./UserNav.css";
 import { useNavigate } from "react-router-dom";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
-import { Avatar, Box, Button, Stack } from "@mui/material";
+import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface UserNavProps {
   onLogout: () => void;
+  initials: string;
 }
 
-function UserNav({ onLogout }: UserNavProps): JSX.Element {
+function UserNav({ onLogout, initials }: UserNavProps): JSX.Element {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="UserNav"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginLeft: "auto",
-      }}
-    >
-      <Stack direction="row" spacing={2} style={{ flexGrow: 1 }}>
+    <div className="UserNav">
+      <div className="logo">
+        <FontAwesomeIcon
+          icon={faPlaneDeparture}
+          size="xl"
+          style={{ color: "#ffffff", marginRight: "5px" }}
+        />
+
+        <Typography variant="h4" component="div">
+          Vacationly
+        </Typography>
+      </div>
+      <div className="middle">
         <Button
           size="large"
           color="inherit"
@@ -34,9 +39,9 @@ function UserNav({ onLogout }: UserNavProps): JSX.Element {
         <Button size="large" color="inherit">
           Saved Vacations
         </Button>
-      </Stack>
-      <Stack direction="row">
-        <Avatar sx={{ width: 32, height: 32 }}>Test</Avatar>
+      </div>
+      <div className="right">
+        <Avatar sx={{ width: 40, height: 40 }}>{initials}</Avatar>
         <Button
           size="large"
           sx={{ height: "2rem" }}
@@ -45,7 +50,7 @@ function UserNav({ onLogout }: UserNavProps): JSX.Element {
         >
           Logout
         </Button>
-      </Stack>
+      </div>
     </div>
   );
 }
