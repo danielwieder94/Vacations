@@ -13,9 +13,11 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { addVacation } from "../../Redux/VacationReducer";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 function AddVacation(): JSX.Element {
-  const [allVacations, setAllVacations] = useState<Vacation[]>([]);
+  // const [allVacations, setAllVacations] = useState<Vacation[]>([]);
   //for image file
   const [vacFile, setVacFile] = useState<File | null>(null);
   const [image, setImage] = useState<string>("");
@@ -66,7 +68,6 @@ function AddVacation(): JSX.Element {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormData) => {
-    console.log("Submit clicked");
     const imageData = new FormData();
     imageData.append("image", vacFile!);
     try {
@@ -88,7 +89,8 @@ function AddVacation(): JSX.Element {
         data.vacPrice,
         vacFile?.name || ""
       );
-      setAllVacations([...allVacations, newVacation]);
+      vacationlyStore.dispatch(addVacation(newVacation));
+      // setAllVacations([...allVacations, newVacation]);
       navigate("/vacationList");
     } catch (err) {
       console.log("error occured in onSubmit function: ", err);
@@ -103,7 +105,6 @@ function AddVacation(): JSX.Element {
     setVacFile(file);
     setImage(URL.createObjectURL(file));
   };
-  console.log(vacFile);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const handleClick = () => {
     inputRef.current?.click();

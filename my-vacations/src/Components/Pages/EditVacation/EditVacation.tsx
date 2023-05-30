@@ -72,9 +72,6 @@ function EditVacation(): JSX.Element {
         .get(`http://localhost:4000/api/v1/vacations/list/${id}`)
         .then((response) => {
           setEditedVacation(response.data);
-          console.log("response data...", response.data);
-          console.log("date..." + response.data.startDate);
-          console.log("date..." + response.data.endDate);
           setImage(`http://localhost:4000/${id}_${response.data.vacImg}`);
         });
     };
@@ -87,7 +84,6 @@ function EditVacation(): JSX.Element {
     console.log("editedVacation", editedVacation);
     const vacationId: number | undefined = editedVacation?.id;
     const updatedVacation = new Vacation(
-      //   vacationId!,
       data.destination,
       new Date(data.startDate),
       new Date(data.endDate),

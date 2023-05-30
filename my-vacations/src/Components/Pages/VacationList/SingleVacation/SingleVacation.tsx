@@ -19,6 +19,7 @@ interface singleVacationProps {
   vacDesc: string;
   vacPrice: number;
   vacImg: string;
+  isAdmin: boolean;
 }
 
 const formatDate = (date: Date): string => {
@@ -28,28 +29,36 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+  // const [isHovered, setIsHovered] = useState<boolean>(false);
+  // const handleMouseEnter = () => {
+  //   setIsHovered(true);
+  // };
+  // const handleMouseLeave = () => {
+  //   setIsHovered(false);
+  // };
+  const handleDelete = () => {
+    axios.delete(`http://localhost:4000/api/v1/vacations/${props.id}`);
+    console.log("delete icon is clicked...");
   };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+
   const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
 
   return (
     <div className="SingleVacation">
       <Card
-        raised={isHovered}
-        sx={{ width: "90%", height: 500, mb: 2 }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        raised
+        sx={{ width: "90%", height: 500, mb: 2, borderRadius: "5%" }}
       >
         <div className="cardHeader">
           <CardHeader
             title={
               <div className="headerTitle">
-                {props.destination} <Icons vacationId={props.id} />
+                {props.destination}{" "}
+                <Icons
+                  vacationId={props.id}
+                  onDelete={handleDelete}
+                  isAdmin={props.isAdmin}
+                />
               </div>
             }
             subheader={`${formatDate(props.startDate)} - ${formatDate(

@@ -9,7 +9,7 @@ const createVacationsTable = async () => {
             CREATE TABLE IF NOT EXISTS vacations.vacations_list (
             id INT AUTO_INCREMENT PRIMARY KEY,
             destination VARCHAR(255) NOT NULL,
-            vacDesc VARCHAR(510) NOT NULL,
+            vacDesc VARCHAR(1020) NOT NULL,
             vacImg VARCHAR(255) NOT NULL,
             startDate DATE NOT NULL,
             endDate DATE NOT NULL,
@@ -108,10 +108,16 @@ const getVacationByLikes = async () => {
   const result: OkPacket = await dal_mysql.execute(sql);
 };
 
+const deleteVacation = async (id: number) => {
+  const sql = `DELETE FROM vacations.vacations_list WHERE id = ?`;
+  const result: OkPacket = await dal_mysql.execute(sql, [id]);
+};
+
 export default {
   createVacationsTable,
   getAllVacations,
   addVacation,
   getVacationById,
   updateVacation,
+  deleteVacation,
 };

@@ -12,6 +12,7 @@ function VacationList(): JSX.Element {
   const vacations = vacationlyStore.getState().vacations.vacations;
   const itemsPerPage = 9;
   const totalPages = Math.ceil(vacations.length / itemsPerPage);
+  const isAdmin = vacationlyStore.getState().users.user[0].isAdmin;
 
   useEffect(() => {
     if (vacations.length < 1) {
@@ -23,7 +24,7 @@ function VacationList(): JSX.Element {
           setRefresh(true);
         });
     }
-  }, [vacations]);
+  }, [vacations.length]);
 
   const handlePageChange = (event: ChangeEvent<any>, page: number) => {
     setCurrentPage(page);
@@ -52,6 +53,7 @@ function VacationList(): JSX.Element {
                 vacDesc={item.vacDesc}
                 vacImg={item.vacImg}
                 vacPrice={item.vacPrice}
+                isAdmin={isAdmin}
               />
             </Grid>
           );

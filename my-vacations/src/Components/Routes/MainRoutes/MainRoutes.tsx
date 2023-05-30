@@ -8,7 +8,7 @@ import Register from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";
 import VacationList from "../../Pages/VacationList/VacationList";
 import "./MainRoutes.css";
-import PrivateRoutes from "../../../Utils/ProtectedRoutes";
+import { PrivateRoutes, AdminRoutes } from "../../../Utils/ProtectedRoutes";
 
 function MainRoutes(): JSX.Element {
   return (
@@ -17,6 +17,8 @@ function MainRoutes(): JSX.Element {
         <Route path="/" element={<Main />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/vacationList" element={<VacationList />} />
+        </Route>
+        <Route element={<AdminRoutes />}>
           <Route path="/addVacation" element={<AddVacation />} />
           <Route path="/editVacation/:id" element={<EditVacation />} />
         </Route>

@@ -5,42 +5,43 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import DeletePopup from "./DeletePopup/DeletePopup";
+// import DeletePopup from "./DeletePopup/DeletePopup";
 import "./Icons.css";
-import { Tooltip } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Modal,
+  Tooltip,
+} from "@mui/material";
 
 interface IconProps {
   vacationId?: number;
-  destination?: string;
+  onDelete: () => void;
+  isAdmin: boolean;
 }
 
-function Icons({ vacationId, destination }: IconProps): JSX.Element {
-  const isAdmin = useMemo(() => userIsAdmin(), []); //memorize userIsAdmin() value to reduce re-renders
+function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
   const navigate = useNavigate();
   const [liked, setLiked] = useState<boolean>(false);
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
   const handleEdit = () => {
     navigate(`/editVacation/${vacationId}`);
   };
   const handleDelete = () => {
     //handle logic. I want to open a modal to confirm the delete
-    setIsPopupOpen(true);
     console.log("delete icon is clicked...");
+    setShowDeleteModal(true);
   };
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-  };
-  const handleConfirmDelete = () => {
-    handleClosePopup();
-  };
+
   const handleLike = () => {
     //handle logic, add a follower and fill the heart with red
     setLiked(!liked);
   };
 
-  useEffect(() => {
-    console.log("isPopupOpen: ", isPopupOpen);
-  }, [isPopupOpen]);
   return (
     <div className="Icons">
       {isAdmin ? (
@@ -67,16 +68,18 @@ function Icons({ vacationId, destination }: IconProps): JSX.Element {
               onClick={handleLike}
             />
           )}
-          {isPopupOpen && (
-            <DeletePopup
-              isOpen={isPopupOpen}
-              handleClose={handleClosePopup}
-              handleConfirm={handleConfirmDelete}
-              destination={destination}
-            />
-          )}
         </div>
       )}
+      <Dialog open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <p>Are you sure you want to delete this item?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+          <Button color="error">Delete</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
