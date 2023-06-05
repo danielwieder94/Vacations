@@ -3,14 +3,23 @@ import "./VacationList.css";
 import axios from "axios";
 import { downloadVacations } from "../../Redux/VacationReducer";
 import SingleVacation from "./SingleVacation/SingleVacation";
-import { Grid, Pagination } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Pagination } from "@mui/material";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 import Filters from "../../Features/Filters/Filters";
 import Vacation from "../../../Model/Vacation";
 
+function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
+  return (
+    <Backdrop open={isLoading} style={{ zIndex: 1000 }}>
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  );
+}
+
 function VacationList(): JSX.Element {
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const vacations = vacationlyStore.getState().vacations.vacations;
   const [filteredVacations, setFilteredVacations] =
     useState<Vacation[]>(vacations);
@@ -21,11 +30,15 @@ function VacationList(): JSX.Element {
   useEffect(() => {
     if (vacations.length < 1) {
       console.log("loading vacations... getting data from backend");
+      setLoading(true);
       axios
         .get("http://localhost:4000/api/v1/vacations/list")
         .then((response) => {
           vacationlyStore.dispatch(downloadVacations(response.data));
           setRefresh(true);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [vacations.length, setRefresh]);
@@ -34,17 +47,19 @@ function VacationList(): JSX.Element {
     setCurrentPage(page);
   };
   const getPageVacations = () => {
+    console.log("filteredVacations in VACATIONLIST: ", filteredVacations);
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    return vacations.slice(start, end);
+    return filteredVacations.slice(start, end);
   };
 
-  const handleFilters = () => {
-    console.log("filters...");
+  const handleFilters = (filteredVacations: Vacation[]) => {
+    setFilteredVacations(filteredVacations);
+    setCurrentPage(1);
   };
 
-  if (vacationlyStore.getState().vacations.vacations.length < 1) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <LoadingOverlay isLoading={loading} />;
   }
 
   return (
@@ -57,7 +72,7 @@ function VacationList(): JSX.Element {
             { label: "Upcoming Vacations", value: "upcoming" },
           ]}
           onFilterChange={handleFilters}
-          vacations={[]}
+          vacations={vacations}
         />
       </div>
       <Grid container spacing={3} margin={"auto"}>
