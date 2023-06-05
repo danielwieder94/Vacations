@@ -13,8 +13,7 @@ const createUsersTable = async () => {
         lastName VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        isAdmin BOOLEAN NOT NULL DEFAULT false,
-        vacations INT NOT NULL DEFAULT 0
+        isAdmin BOOLEAN NOT NULL DEFAULT false
         )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };

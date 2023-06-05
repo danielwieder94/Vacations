@@ -5,7 +5,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-// import DeletePopup from "./DeletePopup/DeletePopup";
 import "./Icons.css";
 import {
   Button,
@@ -16,6 +15,8 @@ import {
   Modal,
   Tooltip,
 } from "@mui/material";
+import axios from "axios";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 interface IconProps {
   vacationId?: number;
@@ -32,14 +33,27 @@ function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
     navigate(`/editVacation/${vacationId}`);
   };
   const handleDelete = () => {
-    //handle logic. I want to open a modal to confirm the delete
     console.log("delete icon is clicked...");
     setShowDeleteModal(true);
   };
+  const confirmDelete = () => {
+    onDelete();
+    setShowDeleteModal(false);
+  };
 
   const handleLike = () => {
-    //handle logic, add a follower and fill the heart with red
-    setLiked(!liked);
+    const userId = vacationlyStore.getState().users.user[0].id;
+    const requestData = {
+      userId: userId,
+      vacationId: vacationId,
+    };
+    try {
+      axios.post("http://localhost:4000/api/v1/likes/addLike", requestData);
+      console.log("like icon is clicked...");
+      setLiked(!liked);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -77,7 +91,9 @@ function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-          <Button color="error">Delete</Button>
+          <Button onClick={confirmDelete} color="error">
+            Delete
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -24,6 +24,7 @@ router.get(
   "/list",
   async (request: Request, response: Response, next: NextFunction) => {
     response.status(200).json(await VacationLogic.getAllVacations());
+    return response;
   }
 );
 
@@ -62,6 +63,7 @@ router.delete(
   }
 );
 
+//for image upload
 router.post(
   "/:id/upload",
   upload.single("image"),
@@ -71,14 +73,14 @@ router.post(
 );
 
 //get file image from 'public' folder by image id and name
-router.get(
-  "/public/:image",
-  (request: Request, response: Response, next: NextFunction) => {
-    const image = request.params.image;
-    response.sendFile(path.join(__dirname, "../public", image));
-    // response.status(200).json({ message: "image sent successfully" });
-  }
-);
+// router.get(
+//   "/public/:image",
+//   (request: Request, response: Response, next: NextFunction) => {
+//     const image = request.params.image;
+//     response.sendFile(path.join(__dirname, "../public", image));
+//     response.status(200).json({ message: "image sent successfully" });
+//   }
+// );
 
 //format date to local timezone
 const formatDate = (date: Date) => {

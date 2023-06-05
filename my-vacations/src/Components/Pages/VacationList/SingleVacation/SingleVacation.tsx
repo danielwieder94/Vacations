@@ -10,9 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { vacationlyStore } from "../../../Redux/VacationlyStore";
+import { deleteVacation } from "../../../Redux/VacationReducer";
 
 interface singleVacationProps {
-  id?: number;
+  id: number;
   destination: string;
   startDate: Date;
   endDate: Date;
@@ -29,16 +31,10 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
-  // const [isHovered, setIsHovered] = useState<boolean>(false);
-  // const handleMouseEnter = () => {
-  //   setIsHovered(true);
-  // };
-  // const handleMouseLeave = () => {
-  //   setIsHovered(false);
-  // };
-  const handleDelete = () => {
-    axios.delete(`http://localhost:4000/api/v1/vacations/${props.id}`);
+  const deleteVac = () => {
+    axios.delete(`http://localhost:4000/api/v1/vacations/delete/${props.id}`);
     console.log("delete icon is clicked...");
+    vacationlyStore.dispatch(deleteVacation(props.id));
   };
 
   const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
@@ -56,7 +52,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
                 {props.destination}{" "}
                 <Icons
                   vacationId={props.id}
-                  onDelete={handleDelete}
+                  onDelete={deleteVac}
                   isAdmin={props.isAdmin}
                 />
               </div>

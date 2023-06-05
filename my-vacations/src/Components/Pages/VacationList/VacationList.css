@@ -11,3 +11,12 @@
 	height: 5rem;
 	
 }
+
+.vacFilters {
+	margin-left: 1rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	height: 5rem;
+}

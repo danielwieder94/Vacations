@@ -5,11 +5,15 @@ import { downloadVacations } from "../../Redux/VacationReducer";
 import SingleVacation from "./SingleVacation/SingleVacation";
 import { Grid, Pagination } from "@mui/material";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
+import Filters from "../../Features/Filters/Filters";
+import Vacation from "../../../Model/Vacation";
 
 function VacationList(): JSX.Element {
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const vacations = vacationlyStore.getState().vacations.vacations;
+  const [filteredVacations, setFilteredVacations] =
+    useState<Vacation[]>(vacations);
   const itemsPerPage = 9;
   const totalPages = Math.ceil(vacations.length / itemsPerPage);
   const isAdmin = vacationlyStore.getState().users.user[0].isAdmin;
@@ -24,7 +28,7 @@ function VacationList(): JSX.Element {
           setRefresh(true);
         });
     }
-  }, [vacations.length]);
+  }, [vacations.length, setRefresh]);
 
   const handlePageChange = (event: ChangeEvent<any>, page: number) => {
     setCurrentPage(page);
@@ -35,18 +39,33 @@ function VacationList(): JSX.Element {
     return vacations.slice(start, end);
   };
 
+  const handleFilters = () => {
+    console.log("filters...");
+  };
+
   if (vacationlyStore.getState().vacations.vacations.length < 1) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="VacationList">
+      <div className="vacFilters">
+        <Filters
+          filters={[
+            { label: "Liked Vacations", value: "liked" },
+            { label: "Ongoing Vacations", value: "ongoing" },
+            { label: "Upcoming Vacations", value: "upcoming" },
+          ]}
+          onFilterChange={handleFilters}
+          vacations={[]}
+        />
+      </div>
       <Grid container spacing={3} margin={"auto"}>
         {getPageVacations().map((item) => {
           return (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
               <SingleVacation
-                id={item.id}
+                id={item.id!}
                 destination={item.destination}
                 startDate={item.startDate}
                 endDate={item.endDate}

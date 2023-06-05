@@ -13,6 +13,8 @@ import { MdCloudUpload, MdDelete } from "react-icons/md";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./EditVacation.css";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { updateVacation } from "../../Redux/VacationReducer";
 
 function EditVacation(): JSX.Element {
   const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);
@@ -81,7 +83,6 @@ function EditVacation(): JSX.Element {
   const onSubmit = async (data: FormData) => {
     const imageData = new FormData();
     imageData.append("image", vacFile!);
-    console.log("editedVacation", editedVacation);
     const vacationId: number | undefined = editedVacation?.id;
     const updatedVacation = new Vacation(
       data.destination,
@@ -92,7 +93,6 @@ function EditVacation(): JSX.Element {
       vacFile ? vacFile.name : editedVacation!.vacImg
     );
     updatedVacation.id = vacationId;
-    console.log("updated vacation", updatedVacation);
     axios.put(
       `http://localhost:4000/api/v1/vacations/update/${id}`,
       updatedVacation
@@ -103,7 +103,7 @@ function EditVacation(): JSX.Element {
         imageData
       );
     }
-    // vacationlyStore.dispatch(updateVacation(updatedVacation));
+    vacationlyStore.dispatch(updateVacation(updatedVacation));
     navigate("/vacationList");
   };
 

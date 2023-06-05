@@ -9,6 +9,7 @@ import UserLogic from "./Logic/UserLogic";
 import VacationLogic from "./Logic/VacationLogic";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import likeRouter from "./Routes/likeRoutes";
 
 dotenv.config();
 const server = express();
@@ -25,6 +26,7 @@ server.use(express.static("public"));
 
 server.use("/api/v1/vacations", router);
 server.use("/api/v1/users", userRoutes);
+server.use("/api/v1/likes", likeRouter);
 
 // console.log("check if tables exist..");
 

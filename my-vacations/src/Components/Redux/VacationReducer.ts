@@ -21,12 +21,10 @@ export const addVacation = (newVacation: Vacation): VacationAction => {
 };
 
 export const downloadVacations = (vacations: Vacation[]): VacationAction => {
-  console.log("Trying to download vacations: ", vacations);
   return { type: VacationActionType.downloadVacations, payload: vacations };
 };
 
 export const updateVacation = (updatedVacation: Vacation): VacationAction => {
-  console.log("Trying to update vacation: ", updatedVacation);
   return { type: VacationActionType.updateVacation, payload: updatedVacation };
 };
 
@@ -42,12 +40,17 @@ export function vacationReducer(
 
   switch (action.type) {
     case VacationActionType.addVacation:
-      newState.vacations = [...newState.vacations, action.payload];
+      return {
+        ...currentState,
+        vacations: [...newState.vacations, action.payload],
+      };
       break;
     case VacationActionType.downloadVacations:
-      newState.vacations = action.payload;
-      console.log("DownloadVacations called with payload: ", action.payload);
-      break;
+      return {
+        ...currentState,
+        vacations: action.payload,
+      };
+
     case VacationActionType.updateVacation:
       const updatedIndex = newState.vacations.findIndex(
         (v) => v.id === action.payload.id
