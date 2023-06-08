@@ -12,10 +12,27 @@ likeRouter.post(
     const userId = +request.body.userId;
     const vacationId = +request.body.vacationId;
     try {
-      const like = await likeLogic.addLike(userId, vacationId);
+      const like = await likeLogic.toggleLike(userId, vacationId);
       response.status(200).json({
         like: like,
-        message: "Like added successfully",
+        message: "Like added successfully to vacation",
+      });
+    } catch (error) {
+      response.status(500).json({ message: "Something went wrong" });
+    }
+  }
+);
+
+//get likes by user
+likeRouter.get(
+  "/getLikesByUser/",
+  async (request: Request, response: Response, next: NextFunction) => {
+    const userId = +request.body.userId;
+    try {
+      const likes = await likeLogic.getLikesByUser(userId);
+      response.status(200).json({
+        likes: likes,
+        message: "Likes retrieved successfully",
       });
     } catch (error) {
       response.status(500).json({ message: "Something went wrong" });

@@ -6,12 +6,19 @@ const findImage = async (vacationId: number) => {
   console.log("searching for image in backend...");
   const folderPath = path.join(__dirname, "../public");
   const files = fs.readdirSync(folderPath);
-  const image = files.find((file) => file.includes(`${vacationId}_`));
+  const image = files.find((file) => file.startsWith(`${vacationId}_`));
 
-  for (const file of files) {
-    if (file.includes(`${vacationId}_`)) {
-      return file;
-    }
+  if (image) {
+    return image;
+  } else {
+    return null;
+  }
+};
+
+const deleteImage = async (vacationId: number) => {
+  const existingFile = await findImage(+vacationId);
+  if (existingFile) {
+    fs.unlinkSync(path.join(__dirname, "../public", existingFile));
   }
 };
 
@@ -25,14 +32,9 @@ const storage = multer.diskStorage({
     const ext = path.extname(file.originalname);
     const fileName = `${vacationId}_${originalName}${ext}`;
     cb(null, fileName);
-    const existingFile = await findImage(+vacationId);
-    if (existingFile) {
-      fs.unlinkSync(path.join(__dirname, "../public", existingFile));
-      console.log("image file deleted successfully");
-    }
+    await deleteImage(+vacationId);
   },
 });
-
 const upload = multer({ storage: storage });
 
 export default upload;

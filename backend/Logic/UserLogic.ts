@@ -13,7 +13,8 @@ const createUsersTable = async () => {
         lastName VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        isAdmin BOOLEAN NOT NULL DEFAULT false
+        isAdmin BOOLEAN NOT NULL DEFAULT false,
+        likedVacations JSON NULL
         )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };
@@ -61,7 +62,7 @@ export const registerUser = async (user: User) => {
       email: user.email,
       password: "", //don't return the password to the client
       isAdmin: false,
-      vacations: [],
+      likedVacations: [],
     };
     return newUser;
   } catch (error: any) {

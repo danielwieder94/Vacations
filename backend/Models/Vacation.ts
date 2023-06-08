@@ -6,7 +6,7 @@ class Vacation {
   public vacDesc: string;
   public vacPrice: number;
   public vacImg: string;
-
+  public likes: number;
   constructor(
     id: number,
     destination: string,
@@ -14,7 +14,8 @@ class Vacation {
     endDate: Date,
     vacDesc: string,
     vacPrice: number,
-    vacImg: string
+    vacImg: string,
+    likes: number
   ) {
     this.id = id;
     this.destination = destination;
@@ -33,6 +34,7 @@ class Vacation {
     this.vacDesc = vacDesc;
     this.vacPrice = vacPrice;
     this.vacImg = vacImg;
+    this.likes = likes;
   }
 }
 

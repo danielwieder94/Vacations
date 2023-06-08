@@ -7,14 +7,14 @@ class User {
   email: string;
   password: string;
   isAdmin: boolean;
-  vacations: Vacation[];
+  likedVacations: number[];
   constructor(
     id: number,
     firstName: string,
     lastName: string,
     email: string,
     password: string,
-    vacations: Vacation[]
+    likedVacations: number[]
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -22,7 +22,7 @@ class User {
     this.email = email;
     this.password = password;
     this.isAdmin = false;
-    this.vacations = vacations;
+    this.likedVacations = likedVacations;
   }
 }
 

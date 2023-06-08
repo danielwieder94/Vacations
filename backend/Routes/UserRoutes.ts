@@ -25,7 +25,7 @@ userRoutes.post(
         password,
         id: 0,
         isAdmin: false,
-        vacations: [],
+        likedVacations: [],
       };
       const registeredUser = await UserLogic.registerUser(newUser);
       response.status(201).json(registeredUser);

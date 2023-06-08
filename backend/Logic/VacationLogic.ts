@@ -13,8 +13,7 @@ const createVacationsTable = async () => {
             vacImg VARCHAR(255) NOT NULL,
             startDate DATE NOT NULL,
             endDate DATE NOT NULL,
-            vacPrice INT NOT NULL,
-            likes INT NOT NULL DEFAULT 0
+            vacPrice INT NOT NULL
             )`;
   const result: OkPacket = await dal_mysql.execute(sql);
 };
@@ -42,7 +41,8 @@ const addVacation = async (vacation: Vacation) => {
     vacation.endDate,
     vacation.vacDesc,
     vacation.vacPrice,
-    vacation.vacImg
+    vacation.vacImg,
+    vacation.likes
   );
 };
 
