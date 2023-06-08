@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icons from "../../../UserOptions/Icons/Icons";
 import "./SingleVacation.css";
 import {
@@ -22,6 +22,7 @@ interface singleVacationProps {
   vacPrice: number;
   vacImg: string;
   isAdmin: boolean;
+  likes: number;
 }
 
 const formatDate = (date: Date): string => {
@@ -54,6 +55,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
                   vacationId={props.id}
                   onDelete={deleteVac}
                   isAdmin={props.isAdmin}
+                  likes={props.likes}
                 />
               </div>
             }

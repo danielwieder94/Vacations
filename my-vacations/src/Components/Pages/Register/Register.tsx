@@ -74,7 +74,7 @@ function Register(): JSX.Element {
         password: data.password,
         isAdmin: false,
         id: 0,
-        vacations: [],
+        likedVacations: [],
       };
       const response = await axios.post<User>(
         "http://localhost:4000/api/v1/users/register",

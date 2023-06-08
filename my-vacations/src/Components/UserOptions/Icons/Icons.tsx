@@ -7,6 +7,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "./Icons.css";
 import {
+  Badge,
   Button,
   Dialog,
   DialogActions,
@@ -17,17 +18,32 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { updateLikes } from "../../Redux/UserReducer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IconProps {
   vacationId?: number;
   onDelete: () => void;
   isAdmin: boolean;
+  likes: number;
 }
 
-function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
+function Icons({
+  vacationId,
+  onDelete,
+  isAdmin,
+  likes,
+}: IconProps): JSX.Element {
   const navigate = useNavigate();
+  const user = vacationlyStore.getState().users.user[0];
+  const likedVacations = user.likedVacations;
   const [liked, setLiked] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLiked(likedVacations.some((vacation) => vacation === vacationId));
+    console.log("liked vacations: ", likedVacations);
+  }, [likedVacations, vacationId]);
 
   const handleEdit = () => {
     navigate(`/editVacation/${vacationId}`);
@@ -41,13 +57,23 @@ function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
     setShowDeleteModal(false);
   };
 
+  // vacationlyStore.dispatch(updateLikes([]));
   const handleLike = () => {
     const userId = vacationlyStore.getState().users.user[0].id;
     const requestData = {
       userId: userId,
       vacationId: vacationId,
     };
+
     try {
+      if (liked) {
+        const updatedLikedVacations = likedVacations.filter(
+          (likedId) => likedId !== vacationId
+        );
+        vacationlyStore.dispatch(updateLikes(updatedLikedVacations));
+      } else {
+        vacationlyStore.dispatch(updateLikes([...likedVacations, vacationId!]));
+      }
       axios.post("http://localhost:4000/api/v1/likes/addLike", requestData);
       console.log("like icon is clicked...");
       setLiked(!liked);
@@ -70,20 +96,22 @@ function Icons({ vacationId, onDelete, isAdmin }: IconProps): JSX.Element {
       ) : (
         <div className="userIcons">
           {liked ? (
-            <FavoriteIcon
-              className="heartIcon filled"
-              sx={{ color: "red" }}
-              onClick={handleLike}
-            />
+            <FavoriteIcon className="heartIcon filled" onClick={handleLike} />
           ) : (
             <FavoriteBorderOutlinedIcon
               className="heartIcon outlined"
-              sx={{ color: "#FFC857" }}
               onClick={handleLike}
             />
           )}
+          <Badge
+            badgeContent={likes}
+            color="primary"
+            overlap="rectangular"
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          />
         </div>
       )}
+
       <Dialog open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

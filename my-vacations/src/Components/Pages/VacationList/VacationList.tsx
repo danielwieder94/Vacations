@@ -7,6 +7,7 @@ import { Backdrop, CircularProgress, Grid, Pagination } from "@mui/material";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 import Filters from "../../Features/Filters/Filters";
 import Vacation from "../../../Model/Vacation";
+import SearchBar from "../../Features/SearchBar/SearchBar";
 
 function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
   return (
@@ -17,10 +18,11 @@ function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
 }
 
 function VacationList(): JSX.Element {
+  const vacations = vacationlyStore.getState().vacations.vacations;
+  const [searchQuery, setSearchQuery] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const vacations = vacationlyStore.getState().vacations.vacations;
+  const [loading, setLoading] = useState(true);
   const [filteredVacations, setFilteredVacations] =
     useState<Vacation[]>(vacations);
   const itemsPerPage = 9;
@@ -30,24 +32,36 @@ function VacationList(): JSX.Element {
   useEffect(() => {
     if (vacations.length < 1) {
       console.log("loading vacations... getting data from backend");
-      setLoading(true);
       axios
         .get("http://localhost:4000/api/v1/vacations/list")
         .then((response) => {
           vacationlyStore.dispatch(downloadVacations(response.data));
           setRefresh(true);
         })
+        .catch((err) => {
+          console.log(err);
+        })
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [vacations.length, setRefresh]);
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    const results = vacations.filter((vacation) =>
+      vacation.destination.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredVacations(results);
+  };
 
   const handlePageChange = (event: ChangeEvent<any>, page: number) => {
     setCurrentPage(page);
   };
   const getPageVacations = () => {
-    console.log("filteredVacations in VACATIONLIST: ", filteredVacations);
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     return filteredVacations.slice(start, end);
@@ -64,17 +78,23 @@ function VacationList(): JSX.Element {
 
   return (
     <div className="VacationList">
-      <div className="vacFilters">
-        <Filters
-          filters={[
-            { label: "Liked Vacations", value: "liked" },
-            { label: "Ongoing Vacations", value: "ongoing" },
-            { label: "Upcoming Vacations", value: "upcoming" },
-          ]}
-          onFilterChange={handleFilters}
-          vacations={vacations}
-        />
+      <div className="container">
+        <div className="vacFilters">
+          <Filters
+            filters={[
+              { label: "Liked Vacations", value: "liked" },
+              { label: "Ongoing Vacations", value: "ongoing" },
+              { label: "Upcoming Vacations", value: "upcoming" },
+            ]}
+            onFilterChange={handleFilters}
+            vacations={vacations}
+          />
+        </div>
+        <div className="vacSearch">
+          <SearchBar query={searchQuery} onQueryChange={handleSearch} />
+        </div>
       </div>
+
       <Grid container spacing={3} margin={"auto"}>
         {getPageVacations().map((item) => {
           return (
@@ -88,11 +108,13 @@ function VacationList(): JSX.Element {
                 vacImg={item.vacImg}
                 vacPrice={item.vacPrice}
                 isAdmin={isAdmin}
+                likes={item.likes || 0}
               />
             </Grid>
           );
         })}
       </Grid>
+
       <Pagination
         className="pagination"
         count={totalPages}

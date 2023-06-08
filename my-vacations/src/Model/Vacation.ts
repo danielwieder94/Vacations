@@ -8,6 +8,7 @@ class Vacation {
   public vacDesc: string;
   public vacPrice: number;
   public vacImg: string;
+  public likes?: number;
 
   constructor(
     // id: number,

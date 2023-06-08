@@ -9,6 +9,7 @@ export enum UserActionType {
   addUser = "addUser",
   downloadUsers = "downloadUsers",
   isLoggedIn = "isLoggedIn",
+  updateLikes = "updateLikes",
 }
 
 export interface UserAction {
@@ -31,6 +32,9 @@ export const downloadUsers = (user: User): UserAction => {
 export const isLoggedIn = (isLoggedIn: boolean): UserAction => {
   return { type: UserActionType.isLoggedIn, payload: isLoggedIn };
 };
+export const updateLikes = (likes: number[]): UserAction => {
+  return { type: UserActionType.updateLikes, payload: likes };
+};
 
 export function userReducer(
   currentState: UserState = new UserState(),
@@ -51,6 +55,16 @@ export function userReducer(
       if (!action.payload) {
         newState.user = [];
       }
+      break;
+    case UserActionType.updateLikes:
+      const updatedUser = { ...newState.user[0] };
+      if (action.payload.length > 0) {
+        updatedUser.likedVacations = action.payload;
+      } else {
+        updatedUser.likedVacations = [];
+      }
+      return { ...newState, user: [updatedUser] };
+    default:
       break;
   }
   return newState;

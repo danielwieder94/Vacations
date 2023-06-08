@@ -9,6 +9,7 @@ export enum VacationActionType {
   downloadVacations = "DownloadVacations",
   updateVacation = "UpdateVacation",
   deleteVacation = "DeleteVacation",
+  vacationLikes = "VacationLikes",
 }
 
 export interface VacationAction {
@@ -32,6 +33,10 @@ export const deleteVacation = (id: number): VacationAction => {
   return { type: VacationActionType.deleteVacation, payload: id };
 };
 
+export const vacationLikes = (likes: number[]): VacationAction => {
+  return { type: VacationActionType.vacationLikes, payload: likes };
+};
+
 export function vacationReducer(
   currentState: VacationState = new VacationState(),
   action: VacationAction
@@ -44,7 +49,6 @@ export function vacationReducer(
         ...currentState,
         vacations: [...newState.vacations, action.payload],
       };
-      break;
     case VacationActionType.downloadVacations:
       return {
         ...currentState,
@@ -67,6 +71,11 @@ export function vacationReducer(
         (v) => v.id !== action.payload
       );
       break;
+    // case VacationActionType.vacationLikes:
+    //   const updatedVacation = {
+    //     ...newState.vacations.find((v) => v.id === action.payload[0]),
+    //   };
+    //   updatedVacation.likes = action.payload[1];
   }
 
   return newState;
