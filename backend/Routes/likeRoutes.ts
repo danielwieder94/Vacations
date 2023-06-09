@@ -24,8 +24,8 @@ likeRouter.post(
 );
 
 //get likes by user
-likeRouter.get(
-  "/getLikesByUser/",
+likeRouter.post(
+  "/getLikesByUser",
   async (request: Request, response: Response, next: NextFunction) => {
     const userId = +request.body.userId;
     try {
@@ -34,6 +34,7 @@ likeRouter.get(
         likes: likes,
         message: "Likes retrieved successfully",
       });
+      console.log("likes:", likes);
     } catch (error) {
       response.status(500).json({ message: "Something went wrong" });
     }

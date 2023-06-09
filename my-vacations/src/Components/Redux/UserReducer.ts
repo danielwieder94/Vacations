@@ -46,8 +46,11 @@ export function userReducer(
       newState.user = [...newState.user, action.payload];
       break;
     case UserActionType.downloadUsers:
-      newState.user = [action.payload];
-      console.log("downloadUsers called with payload: ", action.payload);
+      const user = action.payload;
+      const likedVacationsString = user.likedVacations || "[]";
+      const likedVacations = JSON.parse(likedVacationsString) as number[];
+      const userWithLikedVacations = { ...user, likedVacations };
+      newState.user = [userWithLikedVacations];
       break;
     case UserActionType.isLoggedIn:
       newState.isLoggedIn = action.payload;
@@ -57,29 +60,46 @@ export function userReducer(
       break;
     case UserActionType.updateLikes:
       const updatedUser = { ...newState.user[0] };
-      const likedVacations = action.payload || [];
+      const likedVacationId = action.payload[0] || 0;
+      const updatedLikedVacations = [...updatedUser.likedVacations];
 
-      if (likedVacations.length === 0) {
-        // Reset likedVacations to an empty array if payload is empty
-        updatedUser.likedVacations = [];
+      if (updatedLikedVacations.includes(likedVacationId)) {
+        // Remove the vacation ID if it already exists
+        updatedLikedVacations.splice(
+          updatedLikedVacations.indexOf(likedVacationId),
+          1
+        );
       } else {
-        const updatedLikedVacations = [...updatedUser.likedVacations];
-
-        likedVacations.forEach((id: number) => {
-          if (updatedLikedVacations.includes(id)) {
-            // Remove the vacation ID if it already exists
-            updatedLikedVacations.splice(updatedLikedVacations.indexOf(id), 1);
-          } else {
-            // Add the vacation ID if it doesn't exist
-            updatedLikedVacations.push(id);
-          }
-        });
-
-        updatedUser.likedVacations = updatedLikedVacations;
+        // Add the vacation ID if it doesn't exist
+        updatedLikedVacations.push(likedVacationId);
       }
 
+      updatedUser.likedVacations = updatedLikedVacations;
       newState.user = [updatedUser];
       return { ...newState };
+    // const updatedUser = { ...newState.user[0] };
+    // const likedVacations = action.payload || [];
+
+    // if (likedVacations.length === 0) {
+    //   // Reset likedVacations to an empty array if payload is empty
+    //   updatedUser.likedVacations = [];
+    // } else {
+    //   const updatedLikedVacations = [...updatedUser.likedVacations];
+
+    //   likedVacations.forEach((id: number) => {
+    //     if (updatedLikedVacations.includes(id)) {
+    //       // Remove the vacation ID if it already exists
+    //       updatedLikedVacations.splice(updatedLikedVacations.indexOf(id), 1);
+    //     } else {
+    //       // Add the vacation ID if it doesn't exist
+    //       updatedLikedVacations.push(id);
+    //     }
+    //   });
+    //   updatedUser.likedVacations = updatedLikedVacations;
+    // }
+
+    // newState.user = [updatedUser];
+    // return { ...newState };
     default:
       break;
   }

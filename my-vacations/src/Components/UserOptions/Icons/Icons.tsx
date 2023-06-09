@@ -35,6 +35,7 @@ function Icons({
 }: IconProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const likeUrl = "http://localhost:4000/api/v1/likes";
   const user = useSelector((state: any) => state.users.user[0]);
   // const [liked, setLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(initialLikes);
@@ -43,6 +44,29 @@ function Icons({
   // useEffect(() => {
   //   vacationlyStore.dispatch(updateLikes([]));
   // }, []);
+
+  // useEffect(() => {
+  //   console.log("type of likeVacations", typeof user.likedVacations);
+  // }, []);
+  // useEffect(() => {
+  //   const fetchLikedVacations = async () => {
+  //     const requestData = {
+  //       userId: +user.id,
+  //     };
+  //     try {
+  //       const response = await axios.post(
+  //         `${likeUrl}/getLikesByUser`,
+  //         requestData
+  //       );
+  //       console.log(response.data);
+  //       const likedVacations = response.data.likes || [];
+  //       dispatch(updateLikes(likedVacations));
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchLikedVacations();
+  // }, [dispatch, user.id]);
 
   const handleEdit = () => {
     navigate(`/editVacation/${vacationId}`);
@@ -62,9 +86,10 @@ function Icons({
       userId: userId,
       vacationId: vacationId,
     };
-    // ["[, "1", "]", 2, 5....]
 
     try {
+      console.log("typeof vacationId: ", typeof vacationId);
+      console.log("is array an array?: ", Array.isArray(user.likedVacations));
       const isLiked = user.likedVacations.includes(vacationId);
       let updatedLikedVacations = [...user.likedVacations];
       if (isLiked) {
@@ -84,7 +109,7 @@ function Icons({
       }
       dispatch(updateLikes([vacationId!]));
 
-      axios.post("http://localhost:4000/api/v1/likes/addLike", requestData);
+      axios.post(`${likeUrl}/addLike`, requestData);
     } catch (error) {
       console.log(error);
     }

@@ -69,7 +69,7 @@ const toggleLike = async (userId: number, vacationId: number) => {
 
 const getLikesByUser = async (userId: number) => {
   const sql = `
-      SELECT vacations_list.id, vacations_list.destination
+      SELECT vacations_list.id
       FROM vacations.likes
       INNER JOIN vacations.vacations_list ON likes.vacationId = vacations_list.id
       WHERE likes.userId = ?  
