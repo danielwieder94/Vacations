@@ -10,6 +10,7 @@ export enum VacationActionType {
   updateVacation = "UpdateVacation",
   deleteVacation = "DeleteVacation",
   vacationLikes = "VacationLikes",
+  vacationUnlike = "VacationUnlike",
 }
 
 export interface VacationAction {
@@ -33,8 +34,14 @@ export const deleteVacation = (id: number): VacationAction => {
   return { type: VacationActionType.deleteVacation, payload: id };
 };
 
-export const vacationLikes = (likes: number[]): VacationAction => {
-  return { type: VacationActionType.vacationLikes, payload: likes };
+export const vacationLikes = (vacationId: number): VacationAction => {
+  // console.log("ACTION - trying to like vacationId: ", vacationId);
+  return { type: VacationActionType.vacationLikes, payload: vacationId };
+};
+
+export const vacationUnlike = (vacationId: number): VacationAction => {
+  // console.log("ACTION - trying to unlike vacationId: ", vacationId);
+  return { type: VacationActionType.vacationUnlike, payload: vacationId };
 };
 
 export function vacationReducer(
@@ -71,11 +78,42 @@ export function vacationReducer(
         (v) => v.id !== action.payload
       );
       break;
-    // case VacationActionType.vacationLikes:
-    //   const updatedVacation = {
-    //     ...newState.vacations.find((v) => v.id === action.payload[0]),
-    //   };
-    //   updatedVacation.likes = action.payload[1];
+    case VacationActionType.vacationLikes:
+      const vacationId = action.payload;
+      const updatedVacations = currentState.vacations.map((vacation) => {
+        if (vacation.id === vacationId) {
+          const updatedLikes = (vacation.likes || 0) + 1;
+          return {
+            ...vacation,
+            likes: updatedLikes, // Increment the likes count
+          };
+        }
+        return vacation;
+      });
+
+      return {
+        ...currentState,
+        vacations: updatedVacations,
+      };
+    case VacationActionType.vacationUnlike:
+      const unlikedVacationId = action.payload;
+
+      const unlikedVacations = currentState.vacations.map((vacation) => {
+        if (vacation.id === unlikedVacationId) {
+          const updatedLikes = (vacation.likes || 0) - 1;
+          return {
+            ...vacation,
+            likes: updatedLikes, // Decrement the likes count
+          };
+        }
+        return vacation;
+      });
+      return {
+        ...currentState,
+        vacations: unlikedVacations,
+      };
+    default:
+      return currentState;
   }
 
   return newState;

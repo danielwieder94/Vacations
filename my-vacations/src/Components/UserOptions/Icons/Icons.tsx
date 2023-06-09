@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { userIsAdmin } from "../../../Utils/authUtils";
 import { useNavigate } from "react-router-dom";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -13,43 +12,42 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Modal,
   Tooltip,
 } from "@mui/material";
 import axios from "axios";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 import { updateLikes } from "../../Redux/UserReducer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { vacationLikes, vacationUnlike } from "../../Redux/VacationReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 interface IconProps {
   vacationId?: number;
   onDelete: () => void;
   isAdmin: boolean;
-  likes: number;
+  initialLikes: number;
 }
 
 function Icons({
   vacationId,
   onDelete,
   isAdmin,
-  likes,
+  initialLikes,
 }: IconProps): JSX.Element {
   const navigate = useNavigate();
-  const user = vacationlyStore.getState().users.user[0];
-  const likedVacations = user.likedVacations;
-  const [liked, setLiked] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.users.user[0]);
+  // const [liked, setLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(initialLikes);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLiked(likedVacations.some((vacation) => vacation === vacationId));
-    console.log("liked vacations: ", likedVacations);
-  }, [likedVacations, vacationId]);
+  // useEffect(() => {
+  //   vacationlyStore.dispatch(updateLikes([]));
+  // }, []);
 
   const handleEdit = () => {
     navigate(`/editVacation/${vacationId}`);
   };
   const handleDelete = () => {
-    console.log("delete icon is clicked...");
     setShowDeleteModal(true);
   };
   const confirmDelete = () => {
@@ -57,26 +55,36 @@ function Icons({
     setShowDeleteModal(false);
   };
 
-  // vacationlyStore.dispatch(updateLikes([]));
   const handleLike = () => {
-    const userId = vacationlyStore.getState().users.user[0].id;
+    console.log("like icon is clicked...");
+    const userId = user.id;
     const requestData = {
       userId: userId,
       vacationId: vacationId,
     };
+    // ["[, "1", "]", 2, 5....]
 
     try {
-      if (liked) {
-        const updatedLikedVacations = likedVacations.filter(
-          (likedId) => likedId !== vacationId
+      const isLiked = user.likedVacations.includes(vacationId);
+      let updatedLikedVacations = [...user.likedVacations];
+      if (isLiked) {
+        // Unlike the vacation
+        dispatch(vacationUnlike(vacationId!));
+        setLikes((prevLikes) => prevLikes - 1);
+
+        // Update the liked vacations array
+        updatedLikedVacations = updatedLikedVacations.filter(
+          (id: number) => id !== vacationId
         );
-        vacationlyStore.dispatch(updateLikes(updatedLikedVacations));
       } else {
-        vacationlyStore.dispatch(updateLikes([...likedVacations, vacationId!]));
+        // Like the vacation
+        dispatch(vacationLikes(vacationId!));
+        setLikes((prevLikes) => prevLikes + 1);
+        updatedLikedVacations.push(vacationId!);
       }
+      dispatch(updateLikes([vacationId!]));
+
       axios.post("http://localhost:4000/api/v1/likes/addLike", requestData);
-      console.log("like icon is clicked...");
-      setLiked(!liked);
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +103,7 @@ function Icons({
         </div>
       ) : (
         <div className="userIcons">
-          {liked ? (
+          {user.likedVacations.includes(vacationId) ? (
             <FavoriteIcon className="heartIcon filled" onClick={handleLike} />
           ) : (
             <FavoriteBorderOutlinedIcon

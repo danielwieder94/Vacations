@@ -97,8 +97,6 @@ const loginUser = async (email: string, password: string) => {
 const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const sql = `SELECT * FROM vacations.users WHERE email = ?`;
-    // synax [userData] = await dal_mysql......, is the same as - const result = await dal_mysql....
-    //and then const userData = result[0]
     const [userData] = await dal_mysql.execute(sql, [email]);
     if (!userData) {
       return null;

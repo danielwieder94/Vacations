@@ -55,7 +55,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
                   vacationId={props.id}
                   onDelete={deleteVac}
                   isAdmin={props.isAdmin}
-                  likes={props.likes}
+                  initialLikes={props.likes}
                 />
               </div>
             }

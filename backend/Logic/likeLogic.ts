@@ -20,6 +20,7 @@ const toggleLike = async (userId: number, vacationId: number) => {
 
   if (currentLikedVacations.includes(vacationId)) {
     // Remove the like
+    console.log("Removing like from vacationId:", vacationId);
     const index = currentLikedVacations.indexOf(vacationId);
     currentLikedVacations.splice(index, 1);
 
@@ -37,6 +38,8 @@ const toggleLike = async (userId: number, vacationId: number) => {
     await dal_mysql.execute(updateVacationSql, [vacationId]);
   } else {
     // Add the like
+    console.log("Adding like to vacationId:", vacationId);
+
     currentLikedVacations.push(vacationId);
 
     const addLikeSql = `
@@ -63,52 +66,6 @@ const toggleLike = async (userId: number, vacationId: number) => {
     userId,
   ]);
 };
-
-// const addLike = async (userId: number, vacationId: number) => {
-//   const sql = `
-//     INSERT INTO likes (vacationId, userId)
-//     VALUES (?, ?)
-//   `;
-//   const result: OkPacket = await dal_mysql.execute(sql, [vacationId, userId]);
-
-//   const userSql = `
-//     SELECT likedVacations
-//     FROM users
-//     WHERE id = ?
-//   `;
-//   const userResult: { likedVacations: string }[] = await dal_mysql.execute(
-//     userSql,
-//     [userId]
-//   );
-//   console.log("userResult: ", userResult[0].likedVacations);
-
-//   const currentLikedVacations: number[] = userResult[0].likedVacations
-//     ? JSON.parse(userResult[0].likedVacations)
-//     : [];
-//   console.log("currentLikedVacations: ", currentLikedVacations);
-
-//   if (!currentLikedVacations.includes(vacationId)) {
-//     currentLikedVacations.push(vacationId);
-//     console.log("currentLikedVacations AFTER PUSH: ", currentLikedVacations);
-//   } else {
-//     throw new Error("You already liked this vacation");
-//   }
-//   const updateSql = `
-//     UPDATE users
-//     SET likedVacations = ?
-//     WHERE id = ?
-//   `;
-//   await dal_mysql.execute(updateSql, [
-//     JSON.stringify(currentLikedVacations),
-//     userId,
-//   ]);
-
-//   const vacationSql = `
-//    UPDATE vacations_list
-//    SET likes = likes + 1
-//    WHERE id = ?`;
-//   await dal_mysql.execute(vacationSql, [vacationId]);
-// };
 
 const getLikesByUser = async (userId: number) => {
   const sql = `

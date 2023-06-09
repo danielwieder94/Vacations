@@ -5,7 +5,7 @@ import likeLogic from "../Logic/likeLogic";
 
 const likeRouter = express.Router();
 
-//add like
+//add / remove like
 likeRouter.post(
   "/addLike",
   async (request: Request, response: Response, next: NextFunction) => {
