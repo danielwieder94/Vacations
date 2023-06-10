@@ -16,7 +16,13 @@ function UserNav({ onLogout, initials }: UserNavProps): JSX.Element {
 
   return (
     <div className="UserNav">
-      <div className="logo">
+      <div
+        className="logo"
+        onClick={() => {
+          navigate("/");
+        }}
+        style={{ cursor: "pointer" }}
+      >
         <FontAwesomeIcon
           icon={faPlaneDeparture}
           size="xl"
@@ -34,10 +40,6 @@ function UserNav({ onLogout, initials }: UserNavProps): JSX.Element {
           onClick={() => navigate("/vacationList")}
         >
           Explore
-        </Button>
-
-        <Button size="large" color="inherit">
-          Saved Vacations
         </Button>
       </div>
       <div className="right">

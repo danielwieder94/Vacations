@@ -78,13 +78,13 @@ const getLikesByUser = async (userId: number) => {
   return result;
 };
 
-const likesPerVacation = async (vacationId: number) => {
+const getLikesPerVacation = async () => {
   const sql = `
-      SELECT COUNT(*) as likes FROM likes
-      WHERE vacationId = ?
+      SELECT destination, likes
+      FROM vacations.vacations_list
     `;
-  const result: any = await dal_mysql.execute(sql, [vacationId]);
-  return result[0].likes;
+  const result: any = await dal_mysql.execute(sql);
+  return result;
 };
 
-export default { toggleLike, getLikesByUser, likesPerVacation };
+export default { toggleLike, getLikesByUser, getLikesPerVacation };

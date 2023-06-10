@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "../Theme/Theme";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 import { downloadUsers } from "../../Redux/UserReducer";
+import { ToastContainer } from "react-toastify";
 // import { useDispatch } from "react-redux";
 // import { getCookie } from "../../../Utils/cookieUtil";
 // import { isAdmin, isLoggedIn } from "../../Redux/UserReducer";
@@ -31,6 +32,7 @@ function MainLayout(): JSX.Element {
           <Header />
         </header>
         <main>
+          <ToastContainer />
           <MainRoutes />
         </main>
 

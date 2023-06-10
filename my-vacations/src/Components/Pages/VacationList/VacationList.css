@@ -26,9 +26,12 @@
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
-
+	flex-wrap: wrap;
 }
 
+.vacSearch {
+	margin-right: 1rem;
+}
 /* .SearchBar input {
     margin-right: 5rem;
 	padding: 0.5rem;

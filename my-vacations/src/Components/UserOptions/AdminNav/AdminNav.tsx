@@ -14,7 +14,13 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
   const navigate = useNavigate();
   return (
     <div className="AdminNav">
-      <div className="logo">
+      <div
+        className="logo"
+        onClick={() => {
+          navigate("/");
+        }}
+        style={{ cursor: "pointer" }}
+      >
         <FontAwesomeIcon
           icon={faPlaneDeparture}
           size="xl"
@@ -44,7 +50,13 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
           Explore
         </Button>
 
-        <Button size="large" color="inherit">
+        <Button
+          size="large"
+          color="inherit"
+          onClick={() => {
+            navigate("/reports");
+          }}
+        >
           Reports
         </Button>
       </div>

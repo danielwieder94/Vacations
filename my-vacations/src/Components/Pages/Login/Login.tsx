@@ -4,14 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../Layout/Theme/Theme";
-import {
-  Alert,
-  Button,
-  Link,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Link, TextField, Typography } from "@mui/material";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -19,11 +12,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login(): JSX.Element {
   const dispatch = useDispatch();
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
   type FormData = {
     email: string;
     password: string;
@@ -52,38 +45,18 @@ function Login(): JSX.Element {
       const { user } = response.data;
       dispatch(isLoggedIn(true));
       dispatch(downloadUsers({ ...user, password: "Confidential" }));
-      setSuccessMsg("Logged in successfully");
+      toast.success(`Welcome ${user.firstName}!`);
       navigate("/vacationList");
     } catch (err: any) {
       err.response.status === 401
-        ? setErrorMsg("Invalid email or password")
-        : setErrorMsg(err.response.message);
+        ? toast.error("Invalid email or password")
+        : toast.error(err.response.message);
     }
   };
-  useEffect(() => {
-    if (errorMsg) {
-      const timeout = setTimeout(() => {
-        setErrorMsg("");
-      }, 5000);
-      return () => clearTimeout(timeout);
-    }
-  }, [errorMsg]);
 
   return (
     <ThemeProvider theme={theme}>
       <div className="Login" onSubmit={handleSubmit(onSubmit)}>
-        {errorMsg && (
-          <Snackbar
-            open={!!errorMsg}
-            autoHideDuration={600}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="error" onClose={() => setErrorMsg("")}>
-              {errorMsg}
-            </Alert>
-          </Snackbar>
-        )}
-        {/* <UserMsg errorMsg={errorMsg} successMsg={successMsg} /> */}
         <form className="logForm">
           <Typography variant="h4">
             Login{" "}

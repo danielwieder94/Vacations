@@ -41,4 +41,21 @@ likeRouter.post(
   }
 );
 
+//get likes per vacation
+likeRouter.get(
+  "/likesPerVacation",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const vacations = await likeLogic.getLikesPerVacation();
+      response.status(200).json({
+        vacations: vacations,
+        message: "Likes retrieved successfully",
+      });
+      console.log("vacations:", vacations);
+    } catch (error) {
+      response.status(500).json({ message: "Something went wrong" });
+    }
+  }
+);
+
 export default likeRouter;

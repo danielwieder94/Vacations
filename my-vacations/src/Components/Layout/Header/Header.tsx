@@ -47,14 +47,22 @@ function Header(): JSX.Element {
           <Toolbar>
             {!loggedIn ? (
               <>
-                <FontAwesomeIcon
-                  icon={faPlaneDeparture}
-                  size="xl"
-                  style={{ color: "#ffffff", marginRight: "5px" }}
-                />
-                <Typography variant="h4" component="div">
-                  Vacationly
-                </Typography>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlaneDeparture}
+                    size="xl"
+                    style={{ color: "#ffffff", marginRight: "5px" }}
+                  />
+                  <Typography variant="h4" component="div">
+                    Vacationly
+                  </Typography>
+                </div>
                 <Stack direction="row" spacing={2} sx={{ marginLeft: "auto" }}>
                   <Button
                     size="large"
