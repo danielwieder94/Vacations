@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AddVacation from "../../Pages/AddVacation/AddVacation";
 import EditVacation from "../../Pages/EditVacation/EditVacation";
-import Main from "../../Layout/Main/Main";
 import Page404 from "../../Pages/Page404/Page404";
 import Register from "../../Pages/Register/Register";
 import Login from "../../Pages/Login/Login";

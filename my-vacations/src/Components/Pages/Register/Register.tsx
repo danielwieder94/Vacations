@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { addUser, isLoggedIn } from "../../Redux/UserReducer";
 import User from "../../../Model/User";
+import { toast } from "react-toastify";
 
 function Register(): JSX.Element {
   const [errorMsg, setErrorMsg] = useState("");
@@ -82,12 +83,25 @@ function Register(): JSX.Element {
       );
       dispatch(addUser(response.data));
       dispatch(isLoggedIn(true));
+      toast.success(`Welcome, ${newUser.firstName}!`, {
+        position: "bottom-left",
+        theme: "colored",
+        autoClose: 3000,
+      });
       navigate("/vacationList");
     } catch (err: any) {
       console.log("error occured in register component: ", err);
       err.response.status === 400
-        ? setErrorMsg("Email already exists")
-        : setErrorMsg("");
+        ? toast.error("Email already exists", {
+            position: "bottom-left",
+            theme: "colored",
+            autoClose: 3000,
+          })
+        : toast.error("Unexpected error occured, please try again later.", {
+            position: "bottom-left",
+            theme: "colored",
+            autoClose: 3000,
+          });
     }
   };
   useEffect(() => {

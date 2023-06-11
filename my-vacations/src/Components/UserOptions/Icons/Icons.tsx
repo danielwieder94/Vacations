@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -15,7 +15,6 @@ import {
   Tooltip,
 } from "@mui/material";
 import axios from "axios";
-import { vacationlyStore } from "../../Redux/VacationlyStore";
 import { updateLikes } from "../../Redux/UserReducer";
 import { vacationLikes, vacationUnlike } from "../../Redux/VacationReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,33 +39,6 @@ function Icons({
   // const [liked, setLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   vacationlyStore.dispatch(updateLikes([]));
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("type of likeVacations", typeof user.likedVacations);
-  // }, []);
-  // useEffect(() => {
-  //   const fetchLikedVacations = async () => {
-  //     const requestData = {
-  //       userId: +user.id,
-  //     };
-  //     try {
-  //       const response = await axios.post(
-  //         `${likeUrl}/getLikesByUser`,
-  //         requestData
-  //       );
-  //       console.log(response.data);
-  //       const likedVacations = response.data.likes || [];
-  //       dispatch(updateLikes(likedVacations));
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchLikedVacations();
-  // }, [dispatch, user.id]);
 
   const handleEdit = () => {
     navigate(`/editVacation/${vacationId}`);

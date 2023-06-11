@@ -1,8 +1,8 @@
 import React from "react";
 import "./UserNav.css";
 import { useNavigate } from "react-router-dom";
-import { vacationlyStore } from "../../Redux/VacationlyStore";
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+
+import { Avatar, Button, Typography } from "@mui/material";
 import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

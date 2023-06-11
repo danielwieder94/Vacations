@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Icons from "../../../UserOptions/Icons/Icons";
 import "./SingleVacation.css";
 import {

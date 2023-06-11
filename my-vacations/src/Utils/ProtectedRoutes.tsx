@@ -15,7 +15,7 @@ const PrivateRoutes = () => {
 };
 
 const AdminRoutes = () => {
-  const { userLogged, user } = userAuth();
+  const { userLogged } = userAuth();
   if (userLogged === true) {
     const user = vacationlyStore.getState().users.user[0];
     return user.isAdmin ? <Outlet /> : <Navigate to="/vacationList" />;

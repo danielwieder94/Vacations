@@ -9,10 +9,6 @@
     text-align: center;
 }
 
-/* .MuiAlert-root {
-    margin-bottom: 2rem;
-} */
-
 .logForm {
     width: 18%;
     display: flex;
@@ -31,14 +27,3 @@ span {
     color: black;
     font-size: small;
 }
-
-/* .logForm input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.logForm input:focus {
-    border: 1px solid #5EB4FF;
-    outline: none;
-}
- */

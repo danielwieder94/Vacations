@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Login.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -45,12 +45,24 @@ function Login(): JSX.Element {
       const { user } = response.data;
       dispatch(isLoggedIn(true));
       dispatch(downloadUsers({ ...user, password: "Confidential" }));
-      toast.success(`Welcome ${user.firstName}!`);
+      toast.success(`Welcome back, ${user.firstName}!`, {
+        position: "bottom-left",
+        theme: "colored",
+        autoClose: 3000,
+      });
       navigate("/vacationList");
     } catch (err: any) {
       err.response.status === 401
-        ? toast.error("Invalid email or password")
-        : toast.error(err.response.message);
+        ? toast.error("Invalid email or password", {
+            position: "bottom-left",
+            theme: "colored",
+            autoClose: 3000,
+          })
+        : toast.error(err.response.message, {
+            position: "bottom-left",
+            theme: "colored",
+            autoClose: 3000,
+          });
     }
   };
 

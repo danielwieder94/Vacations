@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useRef } from "react";
+import React, { ChangeEvent } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import "./SearchBar.css";
-import { Search } from "@mui/icons-material";
 
 interface SearchBarProps {
   query: string;

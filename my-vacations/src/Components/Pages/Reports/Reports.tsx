@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import "./Reports.css";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import { Button, Typography, Switch } from "@mui/material";
 import { faFileCsv } from "@fortawesome/free-solid-svg-icons";

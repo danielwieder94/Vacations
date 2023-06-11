@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   AppBar,
-  Box,
   Button,
   ThemeProvider,
   Toolbar,
@@ -13,10 +12,10 @@ import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
-import { persistor, vacationlyStore } from "../../Redux/VacationlyStore";
+import { vacationlyStore } from "../../Redux/VacationlyStore";
 import AdminNav from "../../UserOptions/AdminNav/AdminNav";
 import UserNav from "../../UserOptions/UserNav/UserNav";
-import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
+import { isLoggedIn } from "../../Redux/UserReducer";
 import { userIsAdmin, userLoggedIn } from "../../../Utils/authUtils";
 
 function Header(): JSX.Element {

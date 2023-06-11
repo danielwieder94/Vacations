@@ -46,8 +46,9 @@ function VacationList(): JSX.Element {
         });
     } else {
       setLoading(false);
+      setFilteredVacations(vacations);
     }
-  }, [vacations.length, setRefresh]);
+  }, [vacations.length, setRefresh, vacations]);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -68,6 +69,7 @@ function VacationList(): JSX.Element {
   };
 
   const handleFilters = (filteredVacations: Vacation[]) => {
+    console.log("filtered vacations: ", filteredVacations);
     setFilteredVacations(filteredVacations);
     setCurrentPage(1);
   };

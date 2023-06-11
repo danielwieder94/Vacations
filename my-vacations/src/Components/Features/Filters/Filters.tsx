@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./Filters.css";
-import { Chip } from "@mui/material";
+import { FormControlLabel, Switch } from "@mui/material";
 import Vacation from "../../../Model/Vacation";
 import dayjs from "dayjs";
-import { type } from "os";
+import { toast } from "react-toastify";
 
 interface Filter {
   label: string;
@@ -22,37 +22,52 @@ function Filters({
   vacations,
 }: FiltersProps): JSX.Element {
   const [selected, setSelected] = useState<string[]>([]);
-  // const [filtered, setFiltered] = useState<Vacation[]>([]);
   const today = dayjs().startOf("day").toDate();
 
   useEffect(() => {
-    filterVacations(selected);
+    const isOngoing = selected.includes("ongoing");
+    const isUpcoming = selected.includes("upcoming");
+    if (isOngoing && isUpcoming) {
+      toast.warning("Cannot select both ongoing and upcoming filters", {
+        position: "top-center",
+      });
+    }
   }, [selected]);
 
   const handleFilter = (filter: string) => {
-    const updatedFilters = [...selected];
-    if (updatedFilters.includes(filter)) {
-      updatedFilters.splice(updatedFilters.indexOf(filter), 1);
-    } else {
-      updatedFilters.push(filter);
+    // const updatedFilters = [...selected];
+    const disabledFilters: Record<string, boolean> = {
+      ongoing: selected.includes("upcoming"),
+      upcoming: selected.includes("ongoing"),
+    };
+
+    if (disabledFilters[filter]) {
+      let selectedFilter = filter === "ongoing" ? "upcoming" : "ongoing";
+      toast.info(`Cannot select ${filter} when ${selectedFilter} is selected`, {
+        position: "top-center",
+      });
+      return;
     }
+    const updatedFilters = selected.includes(filter)
+      ? selected.filter((f) => f !== filter)
+      : [...selected, filter];
     setSelected(updatedFilters);
-  };
 
-  const filterVacations = (selectedFilters: string[]) => {
-    let filteredVacations: Vacation[] = [...vacations]; // Copy the vacations array
+    let filteredVacations: Vacation[] = [...vacations];
 
-    if (selectedFilters.length > 0) {
+    if (updatedFilters.length > 0) {
       filteredVacations = filteredVacations.filter((vacation) => {
         const startDate = new Date(vacation.startDate);
         const endDate = new Date(vacation.endDate);
-
-        return selectedFilters.some((filter) => {
+        const likes = vacation.likes || 0;
+        return updatedFilters.every((filter) => {
           switch (filter) {
             case "ongoing":
               return startDate <= today && endDate >= today;
             case "upcoming":
               return startDate > today;
+            case "liked":
+              return likes > 0;
             default:
               return false;
           }
@@ -61,7 +76,6 @@ function Filters({
     } else {
       filteredVacations = vacations;
     }
-    console.log("filteredVacations IN FILTERS.TSX: ", filteredVacations);
     onFilterChange(filteredVacations);
   };
 
@@ -69,6 +83,21 @@ function Filters({
     <div className="Filters">
       <div className="FilterOptions">
         {filters.map((filter) => {
+          return (
+            <FormControlLabel
+              key={filter.value}
+              control={
+                <Switch
+                  checked={selected.includes(filter.value)}
+                  onChange={() => handleFilter(filter.value)}
+                  color="primary"
+                />
+              }
+              label={filter.label}
+            />
+          );
+        })}
+        {/* {filters.map((filter) => {
           return (
             <Chip
               key={filter.value}
@@ -79,7 +108,7 @@ function Filters({
               sx={{ m: 1 }}
             />
           );
-        })}
+        })} */}
       </div>
     </div>
   );
