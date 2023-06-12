@@ -14,12 +14,14 @@ interface FiltersProps {
   filters: Filter[];
   onFilterChange: (filteredVacations: Vacation[]) => void;
   vacations: Vacation[];
+  likedVacations: number[];
 }
 
 function Filters({
   filters,
   onFilterChange,
   vacations,
+  likedVacations,
 }: FiltersProps): JSX.Element {
   const [selected, setSelected] = useState<string[]>([]);
   const today = dayjs().startOf("day").toDate();
@@ -67,7 +69,7 @@ function Filters({
             case "upcoming":
               return startDate > today;
             case "liked":
-              return likes > 0;
+              return likedVacations.includes(vacation.id!);
             default:
               return false;
           }
