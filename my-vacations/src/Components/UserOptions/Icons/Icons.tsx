@@ -36,7 +36,6 @@ function Icons({
   const dispatch = useDispatch();
   const likeUrl = "http://localhost:4000/api/v1/likes";
   const user = useSelector((state: any) => state.users.user[0]);
-  // const [liked, setLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 

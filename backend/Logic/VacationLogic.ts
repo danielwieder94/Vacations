@@ -2,6 +2,7 @@ import Vacation from "../Models/Vacation";
 import dal_mysql from "../Utils/dal_mysql";
 import { Request, Response } from "express";
 import { OkPacket } from "mysql";
+import { deleteImage } from "./FileUpload";
 
 //create vacationsTable
 const createVacationsTable = async () => {
@@ -109,8 +110,28 @@ const getVacationByLikes = async () => {
 };
 
 const deleteVacation = async (id: number) => {
-  const sql = `DELETE FROM vacations.vacations_list WHERE id = ?`;
-  const result: OkPacket = await dal_mysql.execute(sql, [id]);
+  const checkLikes = `SELECT likes FROM vacations.vacations_list WHERE id = ?`;
+  const likeResult: { likes: number }[] = await dal_mysql.execute(checkLikes, [
+    id,
+  ]);
+  const likesCount = likeResult[0].likes;
+
+  const deleteSql = `DELETE FROM vacations.vacations_list WHERE id = ?`;
+  await dal_mysql.execute(deleteSql, [id]);
+
+  if (likesCount > 0) {
+    const updateUserLikes = `UPDATE users
+    SET likedVacations = JSON_REMOVE(likedVacations, (JSON_SEARCH(likedVacations, 'one', ?)))
+    WHERE JSON_CONTAINS(likedVacations, ?)
+  `;
+    await dal_mysql.execute(updateUserLikes, [id, id]);
+
+    const deleteLikes = `DELETE FROM likes
+    WHERE vacationId = ?`;
+    await dal_mysql.execute(deleteLikes, [id]);
+  }
+
+  await deleteImage(id);
 };
 
 export default {

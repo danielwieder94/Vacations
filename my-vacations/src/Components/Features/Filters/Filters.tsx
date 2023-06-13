@@ -3,6 +3,7 @@ import "./Filters.css";
 import { FormControlLabel, Switch } from "@mui/material";
 import Vacation from "../../../Model/Vacation";
 import dayjs from "dayjs";
+import { userIsAdmin } from "../../../Utils/authUtils";
 import { toast } from "react-toastify";
 
 interface Filter {
@@ -37,7 +38,6 @@ function Filters({
   }, [selected]);
 
   const handleFilter = (filter: string) => {
-    // const updatedFilters = [...selected];
     const disabledFilters: Record<string, boolean> = {
       ongoing: selected.includes("upcoming"),
       upcoming: selected.includes("ongoing"),

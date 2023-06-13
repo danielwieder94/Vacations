@@ -20,6 +20,7 @@ import { userIsAdmin, userLoggedIn } from "../../../Utils/authUtils";
 
 function Header(): JSX.Element {
   const [initials, setInitials] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const navigate = useNavigate();
   const loggedIn = userLoggedIn();
   const isAdmin = userIsAdmin();
@@ -27,9 +28,10 @@ function Header(): JSX.Element {
   useEffect(() => {
     if (loggedIn) {
       const user = vacationlyStore.getState().users.user[0];
-      const firstInitial = user.firstName.charAt(0);
-      const lastInitial = user.lastName.charAt(0);
-      const initials = firstInitial + lastInitial;
+      const initials =
+        user.firstName.charAt(0).toUpperCase() +
+        user.lastName.charAt(0).toUpperCase();
+      setName(user.firstName + " " + user.lastName);
       setInitials(initials);
     }
   }, [loggedIn]);
@@ -64,17 +66,19 @@ function Header(): JSX.Element {
                 </div>
                 <Stack direction="row" spacing={2} sx={{ marginLeft: "auto" }}>
                   <Button
-                    size="large"
+                    variant="outlined"
+                    size="medium"
                     sx={{ height: "2rem" }}
-                    color="inherit"
+                    color="secondary"
                     onClick={() => navigate("/login")}
                   >
                     Login
                   </Button>
                   <Button
-                    size="large"
+                    variant="outlined"
+                    size="medium"
                     sx={{ height: "2rem" }}
-                    color="inherit"
+                    color="secondary"
                     onClick={() => navigate("/register")}
                   >
                     Register
@@ -82,9 +86,17 @@ function Header(): JSX.Element {
                 </Stack>
               </>
             ) : isAdmin ? (
-              <AdminNav onLogout={handleLogout} initials={initials} />
+              <AdminNav
+                onLogout={handleLogout}
+                initials={initials}
+                name={name}
+              />
             ) : (
-              <UserNav onLogout={handleLogout} initials={initials} />
+              <UserNav
+                onLogout={handleLogout}
+                initials={initials}
+                name={name}
+              />
             )}
           </Toolbar>
         </AppBar>
@@ -94,37 +106,3 @@ function Header(): JSX.Element {
 }
 
 export default Header;
-
-{
-  /* <Stack direction="row" spacing={2} margin="auto">
-                <Button
-                  size="large"
-                  color="inherit"
-                  onClick={() => navigate("/vacationList")}
-                >
-                  Explore
-                </Button>
-
-                <Button size="large" color="inherit">
-                  Saved Vacations
-                </Button>
-              </Stack>
-              <Stack direction="row">
-                <Button
-                  size="large"
-                  sx={{ height: "2rem" }}
-                  color="inherit"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
-                <Button
-                  size="large"
-                  sx={{ height: "2rem" }}
-                  color="inherit"
-                  onClick={() => navigate("/register")}
-                >
-                  Register
-                </Button>
-              </Stack> */
-}

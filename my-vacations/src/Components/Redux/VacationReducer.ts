@@ -85,7 +85,7 @@ export function vacationReducer(
           const updatedLikes = (vacation.likes || 0) + 1;
           return {
             ...vacation,
-            likes: updatedLikes, // Increment the likes count
+            likes: updatedLikes,
           };
         }
         return vacation;
@@ -103,7 +103,7 @@ export function vacationReducer(
           const updatedLikes = (vacation.likes || 0) - 1;
           return {
             ...vacation,
-            likes: updatedLikes, // Decrement the likes count
+            likes: updatedLikes,
           };
         }
         return vacation;

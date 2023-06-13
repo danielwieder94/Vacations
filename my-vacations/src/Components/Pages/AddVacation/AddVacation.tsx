@@ -67,6 +67,26 @@ function AddVacation(): JSX.Element {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    if (!file) {
+      return "No file selected";
+    }
+    setVacFile(file);
+    setImage(URL.createObjectURL(file));
+  };
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const handleClick = () => {
+    inputRef.current?.click();
+  };
+  const handleDelete = () => {
+    setVacFile(null);
+    setImage("");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   const onSubmit = async (data: FormData) => {
     const imageData = new FormData();
     imageData.append("image", vacFile!);
@@ -94,26 +114,6 @@ function AddVacation(): JSX.Element {
       navigate("/vacationList");
     } catch (err) {
       console.log("error occured in onSubmit function: ", err);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    if (!file) {
-      return "No file selected";
-    }
-    setVacFile(file);
-    setImage(URL.createObjectURL(file));
-  };
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
-  const handleDelete = () => {
-    setVacFile(null);
-    setImage("");
-    if (inputRef.current) {
-      inputRef.current.value = "";
     }
   };
 

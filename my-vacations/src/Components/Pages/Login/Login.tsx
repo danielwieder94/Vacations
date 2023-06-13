@@ -98,6 +98,7 @@ function Login(): JSX.Element {
             }}
           />
           <Button
+            data-testid="loginBtn"
             variant="contained"
             size="large"
             color="secondary"

@@ -26,8 +26,8 @@ const createLikesTable = async () => {
         id INT AUTO_INCREMENT PRIMARY KEY,
         vacationId INT NOT NULL,
         userId INT NOT NULL,
-        FOREIGN KEY (userId) REFERENCES users(id),
-        FOREIGN KEY (vacationId) REFERENCES vacations_list(id),
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (vacationId) REFERENCES vacations_list(id) ON DELETE CASCADE,
         UNIQUE KEY (userId, vacationId)
         )`;
   const result: OkPacket = await dal_mysql.execute(sql);

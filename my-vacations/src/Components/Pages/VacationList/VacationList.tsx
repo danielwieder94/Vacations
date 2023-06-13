@@ -8,7 +8,7 @@ import { vacationlyStore } from "../../Redux/VacationlyStore";
 import Filters from "../../Features/Filters/Filters";
 import Vacation from "../../../Model/Vacation";
 import SearchBar from "../../Features/SearchBar/SearchBar";
-import { useSelector } from "react-redux";
+import { userIsAdmin } from "../../../Utils/authUtils";
 
 function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
   return (
@@ -29,7 +29,7 @@ function VacationList(): JSX.Element {
     useState<Vacation[]>(vacations);
   const itemsPerPage = 9;
   const totalPages = Math.ceil(vacations.length / itemsPerPage);
-  const isAdmin = vacationlyStore.getState().users.user[0].isAdmin;
+  const isAdmin = userIsAdmin();
 
   useEffect(() => {
     if (vacations.length < 1) {
@@ -86,7 +86,9 @@ function VacationList(): JSX.Element {
         <div className="vacFilters">
           <Filters
             filters={[
-              { label: "Liked Vacations", value: "liked" },
+              ...(isAdmin
+                ? []
+                : [{ label: "Liked Vacations", value: "liked" }]),
               { label: "Ongoing Vacations", value: "ongoing" },
               { label: "Upcoming Vacations", value: "upcoming" },
             ]}

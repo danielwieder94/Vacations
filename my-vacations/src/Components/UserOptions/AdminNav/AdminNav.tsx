@@ -8,9 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface AdminNavProps {
   onLogout: () => void;
   initials: string;
+  name: string;
 }
 
-function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
+function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
   const navigate = useNavigate();
   return (
     <div className="AdminNav">
@@ -34,8 +35,9 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
 
       <div className="middle">
         <Button
-          size="large"
-          color="inherit"
+          variant="contained"
+          size="medium"
+          color="secondary"
           onClick={() => {
             navigate("/addVacation");
           }}
@@ -43,16 +45,18 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
           Add Vacation
         </Button>
         <Button
-          size="large"
-          color="inherit"
+          variant="contained"
+          size="medium"
+          color="secondary"
           onClick={() => navigate("/vacationList")}
         >
           Explore
         </Button>
 
         <Button
-          size="large"
-          color="inherit"
+          variant="contained"
+          size="medium"
+          color="secondary"
           onClick={() => {
             navigate("/reports");
           }}
@@ -63,10 +67,12 @@ function AdminNav({ onLogout, initials }: AdminNavProps): JSX.Element {
 
       <div className="right">
         <Avatar sx={{ width: 40, height: 40 }}>{initials}</Avatar>
+        <Typography>{name}</Typography>
         <Button
-          size="large"
+          variant="contained"
+          size="small"
           sx={{ height: "2rem" }}
-          color="inherit"
+          color="warning"
           onClick={onLogout}
         >
           Logout

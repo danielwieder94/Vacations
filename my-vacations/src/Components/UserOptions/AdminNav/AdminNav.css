@@ -18,10 +18,12 @@
     flex-direction: row;
     margin-left: auto;
     margin-right: auto;
+    gap: 1rem;
 }
 
 .right {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 1rem;
 }

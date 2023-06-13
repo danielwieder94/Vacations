@@ -3,7 +3,6 @@ import User from "../Models/User";
 import UserLogic from "../Logic/UserLogic";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { generateAuthToken, verifyAuthToken } from "../Utils/auth";
 
 const userRoutes = express.Router();
 //email validation in UserLogic.ts

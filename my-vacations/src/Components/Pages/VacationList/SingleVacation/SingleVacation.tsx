@@ -32,8 +32,10 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
-  const deleteVac = () => {
-    axios.delete(`http://localhost:4000/api/v1/vacations/delete/${props.id}`);
+  const deleteVac = async () => {
+    await axios.delete(
+      `http://localhost:4000/api/v1/vacations/delete/${props.id}`
+    );
     console.log("delete icon is clicked...");
     vacationlyStore.dispatch(deleteVacation(props.id));
   };
