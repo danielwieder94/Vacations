@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import "./VacationList.css";
 import axios from "axios";
-import { downloadVacations } from "../../Redux/VacationReducer";
+import { deleteVacation, downloadVacations } from "../../Redux/VacationReducer";
 import SingleVacation from "./SingleVacation/SingleVacation";
 import { Backdrop, CircularProgress, Grid, Pagination } from "@mui/material";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
@@ -28,7 +28,8 @@ function VacationList(): JSX.Element {
   const [filteredVacations, setFilteredVacations] =
     useState<Vacation[]>(vacations);
   const itemsPerPage = 9;
-  const totalPages = Math.ceil(vacations.length / itemsPerPage);
+  // const totalPages = Math.ceil(vacations.length / itemsPerPage);
+  const [totalPages, setTotalPages] = useState(0);
   const isAdmin = userIsAdmin();
 
   useEffect(() => {
@@ -49,8 +50,21 @@ function VacationList(): JSX.Element {
     } else {
       setLoading(false);
       setFilteredVacations(vacations);
+      setTotalPages(Math.ceil(vacations.length / itemsPerPage));
     }
   }, [vacations.length, setRefresh, vacations]);
+
+  const deleteVac = async (vacationId: number) => {
+    await axios.delete(
+      `http://localhost:4000/api/v1/vacations/delete/${vacationId}`
+    );
+    vacationlyStore.dispatch(deleteVacation(vacationId));
+
+    const updatedVacations = filteredVacations.filter(
+      (vacation) => vacation.id !== vacationId
+    );
+    setFilteredVacations(updatedVacations);
+  };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -59,6 +73,7 @@ function VacationList(): JSX.Element {
       vacation.destination.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredVacations(results);
+    setTotalPages(Math.ceil(results.length / itemsPerPage));
   };
 
   const handlePageChange = (event: ChangeEvent<any>, page: number) => {
@@ -74,6 +89,7 @@ function VacationList(): JSX.Element {
     console.log("filtered vacations: ", filteredVacations);
     setFilteredVacations(filteredVacations);
     setCurrentPage(1);
+    setTotalPages(Math.ceil(filteredVacations.length / itemsPerPage));
   };
 
   if (loading) {
@@ -116,6 +132,7 @@ function VacationList(): JSX.Element {
                 vacPrice={item.vacPrice}
                 isAdmin={isAdmin}
                 likes={item.likes || 0}
+                onDelete={() => deleteVac(item.id!)}
               />
             </Grid>
           );

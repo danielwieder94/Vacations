@@ -47,8 +47,6 @@ const addVacation = async (vacation: Vacation) => {
   );
 };
 
-//upload image to "public" folder
-
 //edit vacation
 const updateVacation = async (vacation: Vacation) => {
   return await dal_mysql.execute(
@@ -121,10 +119,10 @@ const deleteVacation = async (id: number) => {
 
   if (likesCount > 0) {
     const updateUserLikes = `UPDATE users
-    SET likedVacations = JSON_REMOVE(likedVacations, (JSON_SEARCH(likedVacations, 'one', ?)))
-    WHERE JSON_CONTAINS(likedVacations, ?)
+    SET likedVacations = JSON_REMOVE(likedVacations, (JSON_SEARCH(likedVacations, 'one', CAST(? AS JSON))))
+    WHERE JSON_CONTAINS(likedVacations, CAST(? AS JSON))
   `;
-    await dal_mysql.execute(updateUserLikes, [id, id]);
+    await dal_mysql.execute(updateUserLikes, [id.toString(), id.toString()]);
 
     const deleteLikes = `DELETE FROM likes
     WHERE vacationId = ?`;

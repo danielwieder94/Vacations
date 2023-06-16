@@ -11,7 +11,7 @@ class Vacation {
   public likes?: number;
 
   constructor(
-    // id: number,
+    id: number,
     destination: string,
     startDate: Date,
     endDate: Date,
@@ -20,7 +20,7 @@ class Vacation {
     vacImg: string
   ) {
     const today = dayjs().startOf("day").toDate();
-    // this.id = id;
+    this.id = id;
     this.destination = destination;
     this.startDate =
       startDate < today

@@ -17,8 +17,6 @@ import { addVacation } from "../../Redux/VacationReducer";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
 
 function AddVacation(): JSX.Element {
-  // const [allVacations, setAllVacations] = useState<Vacation[]>([]);
-  //for image file
   const [vacFile, setVacFile] = useState<File | null>(null);
   const [image, setImage] = useState<string>("");
   const today = dayjs().startOf("day").toDate();
@@ -101,7 +99,7 @@ function AddVacation(): JSX.Element {
         imageData
       );
       const newVacation = new Vacation(
-        // vacationId,
+        addVacationRes.data.vacationId,
         data.destination,
         new Date(data.startDate),
         new Date(data.endDate),
@@ -110,7 +108,6 @@ function AddVacation(): JSX.Element {
         vacFile?.name || ""
       );
       vacationlyStore.dispatch(addVacation(newVacation));
-      // setAllVacations([...allVacations, newVacation]);
       navigate("/vacationList");
     } catch (err) {
       console.log("error occured in onSubmit function: ", err);

@@ -8,7 +8,7 @@ import path from "path";
 const router = express.Router();
 
 //router.post
-const addVacation = router.post(
+router.post(
   "/add",
   async (request: Request, response: Response, next: NextFunction) => {
     const newVacation: Vacation = await VacationLogic.addVacation(request.body);

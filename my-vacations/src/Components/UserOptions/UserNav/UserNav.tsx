@@ -37,7 +37,7 @@ function UserNav({ onLogout, initials, name }: UserNavProps): JSX.Element {
       </div>
       <div className="middle">
         <Button
-          variant="contained"
+          variant="outlined"
           size="medium"
           color="secondary"
           onClick={() => navigate("/vacationList")}

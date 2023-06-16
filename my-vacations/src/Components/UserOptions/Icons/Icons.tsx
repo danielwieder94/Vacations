@@ -59,8 +59,6 @@ function Icons({
     };
 
     try {
-      console.log("typeof vacationId: ", typeof vacationId);
-      console.log("is array an array?: ", Array.isArray(user.likedVacations));
       const isLiked = user.likedVacations.includes(vacationId);
       let updatedLikedVacations = [...user.likedVacations];
       if (isLiked) {

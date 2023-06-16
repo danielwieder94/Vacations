@@ -16,7 +16,7 @@ function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
   return (
     <div className="AdminNav">
       <div
-        className="logo"
+        className="logo-admin"
         onClick={() => {
           navigate("/");
         }}
@@ -33,9 +33,9 @@ function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
         </Typography>
       </div>
 
-      <div className="middle">
+      <div className="middle-admin">
         <Button
-          variant="contained"
+          variant="outlined"
           size="medium"
           color="secondary"
           onClick={() => {
@@ -45,7 +45,7 @@ function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
           Add Vacation
         </Button>
         <Button
-          variant="contained"
+          variant="outlined"
           size="medium"
           color="secondary"
           onClick={() => navigate("/vacationList")}
@@ -54,7 +54,7 @@ function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
         </Button>
 
         <Button
-          variant="contained"
+          variant="outlined"
           size="medium"
           color="secondary"
           onClick={() => {
@@ -65,7 +65,7 @@ function AdminNav({ onLogout, initials, name }: AdminNavProps): JSX.Element {
         </Button>
       </div>
 
-      <div className="right">
+      <div className="right-admin">
         <Avatar sx={{ width: 40, height: 40 }}>{initials}</Avatar>
         <Typography>{name}</Typography>
         <Button

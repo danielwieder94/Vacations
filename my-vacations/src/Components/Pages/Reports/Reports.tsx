@@ -44,10 +44,8 @@ function Reports(): JSX.Element {
     destination: vacation.destination,
     likes: vacation.likes,
   }));
-
   const csvData = data;
 
-  console.log("data for charts...", data);
   return (
     <div className="Reports">
       <div className="report-container">
@@ -73,7 +71,7 @@ function Reports(): JSX.Element {
       </div>
       <div className="reportChart">
         <Typography variant="h4">Vacations Reports</Typography>
-        <BarChart width={1500} height={600} data={data}>
+        <BarChart width={1200} height={500} data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="destination" />
           <YAxis dataKey="likes" allowDecimals={false} tickCount={10} />

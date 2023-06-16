@@ -18,7 +18,6 @@ import { updateVacation } from "../../Redux/VacationReducer";
 
 function EditVacation(): JSX.Element {
   const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);
-  //for image file
   const [vacFile, setVacFile] = useState<File | null>(null);
   const [image, setImage] = useState<string>("");
   const today = dayjs().startOf("day").toDate();
@@ -85,6 +84,7 @@ function EditVacation(): JSX.Element {
     imageData.append("image", vacFile!);
     const vacationId: number | undefined = editedVacation?.id;
     const updatedVacation = new Vacation(
+      editedVacation?.id!,
       data.destination,
       new Date(data.startDate),
       new Date(data.endDate),

@@ -10,7 +10,6 @@ const userAuth = () => {
 
 const PrivateRoutes = () => {
   const { userLogged } = userAuth();
-  console.log("PrivateRoutes isLoggedIn: ", userLogged);
   return userLogged ? <Outlet /> : <Navigate to="/login" />;
 };
 

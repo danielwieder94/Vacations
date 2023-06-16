@@ -35,13 +35,19 @@ export const deleteVacation = (id: number): VacationAction => {
 };
 
 export const vacationLikes = (vacationId: number): VacationAction => {
-  // console.log("ACTION - trying to like vacationId: ", vacationId);
   return { type: VacationActionType.vacationLikes, payload: vacationId };
 };
 
 export const vacationUnlike = (vacationId: number): VacationAction => {
-  // console.log("ACTION - trying to unlike vacationId: ", vacationId);
   return { type: VacationActionType.vacationUnlike, payload: vacationId };
+};
+
+const sortVacations = (vacations: Vacation[]): Vacation[] => {
+  return vacations.sort((a, b) => {
+    const startDateA = new Date(a.startDate);
+    const startDateB = new Date(b.startDate);
+    return startDateA.getTime() - startDateB.getTime();
+  });
 };
 
 export function vacationReducer(
@@ -52,9 +58,13 @@ export function vacationReducer(
 
   switch (action.type) {
     case VacationActionType.addVacation:
+      const newVacations = sortVacations([
+        ...newState.vacations,
+        action.payload,
+      ]);
       return {
         ...currentState,
-        vacations: [...newState.vacations, action.payload],
+        vacations: newVacations,
       };
     case VacationActionType.downloadVacations:
       return {

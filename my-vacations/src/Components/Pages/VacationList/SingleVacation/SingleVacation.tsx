@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icons from "../../../UserOptions/Icons/Icons";
 import "./SingleVacation.css";
 import {
@@ -9,9 +9,6 @@ import {
   Chip,
   Typography,
 } from "@mui/material";
-import axios from "axios";
-import { vacationlyStore } from "../../../Redux/VacationlyStore";
-import { deleteVacation } from "../../../Redux/VacationReducer";
 
 interface singleVacationProps {
   id: number;
@@ -23,6 +20,7 @@ interface singleVacationProps {
   vacImg: string;
   isAdmin: boolean;
   likes: number;
+  onDelete: () => void;
 }
 
 const formatDate = (date: Date): string => {
@@ -32,16 +30,7 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
-  const deleteVac = async () => {
-    await axios.delete(
-      `http://localhost:4000/api/v1/vacations/delete/${props.id}`
-    );
-    console.log("delete icon is clicked...");
-    vacationlyStore.dispatch(deleteVacation(props.id));
-  };
-
   const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
-
   return (
     <div className="SingleVacation">
       <Card
@@ -55,7 +44,7 @@ function SingleVacation(props: singleVacationProps): JSX.Element {
                 {props.destination}{" "}
                 <Icons
                   vacationId={props.id}
-                  onDelete={deleteVac}
+                  onDelete={props.onDelete}
                   isAdmin={props.isAdmin}
                   initialLikes={props.likes}
                 />
