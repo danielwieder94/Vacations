@@ -8,7 +8,7 @@ const userRoutes = express.Router();
 //email validation in UserLogic.ts
 userRoutes.post(
   "/register",
-  async (request: Request, response: Response, NextFunction) => {
+  async (request: Request, response: Response, next: NextFunction) => {
     try {
       //validate user's input
       const { firstName, lastName, email, password } = request.body;
@@ -32,6 +32,7 @@ userRoutes.post(
     } catch (error) {
       console.error(error);
       response.status(400).json({ message: "Email already exists" });
+      next(error);
     }
   }
 );
@@ -67,6 +68,7 @@ userRoutes.post(
         console.error(error);
         response.status(500).json({ message: error.message });
       }
+      next(error);
     }
   }
 );

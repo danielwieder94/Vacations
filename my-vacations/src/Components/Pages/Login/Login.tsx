@@ -13,6 +13,7 @@ import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
 import { toast } from "react-toastify";
+import apiBaseUrl from "../../../Utils/api";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login(): JSX.Element {
@@ -39,7 +40,7 @@ function Login(): JSX.Element {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/users/login",
+        `${apiBaseUrl}/api/v1/users/login`,
         data
       );
       const { user } = response.data;
