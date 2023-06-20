@@ -1,5 +1,5 @@
 import express from "express";
-// import bodyParser from "body-parser";
+import path from "path";
 import cors from "cors";
 import router from "./Routes/VacationRoutes";
 import userRoutes from "./Routes/UserRoutes";
@@ -27,6 +27,10 @@ server.use(express.static("public"));
 server.use("/api/v1/vacations", router);
 server.use("/api/v1/users", userRoutes);
 server.use("/api/v1/likes", likeRouter);
+
+server.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
 
 // console.log("check if tables exist..");
 
