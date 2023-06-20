@@ -101,7 +101,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     if (!userData) {
       return null;
     }
-    return userData ? { ...userData, isAdmin: userData.isAdmin } : null;
+    return { ...userData, isAdmin: userData.isAdmin };
   } catch (error: any) {
     throw new Error("Invalid email or password");
   }

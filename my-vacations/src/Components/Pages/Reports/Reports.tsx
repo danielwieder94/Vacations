@@ -71,12 +71,12 @@ function Reports(): JSX.Element {
       </div>
       <div className="reportChart">
         <Typography variant="h4">Vacations Reports</Typography>
-        <BarChart width={1200} height={500} data={data}>
+        <BarChart width={1400} height={500} data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="destination" />
           <YAxis dataKey="likes" allowDecimals={false} tickCount={10} />
           <Tooltip />
-          <Bar dataKey="likes" barSize={50} fill="#8884d8" />
+          <Bar dataKey="likes" barSize={40} fill="#8884d8" />
         </BarChart>
       </div>
     </div>

@@ -52,13 +52,13 @@ function Login(): JSX.Element {
       });
       navigate("/vacationList");
     } catch (err: any) {
-      err.response.status === 401
+      err.response?.status === 401
         ? toast.error("Invalid email or password", {
             position: "bottom-left",
             theme: "colored",
             autoClose: 3000,
           })
-        : toast.error(err.response.message, {
+        : toast.error(err.response?.message, {
             position: "bottom-left",
             theme: "colored",
             autoClose: 3000,

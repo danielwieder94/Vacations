@@ -2,16 +2,14 @@ import mysql from "mysql";
 import config from "./Config";
 
 const connection = mysql.createPool({
-  host: config.mySQLhost,
-  user: config.mySQLuser,
-  password: config.mySQLpass,
-  database: config.mySQLdb,
+  host: process.env.MYSQL_HOST || config.mySQLhost,
+  user: process.env.MYSQL_USER || config.mySQLuser,
+  password: process.env.MYSQL_PASSWORD || config.mySQLpass,
+  database: process.env.MYSQL_DATABASE || config.mySQLdb,
 });
 
 const execute = (sql: string, params?: any): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    // console.log("SQL query:", sql);
-    // console.log("Parameters:", params);
+  return new Promise<any>((resolve, reject) => {
     connection.query(sql, params, (err, result) => {
       if (err) {
         console.log("Error in dal_mysql.ts: ", err);
