@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { addUser, isLoggedIn } from "../../Redux/UserReducer";
 import User from "../../../Model/User";
 import { toast } from "react-toastify";
+import apiBaseUrl from "../../../Utils/api";
 
 function Register(): JSX.Element {
   const [errorMsg, setErrorMsg] = useState("");
@@ -78,7 +79,7 @@ function Register(): JSX.Element {
         likedVacations: [],
       };
       const response = await axios.post<User>(
-        "http://localhost:4000/api/v1/users/register",
+        `${apiBaseUrl}/api/v1/users/register`,
         newUser
       );
       dispatch(addUser(response.data));
