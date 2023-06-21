@@ -10,6 +10,7 @@ import VacationLogic from "./Logic/VacationLogic";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import likeRouter from "./Routes/likeRoutes";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config();
 const server = express();
@@ -23,27 +24,37 @@ server.use(
 
 server.use(express.json());
 server.use(express.static("public"));
-//environment variables from Render
-// const vacationsApiEndpoint =
-//   process.env.VACATIONS_API_ENDPOINT ||
-//   "http://localhost:4000/api/v1/vacations";
-// const usersApiEndpoint =
-//   process.env.USERS_API_ENDPOINT || "http://localhost:4000/api/v1/users";
-// const likesApiEndpoint =
-//   process.env.LIKES_API_ENDPOINT || "http://localhost:4000/api/v1/likes";
-
-server.use("/api/v1/vacations", router);
-server.use("/api/v1/users", userRoutes);
-server.use("/api/v1/likes", likeRouter);
+const vacationsApiEndpoint =
+  process.env.VACATIONS_API_ENDPOINT ||
+  "http://localhost:4000/api/v1/vacations";
+const usersApiEndpoint =
+  process.env.USERS_API_ENDPOINT || "http://localhost:4000/api/v1/users";
+const likesApiEndpoint =
+  process.env.LIKES_API_ENDPOINT || "http://localhost:4000/api/v1/likes";
+// server.use("/api/v1/vacations", router);
+// server.use("/api/v1/users", userRoutes);
+// server.use("/api/v1/likes", likeRouter);
+server.use(
+  "/api/v1/vacations",
+  router,
+  createProxyMiddleware({ target: vacationsApiEndpoint, changeOrigin: true })
+);
+server.use(
+  "/api/v1/users",
+  userRoutes,
+  createProxyMiddleware({ target: usersApiEndpoint, changeOrigin: true })
+);
+server.use(
+  "/api/v1/likes",
+  likeRouter,
+  createProxyMiddleware({ target: likesApiEndpoint, changeOrigin: true })
+);
 
 server.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
-// console.log("check if tables exist..");
-
 server.use("*", ErrorHandler);
-// server.use(fileUpload());
 
 UserLogic.createLikesTable();
 UserLogic.createUsersTable();
