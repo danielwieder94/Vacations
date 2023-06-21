@@ -39,7 +39,7 @@ function Login(): JSX.Element {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        process.env.USERS_API_ENDPOINT ||
+        process.env.USERS_API_ENDPOINT + "/login" ||
           "http://localhost:4000/api/v1/users/login",
         data
       );
