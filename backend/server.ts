@@ -23,6 +23,14 @@ server.use(
 
 server.use(express.json());
 server.use(express.static("public"));
+//environment variables from Render
+// const vacationsApiEndpoint =
+//   process.env.VACATIONS_API_ENDPOINT ||
+//   "http://localhost:4000/api/v1/vacations";
+// const usersApiEndpoint =
+//   process.env.USERS_API_ENDPOINT || "http://localhost:4000/api/v1/users";
+// const likesApiEndpoint =
+//   process.env.LIKES_API_ENDPOINT || "http://localhost:4000/api/v1/likes";
 
 server.use("/api/v1/vacations", router);
 server.use("/api/v1/users", userRoutes);

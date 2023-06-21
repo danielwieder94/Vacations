@@ -77,74 +77,8 @@ export function userReducer(
       updatedUser.likedVacations = updatedLikedVacations;
       newState.user = [updatedUser];
       return { ...newState };
-    // const updatedUser = { ...newState.user[0] };
-    // const likedVacations = action.payload || [];
-
-    // if (likedVacations.length === 0) {
-    //   // Reset likedVacations to an empty array if payload is empty
-    //   updatedUser.likedVacations = [];
-    // } else {
-    //   const updatedLikedVacations = [...updatedUser.likedVacations];
-
-    //   likedVacations.forEach((id: number) => {
-    //     if (updatedLikedVacations.includes(id)) {
-    //       // Remove the vacation ID if it already exists
-    //       updatedLikedVacations.splice(updatedLikedVacations.indexOf(id), 1);
-    //     } else {
-    //       // Add the vacation ID if it doesn't exist
-    //       updatedLikedVacations.push(id);
-    //     }
-    //   });
-    //   updatedUser.likedVacations = updatedLikedVacations;
-    // }
-
-    // newState.user = [updatedUser];
-    // return { ...newState };
     default:
       break;
   }
   return newState;
 }
-// const updatedUser = { ...newState.user[0] };
-// const likedVacations = action.payload || [];
-// const updatedLikedVacations = [...updatedUser.likedVacations];
-// likedVacations.forEach((id: number) => {
-//   if (updatedLikedVacations.includes(id)) {
-//     updatedLikedVacations.splice(updatedLikedVacations.indexOf(id), 1);
-//   } else {
-//     updatedLikedVacations.push(id);
-//   }
-// });
-// updatedUser.likedVacations = updatedLikedVacations;
-// newState.user = [updatedUser];
-// return { ...newState };
-// if (action.payload.length > 0) {
-//   console.log("action.payload: ", action.payload);
-//   likedVacations.includes(action.payload)
-//     ? (updatedUser.likedVacations = updatedUser.likedVacations.filter(
-//         (id) => id !== action.payload
-//       ))
-//     : (updatedUser.likedVacations = [
-//         ...updatedUser.likedVacations,
-//         ...action.payload,
-//       ]);
-//   console.log("updatedUser.likedVacations: ", updatedUser.likedVacations);
-// } else {
-//   updatedUser.likedVacations = [];
-// }
-// newState.user = [updatedUser];
-// return newState;
-
-// const updatedUser = { ...newState.user[0] };
-// const likedVacations = JSON.parse(
-//   JSON.stringify(updatedUser.likedVacations)
-// );
-// action.payload.forEach((id: number) => {
-//   if (likedVacations.includes(id)) {
-//     likedVacations.splice(likedVacations.indexOf(id), 1);
-//   } else {
-//     likedVacations.push(id);
-//   }
-// });
-// updatedUser.likedVacations = likedVacations;
-// newState.user = [updatedUser];

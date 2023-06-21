@@ -79,7 +79,8 @@ function Register(): JSX.Element {
         likedVacations: [],
       };
       const response = await axios.post<User>(
-        `${apiBaseUrl}/api/v1/users/register`,
+        process.env.USERS_API_ENDPOINT ||
+          "http://localhost:4000/api/v1/users/register",
         newUser
       );
       dispatch(addUser(response.data));
