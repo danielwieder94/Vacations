@@ -13,7 +13,6 @@ import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { downloadUsers, isLoggedIn } from "../../Redux/UserReducer";
 import { toast } from "react-toastify";
-import apiBaseUrl from "../../../Utils/api";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login(): JSX.Element {

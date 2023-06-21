@@ -21,7 +21,6 @@ import { useDispatch } from "react-redux";
 import { addUser, isLoggedIn } from "../../Redux/UserReducer";
 import User from "../../../Model/User";
 import { toast } from "react-toastify";
-import apiBaseUrl from "../../../Utils/api";
 
 function Register(): JSX.Element {
   const [errorMsg, setErrorMsg] = useState("");
