@@ -17,7 +17,7 @@ const server = express();
 server.use(cookieParser());
 server.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://vacationly-snmm.onrender.com"],
     credentials: true,
   })
 );
@@ -31,24 +31,21 @@ const usersApiEndpoint =
   process.env.USERS_API_ENDPOINT || "http://localhost:4000/api/v1/users";
 const likesApiEndpoint =
   process.env.LIKES_API_ENDPOINT || "http://localhost:4000/api/v1/likes";
-// server.use("/api/v1/vacations", router);
-// server.use("/api/v1/users", userRoutes);
-// server.use("/api/v1/likes", likeRouter);
 server.use(
   "/api/v1/vacations",
-  router,
   createProxyMiddleware({ target: vacationsApiEndpoint, changeOrigin: true })
 );
 server.use(
   "/api/v1/users",
-  userRoutes,
   createProxyMiddleware({ target: usersApiEndpoint, changeOrigin: true })
 );
 server.use(
   "/api/v1/likes",
-  likeRouter,
   createProxyMiddleware({ target: likesApiEndpoint, changeOrigin: true })
 );
+server.use("/api/v1/vacations", router);
+server.use("/api/v1/users", userRoutes);
+server.use("/api/v1/likes", likeRouter);
 
 server.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
