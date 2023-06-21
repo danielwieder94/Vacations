@@ -34,7 +34,6 @@ likeRouter.post(
         likes: likes,
         message: "Likes retrieved successfully",
       });
-      console.log("likes:", likes);
     } catch (error) {
       response.status(500).json({ message: "Something went wrong" });
     }
@@ -51,7 +50,6 @@ likeRouter.get(
         vacations: vacations,
         message: "Likes retrieved successfully",
       });
-      console.log("vacations:", vacations);
     } catch (error) {
       response.status(500).json({ message: "Something went wrong" });
     }

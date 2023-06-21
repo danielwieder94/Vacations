@@ -28,7 +28,6 @@ userRoutes.post(
       };
       const registeredUser = await UserLogic.registerUser(newUser);
       response.status(201).json(registeredUser);
-      console.log("User registered successfully");
     } catch (error) {
       console.error(error);
       response.status(400).json({ message: "Email already exists" });
@@ -48,21 +47,13 @@ userRoutes.post(
           .status(400)
           .json({ message: "Missing required fields" });
       }
-      console.log(
-        "Email found. Attempting to log in with email:",
-        email,
-        "and password:",
-        password
-      );
       const user = await UserLogic.loginUser(email, password);
-      console.log("User Is Admin?", user.isAdmin);
       response.status(200).json({ message: "Login successful", user });
     } catch (error: any) {
       if (
         error.message === "Invalid email or password" ||
         "Invalid email or password"
       ) {
-        console.log("Login route error, invalid email or password: ", error);
         return response.status(401).json({ message: error.message });
       } else {
         console.error(error);
