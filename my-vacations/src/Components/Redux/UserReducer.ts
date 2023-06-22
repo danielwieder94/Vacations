@@ -25,6 +25,7 @@ export const addUser = (newUser: User): UserAction => {
   return { type: UserActionType.addUser, payload: userWithInitials };
 };
 export const downloadUsers = (user: User): UserAction => {
+  console.log("downloadUsers called with user: ", user);
   return { type: UserActionType.downloadUsers, payload: user };
 };
 export const isLoggedIn = (isLoggedIn: boolean): UserAction => {
@@ -47,10 +48,11 @@ export function userReducer(
       break;
     case UserActionType.downloadUsers:
       const user = action.payload;
-      const likedVacationsString = user.likedVacations || "[]";
-      const likedVacations = JSON.parse(likedVacationsString) as number[];
-      const userWithLikedVacations = { ...user, likedVacations };
-      newState.user = [userWithLikedVacations];
+      // const likedVacationsString = user.likedVacations || "[]";
+      // console.log(likedVacationsString);
+      // const likedVacations = JSON.parse(likedVacationsString) as number[];
+      // const userWithLikedVacations = { ...user, likedVacationsString };
+      newState.user = [user];
       break;
     case UserActionType.isLoggedIn:
       newState.isLoggedIn = action.payload;

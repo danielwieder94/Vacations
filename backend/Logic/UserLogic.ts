@@ -39,7 +39,6 @@ export const registerUser = async (user: User) => {
   try {
     const emailExists = await getUserByEmail(user.email);
     if (emailExists) {
-      response.statusCode = 400;
       throw new Error("Email already exists");
     }
     //protect user's password - using bcrypt
@@ -72,11 +71,10 @@ export const registerUser = async (user: User) => {
 };
 
 //login
-const loginUser = async (email: string, password: string) => {
+export const loginUser = async (email: string, password: string) => {
   const user = await getUserByEmail(email);
 
   if (!user) {
-    response.statusCode = 401;
     throw new Error("Invalid email or password");
   }
   // check if password is correct
@@ -86,10 +84,11 @@ const loginUser = async (email: string, password: string) => {
       throw new Error("Invalid email or password");
     }
     //return the user
+    console.log("user: ", user);
     return user;
   } catch (error: any) {
     console.error("Error occured in loginUser function: ", error);
-    throw new Error("Failed to login user");
+    throw new Error("Invalid email or password");
   }
 };
 
@@ -98,6 +97,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const sql = `SELECT * FROM vacations.users WHERE email = ?`;
     const [userData] = await dal_mysql.execute(sql, [email]);
+    console.log("userData: ", userData);
     if (!userData) {
       return null;
     }

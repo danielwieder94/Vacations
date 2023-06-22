@@ -10,13 +10,14 @@ const toggleLike = async (userId: number, vacationId: number) => {
     FROM users
     WHERE id = ?
   `;
-  const userResult: { likedVacations: string }[] = await dal_mysql.execute(
+  const userResult: { likedVacations: number[] } = await dal_mysql.execute(
     userSql,
     [userId]
   );
-  const currentLikedVacations: number[] = userResult[0].likedVacations
-    ? JSON.parse(userResult[0].likedVacations)
-    : [];
+  console.log("userResult:", userResult);
+  const currentLikedVacations: number[] = userResult[0].likedVacations;
+  // ? JSON.parse(userResult[0].likedVacations)
+  // : [];
   console.log("currentLikedVacations:", currentLikedVacations);
   if (currentLikedVacations.includes(vacationId)) {
     // Remove the like

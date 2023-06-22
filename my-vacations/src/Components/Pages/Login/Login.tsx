@@ -43,9 +43,11 @@ function Login(): JSX.Element {
           "http://localhost:4000/api/v1/users/login",
         data
       );
+      console.log(response.data);
       const { user } = response.data;
       dispatch(isLoggedIn(true));
       dispatch(downloadUsers({ ...user, password: "Confidential" }));
+      console.log(user);
       toast.success(`Welcome back, ${user.firstName}!`, {
         position: "bottom-left",
         theme: "colored",

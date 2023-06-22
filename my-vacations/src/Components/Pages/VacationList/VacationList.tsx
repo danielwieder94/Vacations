@@ -9,6 +9,7 @@ import Filters from "../../Features/Filters/Filters";
 import Vacation from "../../../Model/Vacation";
 import SearchBar from "../../Features/SearchBar/SearchBar";
 import { userIsAdmin } from "../../../Utils/authUtils";
+import { useSelector } from "react-redux";
 
 function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
   return (
@@ -20,7 +21,10 @@ function LoadingOverlay({ isLoading }: { isLoading: boolean }) {
 
 function VacationList(): JSX.Element {
   const vacations = vacationlyStore.getState().vacations.vacations;
-  const userVacations = vacationlyStore.getState().users.user[0].likedVacations;
+  // const userVacations = vacationlyStore.getState().users.user[0].likedVacations;
+  const userVacations = useSelector(
+    (state: any) => state.users.user[0]?.likedVacations || []
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

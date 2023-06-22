@@ -1,8 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import User from "../Models/User";
 import UserLogic from "../Logic/UserLogic";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const userRoutes = express.Router();
 //email validation in UserLogic.ts
@@ -50,10 +48,7 @@ userRoutes.post(
       const user = await UserLogic.loginUser(email, password);
       response.status(200).json({ message: "Login successful", user });
     } catch (error: any) {
-      if (
-        error.message === "Invalid email or password" ||
-        "Invalid email or password"
-      ) {
+      if (error.message === "Invalid email or password") {
         return response.status(401).json({ message: error.message });
       } else {
         console.error(error);
