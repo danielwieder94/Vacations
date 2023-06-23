@@ -33,18 +33,15 @@ const likesApiEndpoint =
   process.env.LIKES_API_ENDPOINT || "http://localhost:4000/api/v1/likes";
 server.use(
   "/api/v1/vacations",
-  createProxyMiddleware({ target: vacationsApiEndpoint, changeOrigin: true }) ||
-    router
+  createProxyMiddleware({ target: vacationsApiEndpoint, changeOrigin: true })
 );
 server.use(
   "/api/v1/users",
-  createProxyMiddleware({ target: usersApiEndpoint, changeOrigin: true }) ||
-    userRoutes
+  createProxyMiddleware({ target: usersApiEndpoint, changeOrigin: true })
 );
 server.use(
   "/api/v1/likes",
-  createProxyMiddleware({ target: likesApiEndpoint, changeOrigin: true }) ||
-    likeRouter
+  createProxyMiddleware({ target: likesApiEndpoint, changeOrigin: true })
 );
 // server.use("/api/v1/vacations", router);
 // server.use("/api/v1/users", userRoutes);
