@@ -39,7 +39,7 @@ function Login(): JSX.Element {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        process.env.USERS_API_ENDPOINT + "/login",
+        "https://vacationly-api.onrender.com/api/v1/users/login",
         data
       );
       console.log(response.data);

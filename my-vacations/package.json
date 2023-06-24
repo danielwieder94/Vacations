@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-syntax-jsx": "^7.22.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.22.5",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
