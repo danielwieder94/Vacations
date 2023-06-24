@@ -49,6 +49,8 @@ server.use(
   createProxyMiddleware({ target: usersApiEndpoint, changeOrigin: true }) ||
     userRoutes
 );
+console.log("usersApiEndpoint: ", process.env.USERS_API_ENDPOINT);
+// server.use("/api/v1/users", userRoutes);
 server.use("/api/v1/vacations", router);
 // server.use("/api/v1/users", userRoutes);
 server.use("/api/v1/likes", likeRouter);
