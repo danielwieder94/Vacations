@@ -10,7 +10,6 @@ import VacationLogic from "./Logic/VacationLogic";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import likeRouter from "./Routes/likeRoutes";
-import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config();
 const server = express();
