@@ -1,83 +1,83 @@
-services:
-  vacations-database-service:
-    image: danielwieder/vacations-database-service-image:1.0
+# services:
+#   vacations-database-service:
+#     image: danielwieder/vacations-database-service-image:1.0
 
-    build: ./database
+#     build: ./database
 
-    container_name: vacations-database-container
+#     container_name: vacations-database-container
 
-    ports:
-      - "3307:3306"
+#     ports:
+#       - "3307:3306"
 
-    environment:
-      MYSQL_HOST: localhost
-      MYSQL_DATABASE: vacations
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 12345678
-      MYSQL_ROOT_PASSWORD: 12345678
+#     environment:
+#       MYSQL_HOST: localhost
+#       MYSQL_DATABASE: vacations
+#       MYSQL_USER: root
+#       MYSQL_PASSWORD: 12345678
+#       MYSQL_ROOT_PASSWORD: 12345678
 
-    restart: unless-stopped
+#     restart: unless-stopped
 
-    volumes:
-      - vacations:/var/lib/mysql
+#     volumes:
+#       - vacations:/var/lib/mysql
 
-    #------------------------------------------------------------------
+#     #------------------------------------------------------------------
 
-    #vacations backend service
-  vacations-backend-service:
-    image: danielwieder/vacations-backend-service-image:1.0
+#     #vacations backend service
+#   vacations-backend-service:
+#     image: danielwieder/vacations-backend-service-image:1.0
 
-    build: ./backend
+#     build: ./backend
 
-    container_name: vacations-backend-container
+#     container_name: vacations-backend-container
 
-    ports:
-      - 4000:4000
+#     ports:
+#       - 4000:4000
 
-    environment:
-      PORT: 4000
-      MYSQL_HOST: vacations-database-service
-      MYSQL_DATABASE: vacations
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 12345678
+#     environment:
+#       PORT: 4000
+#       MYSQL_HOST: vacations-database-service
+#       MYSQL_DATABASE: vacations
+#       MYSQL_USER: root
+#       MYSQL_PASSWORD: 12345678
 
-    restart: unless-stopped
+#     restart: unless-stopped
 
-    volumes:
-      - ./backend:/app
-      - /app/node_modules 
+#     volumes:
+#       - ./backend:/app
+#       - /app/node_modules 
 
-    depends_on:
-      - vacations-database-service
+#     depends_on:
+#       - vacations-database-service
 
-    #------------------------------------------------------------------
+#     #------------------------------------------------------------------
 
-    #vacations frontend service
-  vacations-frontend-service:
-    image: danielwieder/vacations-frontend-service-image:1.0
+#     #vacations frontend service
+#   vacations-frontend-service:
+#     image: danielwieder/vacations-frontend-service-image:1.0
 
-    build: ./my-vacations
+#     build: ./my-vacations
 
-    container_name: vacations-frontend-container
+#     container_name: vacations-frontend-container
 
-    ports:
-      - 3000:3000
+#     ports:
+#       - 3000:3000
 
-    environment:
-      PORT: 3000
-      REACT_APP_BACKEND_URL: http://localhost:4000
+#     environment:
+#       PORT: 3000
+#       REACT_APP_BACKEND_URL: http://localhost:4000
 
-    restart: unless-stopped
+#     restart: unless-stopped
 
-    volumes:
-      - ./my-vacations:/app
+#     volumes:
+#       - ./my-vacations:/app
 
-    depends_on:
-      - vacations-backend-service
+#     depends_on:
+#       - vacations-backend-service
 
-    #------------------------------------------------------------------
-volumes:
-  vacations:
+#     #------------------------------------------------------------------
+# volumes:
+#   vacations:
 
 
 

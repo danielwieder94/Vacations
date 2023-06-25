@@ -10,13 +10,18 @@ import VacationLogic from "./Logic/VacationLogic";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import likeRouter from "./Routes/likeRoutes";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config();
 const server = express();
 server.use(cookieParser());
 server.use(
   cors({
-    origin: ["https://vacationly.onrender.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://vacationly-api.onrender.com",
+      "https://vacationly.onrender.com",
+    ],
     credentials: true,
   })
 );
