@@ -20,7 +20,6 @@ function EditVacation(): JSX.Element {
   const [editedVacation, setEditedVacation] = useState<Vacation | null>(null);
   const [vacFile, setVacFile] = useState<File | null>(null);
   const [image, setImage] = useState<string>("");
-  const today = dayjs().startOf("day").toDate();
 
   type FormData = {
     id?: number;
@@ -31,17 +30,14 @@ function EditVacation(): JSX.Element {
     vacPrice: number;
     vacImg: string;
   };
-  // This will be the schema for the form, it'll be used to validate the form when submitting.
-  //z.coerce.date() is used to convert the string to a date object.
+
   const schema: ZodType<FormData> = z
     .object({
       destination: z
         .string()
         .min(2, { message: "Destination must have at least 2 characters" })
         .nonempty(),
-      startDate: z.coerce.date().refine((data) => data >= today, {
-        message: "Start date must be today or in the future",
-      }),
+      startDate: z.coerce.date(),
       endDate: z.coerce.date(),
       vacDesc: z
         .string()
@@ -205,9 +201,9 @@ function EditVacation(): JSX.Element {
                 id="image-file"
                 name="image"
                 ref={inputRef}
-                className="input-field"
+                className="input-field visually-hidden"
                 onChange={handleImageChange}
-                hidden
+                required
               />
               {image ? (
                 <img
@@ -218,7 +214,6 @@ function EditVacation(): JSX.Element {
                 />
               ) : (
                 <MdCloudUpload size={50} color="#0075A2" />
-                // <img src={`http://localhost:4000/${id}_${editedVacation.vacImg}`} width={"100%"} height={"100%"} alt={File.name} />
               )}
               {!image && <span>Upload Image</span>}
               <input
@@ -256,7 +251,6 @@ function EditVacation(): JSX.Element {
             >
               <Typography>Cancel</Typography>
             </Button>
-
             <br />
           </form>
         )}

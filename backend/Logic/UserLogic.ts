@@ -52,7 +52,6 @@ export const registerUser = async (user: User) => {
       user.email,
       hashedPassword,
     ]);
-    console.log("insertUserResult: ", insertUserResult);
     //Return the new user
     const newUser: User = {
       id: insertUserResult.insertId,
@@ -83,8 +82,6 @@ export const loginUser = async (email: string, password: string) => {
     if (!isPasswordCorrect) {
       throw new Error("Invalid email or password");
     }
-    //return the user
-    console.log("user: ", user);
     return user;
   } catch (error: any) {
     console.error("Error occured in loginUser function: ", error);
@@ -97,7 +94,6 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
     const sql = `SELECT * FROM vacations.users WHERE email = ?`;
     const [userData] = await dal_mysql.execute(sql, [email]);
-    console.log("userData: ", userData);
     if (!userData) {
       return null;
     }

@@ -19,12 +19,7 @@ class Vacation {
   ) {
     this.id = id;
     this.destination = destination;
-    this.startDate =
-      startDate < new Date()
-        ? (() => {
-            throw new Error("Start date cannot be earlier than today.");
-          })()
-        : startDate;
+    this.startDate = startDate;
     this.endDate =
       endDate < startDate
         ? (() => {

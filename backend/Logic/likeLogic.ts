@@ -14,14 +14,11 @@ const toggleLike = async (userId: number, vacationId: number) => {
     userSql,
     [userId]
   );
-  console.log("userResult:", userResult);
   const currentLikedVacations: number[] = userResult[0].likedVacations;
   // ? JSON.parse(userResult[0].likedVacations)
   // : [];
-  console.log("currentLikedVacations:", currentLikedVacations);
   if (currentLikedVacations.includes(vacationId)) {
     // Remove the like
-    console.log("Removing like from vacationId:", vacationId);
     const index = currentLikedVacations.indexOf(vacationId);
     currentLikedVacations.splice(index, 1);
 
@@ -39,10 +36,7 @@ const toggleLike = async (userId: number, vacationId: number) => {
     await dal_mysql.execute(updateVacationSql, [vacationId]);
   } else {
     // Add the like
-    console.log("Adding like to vacationId:", vacationId);
-
     currentLikedVacations.push(vacationId);
-
     const addLikeSql = `
       INSERT INTO likes (vacationId, userId)
       VALUES (?, ?)

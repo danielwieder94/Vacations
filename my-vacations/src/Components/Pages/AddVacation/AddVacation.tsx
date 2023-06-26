@@ -15,6 +15,7 @@ import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addVacation } from "../../Redux/VacationReducer";
 import { vacationlyStore } from "../../Redux/VacationlyStore";
+import { toast } from "react-toastify";
 
 function AddVacation(): JSX.Element {
   const [vacFile, setVacFile] = useState<File | null>(null);
@@ -182,9 +183,9 @@ function AddVacation(): JSX.Element {
               id="image-file"
               name="image"
               ref={inputRef}
-              className="input-field"
+              className="input-field visually-hidden"
               onChange={handleImageChange}
-              hidden
+              required
             />
             {image ? (
               <img src={image} width={"100%"} height={"100%"} alt={File.name} />

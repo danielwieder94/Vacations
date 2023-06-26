@@ -92,7 +92,6 @@ const getVacationById = async (id: number) => {
      FROM vacations.vacations_list WHERE id = ?`,
     [id]
   );
-  console.log(row);
   return row;
 };
 

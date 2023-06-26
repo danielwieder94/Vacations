@@ -4,6 +4,7 @@ import VacationLogic from "../Logic/VacationLogic";
 import Vacation from "../Models/Vacation";
 import upload from "../Logic/FileUpload";
 import path from "path";
+import multer from "multer";
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.get(
     const vacationId = +request.params.id;
     const vacation = await VacationLogic.getVacationById(vacationId);
     response.status(200).json(vacation);
-    console.log(vacation);
+    return response;
   }
 );
 
@@ -63,24 +64,13 @@ router.delete(
   }
 );
 
-//for image upload
 router.post(
   "/:id/upload",
   upload.single("image"),
-  (request: Request, response: Response) => {
+  (request: Request, response: Response, err: any) => {
     response.send("image uploaded successfully");
   }
 );
-
-//get file image from 'public' folder by image id and name
-// router.get(
-//   "/public/:image",
-//   (request: Request, response: Response, next: NextFunction) => {
-//     const image = request.params.image;
-//     response.sendFile(path.join(__dirname, "../public", image));
-//     response.status(200).json({ message: "image sent successfully" });
-//   }
-// );
 
 //format date to local timezone
 const formatDate = (date: Date) => {
