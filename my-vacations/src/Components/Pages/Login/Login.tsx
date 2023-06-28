@@ -42,11 +42,9 @@ function Login(): JSX.Element {
         "https://vacationly-api.onrender.com/api/v1/users/login",
         data
       );
-      console.log(response.data);
       const { user } = response.data;
       dispatch(isLoggedIn(true));
       dispatch(downloadUsers({ ...user, password: "Confidential" }));
-      console.log(user);
       toast.success(`Welcome back, ${user.firstName}!`, {
         position: "bottom-left",
         theme: "colored",

@@ -38,7 +38,6 @@ function VacationList(): JSX.Element {
 
   useEffect(() => {
     if (vacations.length < 1) {
-      console.log("loading vacations... getting data from backend");
       axios
         .get("https://vacationly-api.onrender.com/api/v1/vacations/list")
         .then((response) => {
@@ -90,7 +89,6 @@ function VacationList(): JSX.Element {
   };
 
   const handleFilters = (filteredVacations: Vacation[]) => {
-    console.log("filtered vacations: ", filteredVacations);
     setFilteredVacations(filteredVacations);
     setCurrentPage(1);
     setTotalPages(Math.ceil(filteredVacations.length / itemsPerPage));

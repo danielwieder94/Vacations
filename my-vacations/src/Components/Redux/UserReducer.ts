@@ -25,14 +25,12 @@ export const addUser = (newUser: User): UserAction => {
   return { type: UserActionType.addUser, payload: userWithInitials };
 };
 export const downloadUsers = (user: User): UserAction => {
-  console.log("downloadUsers called with user: ", user);
   return { type: UserActionType.downloadUsers, payload: user };
 };
 export const isLoggedIn = (isLoggedIn: boolean): UserAction => {
   return { type: UserActionType.isLoggedIn, payload: isLoggedIn };
 };
 export const updateLikes = (likes: number[]): UserAction => {
-  console.log("updateLikes called with likes: ", likes);
   return { type: UserActionType.updateLikes, payload: likes };
 };
 

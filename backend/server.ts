@@ -27,7 +27,7 @@ server.use(
 );
 
 server.use(express.json());
-server.use(express.static("public"));
+server.use(express.static("public", { maxAge: 86400000 }));
 
 server.use("/api/v1/users", userRoutes);
 server.use("/api/v1/vacations", router);
