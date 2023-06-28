@@ -60,7 +60,7 @@ function VacationList(): JSX.Element {
 
   const deleteVac = async (vacationId: number) => {
     await axios.delete(
-      `https://vacationly-api.onrender.com//api/v1/vacations/delete/${vacationId}`
+      `https://vacationly-api.onrender.com/api/v1/vacations/delete/${vacationId}`
     );
     vacationlyStore.dispatch(deleteVacation(vacationId));
 

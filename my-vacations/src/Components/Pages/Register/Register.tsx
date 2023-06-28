@@ -71,8 +71,7 @@ function Register(): JSX.Element {
         likedVacations: [],
       };
       const response = await axios.post<User>(
-        process.env.USERS_API_ENDPOINT ||
-          "https://vacationly-api.onrender.com//api/v1/users/register",
+        "https://vacationly-api.onrender.com/api/v1/users/register",
         newUser
       );
       dispatch(addUser(response.data));
