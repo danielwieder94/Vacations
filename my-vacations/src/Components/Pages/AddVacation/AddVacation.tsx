@@ -91,12 +91,12 @@ function AddVacation(): JSX.Element {
     imageData.append("image", vacFile!);
     try {
       const addVacationRes = await axios.post(
-        "http://localhost:4000/api/v1/vacations/add",
+        "https://vacationly-api.onrender.com//api/v1/vacations/add",
         { ...data, vacImg: vacFile?.name || "" }
       );
       const vacationId = addVacationRes.data.vacationId;
       await axios.post(
-        `http://localhost:4000/api/v1/vacations/${vacationId}/upload`,
+        `https://vacationly-api.onrender.com//api/v1/vacations/${vacationId}/upload`,
         imageData
       );
       const newVacation = new Vacation(

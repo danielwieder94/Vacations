@@ -66,10 +66,12 @@ function EditVacation(): JSX.Element {
   useEffect(() => {
     const getVacation = async () => {
       await axios
-        .get(`http://localhost:4000/api/v1/vacations/list/${id}`)
+        .get(`https://vacationly-api.onrender.com//api/v1/vacations/list/${id}`)
         .then((response) => {
           setEditedVacation(response.data);
-          setImage(`http://localhost:4000/${id}_${response.data.vacImg}`);
+          setImage(
+            `https://vacationly-api.onrender.com//${id}_${response.data.vacImg}`
+          );
         });
     };
     getVacation();
@@ -90,12 +92,12 @@ function EditVacation(): JSX.Element {
     );
     updatedVacation.id = vacationId;
     axios.put(
-      `http://localhost:4000/api/v1/vacations/update/${id}`,
+      `https://vacationly-api.onrender.com//api/v1/vacations/update/${id}`,
       updatedVacation
     );
     if (editedVacation?.vacImg !== `${id}_${vacFile?.name}`) {
       axios.post(
-        `http://localhost:4000/api/v1/vacations/${id}/upload`,
+        `https://vacationly-api.onrender.com//api/v1/vacations/${id}/upload`,
         imageData
       );
     }

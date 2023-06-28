@@ -48,10 +48,6 @@ export function userReducer(
       break;
     case UserActionType.downloadUsers:
       const user = action.payload;
-      // const likedVacationsString = user.likedVacations || "[]";
-      // console.log(likedVacationsString);
-      // const likedVacations = JSON.parse(likedVacationsString) as number[];
-      // const userWithLikedVacations = { ...user, likedVacationsString };
       newState.user = [user];
       break;
     case UserActionType.isLoggedIn:

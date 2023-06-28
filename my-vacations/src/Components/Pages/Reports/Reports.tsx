@@ -7,7 +7,7 @@ import { Button, Typography, Switch } from "@mui/material";
 import { faFileCsv } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const url = "http://localhost:4000/api/v1/likes";
+const url = "https://vacationly-api.onrender.com//api/v1/likes";
 
 function Reports(): JSX.Element {
   const [vacations, setVacations] = useState([]);

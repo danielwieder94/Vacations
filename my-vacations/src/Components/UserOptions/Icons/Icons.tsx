@@ -34,7 +34,7 @@ function Icons({
 }: IconProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const likeUrl = "http://localhost:4000/api/v1/likes";
+  const likeUrl = "https://vacationly-api.onrender.com/api/v1/likes";
   const user = useSelector((state: any) => state.users.user[0]);
   const [likes, setLikes] = useState<number>(initialLikes);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
