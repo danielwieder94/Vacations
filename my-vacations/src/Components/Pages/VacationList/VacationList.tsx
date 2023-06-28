@@ -40,7 +40,7 @@ function VacationList(): JSX.Element {
     if (vacations.length < 1) {
       console.log("loading vacations... getting data from backend");
       axios
-        .get("http://localhost:4000/api/v1/vacations/list")
+        .get("https://vacationly-api.onrender.com/api/v1/vacations/list")
         .then((response) => {
           vacationlyStore.dispatch(downloadVacations(response.data));
           setRefresh(true);
