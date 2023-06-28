@@ -1,9 +1,9 @@
 class Config {
-  public WebPort = 4000;
-  public mySQLhost = "localhost";
-  public mySQLuser = "root";
-  public mySQLpass = "12345678";
-  public mySQLdb = "vacations";
+  public WebPort = 3306;
+  public mySQLhost = "db4free.net";
+  public mySQLuser = "vacation_user";
+  public mySQLpass = "t*e2iB-F9._uW$W";
+  public mySQLdb = "vacations_db";
 }
 
 const config = new Config();
