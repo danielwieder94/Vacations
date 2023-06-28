@@ -30,7 +30,7 @@ const formatDate = (date: Date): string => {
 };
 
 function SingleVacation(props: singleVacationProps): JSX.Element {
-  const imageUrl = `http://localhost:4000/${props.id}_${props.vacImg}`;
+  const imageUrl = `https://vacationly-api.onrender.com/${props.id}_${props.vacImg}`;
   return (
     <div className="SingleVacation">
       <Card
