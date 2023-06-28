@@ -65,8 +65,8 @@ const toggleLike = async (userId: number, vacationId: number) => {
 const getLikesByUser = async (userId: number) => {
   const sql = `
       SELECT vacations_list.id
-      FROM vacations.likes
-      INNER JOIN vacations.vacations_list ON likes.vacationId = vacations_list.id
+      FROM vacations_db.likes
+      INNER JOIN vacations_db.vacations_list ON likes.vacationId = vacations_list.id
       WHERE likes.userId = ?  
     `;
   const result: Vacation[] = await dal_mysql.execute(sql, [userId]);
@@ -76,7 +76,7 @@ const getLikesByUser = async (userId: number) => {
 const getLikesPerVacation = async () => {
   const sql = `
       SELECT destination, likes
-      FROM vacations.vacations_list
+      FROM vacations_db.vacations_list
     `;
   const result: any = await dal_mysql.execute(sql);
   return result;

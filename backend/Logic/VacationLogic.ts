@@ -7,7 +7,7 @@ import { deleteImage } from "./FileUpload";
 //create vacationsTable
 const createVacationsTable = async () => {
   const sql = `
-            CREATE TABLE IF NOT EXISTS vacations.vacations_list (
+            CREATE TABLE IF NOT EXISTS vacations_db.vacations_list (
             id INT AUTO_INCREMENT PRIMARY KEY,
             destination VARCHAR(255) NOT NULL,
             vacDesc VARCHAR(1020) NOT NULL,
@@ -26,7 +26,7 @@ const formatDate = (date: Date): string => {
 
 //add vacation
 const addVacation = async (vacation: Vacation) => {
-  const sql = `INSERT INTO vacations.vacations_list (destination, vacDesc, vacImg, startDate, endDate, vacPrice) VALUES (?, ?,  ?, ?, ?, ?)`;
+  const sql = `INSERT INTO vacations_db.vacations_list (destination, vacDesc, vacImg, startDate, endDate, vacPrice) VALUES (?, ?,  ?, ?, ?, ?)`;
   const result: OkPacket = await dal_mysql.execute(sql, [
     vacation.destination,
     vacation.vacDesc,
@@ -50,7 +50,7 @@ const addVacation = async (vacation: Vacation) => {
 //edit vacation
 const updateVacation = async (vacation: Vacation) => {
   return await dal_mysql.execute(
-    `UPDATE vacations.vacations_list
+    `UPDATE vacations_db.vacations_list
 SET destination = ?, vacDesc = ?, vacImg = ?, startDate = ?, endDate = ?, vacPrice = ?
 WHERE id = ?`,
     [
@@ -69,7 +69,7 @@ WHERE id = ?`,
 //get all vacations
 const getAllVacations = async () => {
   return await dal_mysql.execute(
-    `SELECT * FROM vacations.vacations_list ORDER BY startDate ASC`,
+    `SELECT * FROM vacations_db.vacations_list ORDER BY startDate ASC`,
     []
   );
 };
@@ -77,7 +77,7 @@ const getAllVacations = async () => {
 //get vacations by destination
 const getVacationByDest = async (destination: string) => {
   return await dal_mysql.execute(
-    `SELECT * FROM vacations.vacations_list WHERE destination = ?`,
+    `SELECT * FROM vacations_db.vacations_list WHERE destination = ?`,
     [destination]
   );
   // const sql = `SELECT * FROM vacations.vacations_list WHERE destination = ?`;
@@ -89,7 +89,7 @@ const getVacationById = async (id: number) => {
     `SELECT *, 
             CONVERT_TZ(startDate, '+00:00', @@session.time_zone) AS startDate,
             CONVERT_TZ(endDate, '+00:00', @@session.time_zone) AS endDate
-     FROM vacations.vacations_list WHERE id = ?`,
+     FROM vacations_db.vacations_list WHERE id = ?`,
     [id]
   );
   return row;
@@ -98,8 +98,8 @@ const getVacationById = async (id: number) => {
 //get vacations by likes (for admin reports)
 const getVacationByLikes = async () => {
   const sql = `SELECT vacation_list.* 
-    FROM vacations.vacations_list AS vacation_list
-    JOIN vacations.likes AS likes
+    FROM vacations_db.vacations_list AS vacation_list
+    JOIN vacations_db.likes AS likes
     ON vacation_list.id = likes.vacationId
     GROUP BY vacation_list.id
     HAVING COUNT(likes.vacationId) > 0`;
@@ -107,13 +107,13 @@ const getVacationByLikes = async () => {
 };
 
 const deleteVacation = async (id: number) => {
-  const checkLikes = `SELECT likes FROM vacations.vacations_list WHERE id = ?`;
+  const checkLikes = `SELECT likes FROM vacations_db.vacations_list WHERE id = ?`;
   const likeResult: { likes: number }[] = await dal_mysql.execute(checkLikes, [
     id,
   ]);
   const likesCount = likeResult[0].likes;
 
-  const deleteSql = `DELETE FROM vacations.vacations_list WHERE id = ?`;
+  const deleteSql = `DELETE FROM vacations_db.vacations_list WHERE id = ?`;
   await dal_mysql.execute(deleteSql, [id]);
 
   if (likesCount > 0) {

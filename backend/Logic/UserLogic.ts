@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 //create userTable
 const createUsersTable = async () => {
   const sql = `
-        CREATE TABLE IF NOT EXISTS vacations.users (
+        CREATE TABLE IF NOT EXISTS vacations_db.users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         firstName VARCHAR(255) NOT NULL,
         lastName VARCHAR(255) NOT NULL,
@@ -22,7 +22,7 @@ const createUsersTable = async () => {
 //create likesTable
 const createLikesTable = async () => {
   const sql = `
-        CREATE TABLE IF NOT EXISTS vacations.likes (
+        CREATE TABLE IF NOT EXISTS vacations_db.likes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         vacationId INT NOT NULL,
         userId INT NOT NULL,
@@ -44,7 +44,7 @@ export const registerUser = async (user: User) => {
     //protect user's password - using bcrypt
     const hashedPassword: string = await bcrypt.hash(user.password, 10);
     //using ? ? ? ? placeholders to prevent SQL injection, adding maintainability and readability
-    const insertUserSql = `INSERT INTO vacations.users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
+    const insertUserSql = `INSERT INTO vacations_db.users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
     //Insert the new user to the DB
     const insertUserResult: OkPacket = await dal_mysql.execute(insertUserSql, [
       user.firstName,
@@ -92,7 +92,7 @@ export const loginUser = async (email: string, password: string) => {
 //get user by email - for login / register
 const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    const sql = `SELECT * FROM vacations.users WHERE email = ?`;
+    const sql = `SELECT * FROM vacations_db.users WHERE email = ?`;
     const [userData] = await dal_mysql.execute(sql, [email]);
     if (!userData) {
       return null;
