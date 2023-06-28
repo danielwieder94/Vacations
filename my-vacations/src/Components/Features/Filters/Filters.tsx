@@ -99,18 +99,6 @@ function Filters({
             />
           );
         })}
-        {/* {filters.map((filter) => {
-          return (
-            <Chip
-              key={filter.value}
-              label={filter.label}
-              variant={selected.includes(filter.value) ? "filled" : "outlined"}
-              onClick={() => handleFilter(filter.value)}
-              color="primary"
-              sx={{ m: 1 }}
-            />
-          );
-        })} */}
       </div>
     </div>
   );

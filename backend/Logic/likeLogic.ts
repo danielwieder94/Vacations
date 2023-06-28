@@ -15,8 +15,6 @@ const toggleLike = async (userId: number, vacationId: number) => {
     [userId]
   );
   const currentLikedVacations: number[] = userResult[0].likedVacations;
-  // ? JSON.parse(userResult[0].likedVacations)
-  // : [];
   if (currentLikedVacations.includes(vacationId)) {
     // Remove the like
     const index = currentLikedVacations.indexOf(vacationId);

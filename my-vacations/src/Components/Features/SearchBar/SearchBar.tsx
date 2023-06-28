@@ -18,7 +18,6 @@ function SearchBar(props: SearchBarProps): JSX.Element {
           value={props.query}
           onChange={props.onQueryChange}
         />
-        {/* <div className="placeholder">Search vacations</div> */}
       </div>
     </div>
   );

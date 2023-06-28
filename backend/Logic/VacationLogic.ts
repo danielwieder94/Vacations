@@ -80,8 +80,6 @@ const getVacationByDest = async (destination: string) => {
     `SELECT * FROM vacations_db.vacations_list WHERE destination = ?`,
     [destination]
   );
-  // const sql = `SELECT * FROM vacations.vacations_list WHERE destination = ?`;
-  // const result: OkPacket = await dal_mysql.execute(sql, [destination]);
 };
 
 const getVacationById = async (id: number) => {
