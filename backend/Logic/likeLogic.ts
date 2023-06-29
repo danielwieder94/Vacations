@@ -14,7 +14,10 @@ const toggleLike = async (userId: number, vacationId: number) => {
     userSql,
     [userId]
   );
-  const currentLikedVacations: number[] = userResult[0].likedVacations;
+  let currentLikedVacations: number[] = userResult[0].likedVacations;
+  if (currentLikedVacations === null) {
+    currentLikedVacations = [];
+  }
   if (currentLikedVacations.includes(vacationId)) {
     // Remove the like
     const index = currentLikedVacations.indexOf(vacationId);
