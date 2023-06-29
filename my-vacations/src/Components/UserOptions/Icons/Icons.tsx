@@ -59,7 +59,7 @@ function Icons({
     };
 
     try {
-      const isLiked = user.likedVacations.includes(vacationId);
+      const isLiked = user.likedVacations?.includes(vacationId);
       let updatedLikedVacations = [...user.likedVacations];
       if (isLiked) {
         // Unlike the vacation
