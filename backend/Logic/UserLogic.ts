@@ -44,13 +44,14 @@ export const registerUser = async (user: User) => {
     //protect user's password - using bcrypt
     const hashedPassword: string = await bcrypt.hash(user.password, 10);
     //using ? ? ? ? placeholders to prevent SQL injection, adding maintainability and readability
-    const insertUserSql = `INSERT INTO vacations_db.users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
+    const insertUserSql = `INSERT INTO vacations_db.users (firstName, lastName, email, password, likedVacations) VALUES (?, ?, ?, ?, ?)`;
     //Insert the new user to the DB
     const insertUserResult: OkPacket = await dal_mysql.execute(insertUserSql, [
       user.firstName,
       user.lastName,
       user.email,
       hashedPassword,
+      JSON.stringify([]),
     ]);
     //Return the new user
     const newUser: User = {

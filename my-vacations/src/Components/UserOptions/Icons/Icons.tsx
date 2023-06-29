@@ -97,7 +97,7 @@ function Icons({
         </div>
       ) : (
         <div className="userIcons">
-          {user.likedVacations?.includes(vacationId) ? (
+          {user.likedVacations.includes(vacationId) ? (
             <FavoriteIcon className="heartIcon filled" onClick={handleLike} />
           ) : (
             <FavoriteBorderOutlinedIcon
